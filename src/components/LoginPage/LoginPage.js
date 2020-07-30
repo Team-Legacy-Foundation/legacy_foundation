@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import logo from "../../images/image.png";
+
+
 class LoginPage extends Component {
   state = {
     username: '',
@@ -40,6 +43,8 @@ class LoginPage extends Component {
             {this.props.errors.loginMessage}
           </h2>
         )}
+        <center>
+        </center>
         <form onSubmit={this.login}>
           <h1>Login</h1>
           <div>
