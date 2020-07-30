@@ -49,7 +49,7 @@ class LoginPage extends Component {
           <h1>Login</h1>
           <div>
             <label htmlFor="username">
-              Username:
+              Email:
               <input
                 type="text"
                 name="username"
