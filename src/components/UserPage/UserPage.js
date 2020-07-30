@@ -7,9 +7,16 @@ import LogOutButton from '../LogOutButton/LogOutButton';
 // and then instead of `props.user.username` you could use `user.username`
 const UserPage = (props) => (
   <div>
+    {JSON.stringify(props.user)}
+    {props.user.role === 'admin' ? ( //if role is found to be admin, show them this page
     <h1 id="welcome">
-      Welcome, { props.user.username }!
+      Welcome, { props.user.email } you are a admin!
     </h1>
+    ) : ( //else if they are not an admin (i.e. student) they are shown this page
+  <h1 id="welcome">
+      Welcome, { props.user.email } you are a student!
+    </h1>
+    )}
     <p>Your ID is: {props.user.id}</p>
     <LogOutButton className="log-in" />
   </div>
