@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
+import logo from "../../images/image.png";
 
 const Nav = (props) => (
   <div className="nav">
     <Link to="/home">
+      <img className="logo" src={logo} alit="logo" style={{float: "left",
+      width: 250}}/>
       <h2 className="nav-title">Prime Solo Project</h2>
     </Link>
     <div className="nav-right">
