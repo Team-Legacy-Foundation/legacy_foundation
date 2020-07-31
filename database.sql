@@ -45,7 +45,7 @@ CREATE TABLE "entry" (
   "pay_day" DATE,
   "date_submitted" DATE,
   "pass_class" varchar,
-  "gpa" int,
+  "gpa" decimal,
   "clean_attend" int,
   "detent_hours" varchar,
   "act_or_job" varchar,
@@ -69,6 +69,7 @@ CREATE TABLE "entry" (
   "bonus_comments" varchar,
   "money_to_student" int
 );
+
 
 INSERT INTO "admin" ("first_name","last_name","email","password","created_at","role")
 VALUES ('Mary', 'Dehne', 'legacychildrensfoundation@gmail.com', 'legacy', '07/30/20', 'admin');
