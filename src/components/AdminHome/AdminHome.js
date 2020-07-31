@@ -5,9 +5,13 @@ import { withRouter } from "react-router";
 
 class AdminHome extends Component {
   render() {
-    return <div>
-      <h1>Hello there {this.props.user.email}, you are a(n) {this.props.user.role}!</h1>
-    </div>
+    return (
+      <div>
+        <h2>LCF Student List</h2>
+        <div style={{fontSize: 40,}}>Table placeholder</div>
+        <button>Run report placeholder</button>
+      </div>
+    );
   }
 }
 
