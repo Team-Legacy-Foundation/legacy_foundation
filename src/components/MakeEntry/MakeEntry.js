@@ -4,9 +4,29 @@ import { withRouter } from "react-router";
 
 
 class MakeEntry extends Component {
+
+  state = {
+
+  };
+
+  handleChange = (event, fieldName) => {
+    this.setState({ [fieldName]: event.target.value });
+  };
+
+  submitInfo = (event) => {
+    event.preventDefault();
+    //DO DISPATCH HERE
+    this.props.history.push("/home");
+  };
+
   render() {
+
+
     return <div>
-      <h1>This is where students will answer those list of questions</h1>
+      <h3>This entry is for the week of: PAY PERIOD HERE</h3>
+      <form onSubmit={this.submitInfo}>
+
+      </form>
     </div>
   }
 }
