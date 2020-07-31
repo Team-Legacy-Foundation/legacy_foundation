@@ -24,6 +24,7 @@ class AdminHome extends Component {
         <TextField placeholder='Search Students'></TextField>
         </div>
         <Table style={{width:'90%', margin:'auto'}}>
+          
           <TableHead style={{color:'blue'}}>
             <TableRow >
               <TableCell>LCF ID</TableCell>

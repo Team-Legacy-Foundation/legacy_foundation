@@ -19,7 +19,7 @@ const Nav = (props) => (
           <h2 className="nav-title">Admin Dashboard</h2>
         </>
       )}
-      ;
+      
     </Link>
     <div className="nav-right">
       <Link className="nav-link" to="/home">
