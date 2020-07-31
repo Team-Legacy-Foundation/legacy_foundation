@@ -31,7 +31,7 @@ CREATE TABLE "student" (
     "grad_year" DATE,
     "school_attend" varchar,
     "student_email" varchar NOT NULL,
-    "pif_amount" int,
+    "pif_amount" decimal,
     "password" VARCHAR (1000) NOT NULL,
     "created_at" DATE DEFAULT NOW(), --set default to today's date
     "lcf_start_date" DATE,
@@ -39,13 +39,14 @@ CREATE TABLE "student" (
     "last_login" DATE
 );
 
+
 CREATE TABLE "entry" (
   "id" SERIAL PRIMARY KEY,
   "student_id" int,
   "pay_day" DATE,
   "date_submitted" DATE,
   "pass_class" varchar,
-  "gpa" int,
+  "gpa" DECIMAL,
   "clean_attend" int,
   "detent_hours" varchar,
   "act_or_job" varchar,
