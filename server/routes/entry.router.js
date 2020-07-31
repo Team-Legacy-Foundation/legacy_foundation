@@ -9,7 +9,6 @@ const {
  * GET route template
  */
 router.get('/', (req, res) => {
-    
 });
 
 /**
