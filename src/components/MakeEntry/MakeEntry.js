@@ -42,9 +42,15 @@ class MakeEntry extends Component {
   };
 
   render() {
-    const step1 = {
+    const inputPropsGpa = {
       step: 0.01,
+      max: 4.0,
+      min: 0,
     };
+      const inputProps = {
+        max: 10,
+        min: 0,
+      };
 
     return (
       <div>
@@ -97,7 +103,7 @@ class MakeEntry extends Component {
             // sets value of input to local state
             value={this.state.gpa}
             type="number"
-            inputProps={step1}
+            inputProps={inputPropsGpa}
             maxLength={1000}
             onChange={(event) => this.handleChange(event, "gpa")} //onChange of input values set local state
           />
@@ -116,6 +122,7 @@ class MakeEntry extends Component {
             // sets value of input to local state
             value={this.state.absent}
             type="number"
+            inputProps={inputProps}
             maxLength={1000}
             onChange={(event) => this.handleChange(event, "absent")} //onChange of input values set local state
           />
@@ -134,6 +141,7 @@ class MakeEntry extends Component {
             // sets value of input to local state
             value={this.state.tardy}
             type="number"
+            inputProps={inputProps}
             maxLength={1000}
             onChange={(event) => this.handleChange(event, "tardy")} //onChange of input values set local state
           />
@@ -152,6 +160,7 @@ class MakeEntry extends Component {
             // sets value of input to local state
             value={this.state.late}
             type="number"
+            inputProps={inputProps}
             maxLength={1000}
             onChange={(event) => this.handleChange(event, "late")} //onChange of input values set local state
           />
@@ -170,6 +179,7 @@ class MakeEntry extends Component {
             // sets value of input to local state
             value={this.state.truant}
             type="number"
+            inputProps={inputProps}
             maxLength={1000}
             onChange={(event) => this.handleChange(event, "truant")} //onChange of input values set local state
           />
@@ -192,6 +202,7 @@ class MakeEntry extends Component {
             // sets value of input to local state
             value={this.state.clean_attend}
             type="number"
+            inputProps={inputProps}
             maxLength={1000}
             onChange={(event) => this.handleChange(event, "clean_attend")} //onChange of input values set local state
           />
@@ -273,6 +284,7 @@ class MakeEntry extends Component {
             // sets value of input to local state
             value={this.state.current_service_hours}
             type="number"
+            inputProps={inputProps}
             maxLength={1000}
             onChange={(event) =>
               this.handleChange(event, "current_service_hours")
@@ -313,16 +325,12 @@ class MakeEntry extends Component {
             name="comments"
             // sets value of input to local state
             value={this.state.comments}
-            type="number"
+            type="text"
             maxLength={1000}
             onChange={(event) => this.handleChange(event, "comments")} //onChange of input values set local state
           />
-          <Button
-            variant="contained"
-            color="primary"
-            className="button"
-          >
-           Submit entry
+          <Button variant="contained" color="primary" className="button">
+            Submit entry
           </Button>
         </form>
       </div>
