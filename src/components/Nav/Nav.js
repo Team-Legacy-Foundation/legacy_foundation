@@ -20,10 +20,21 @@ const Nav = (props) => (
         {props.user.id ? 'Home' : 'Login / Register'}
       </Link>
       {/* Show the link to the info page and the logout button if the user is logged in */}
-      {props.user.id && (
+      {props.user.id && props.user.role === 'admin' && (
         <>
-          <Link className="nav-link" to="/info">
-            Info Page
+          <Link className="nav-link" to="/pastadminreports">
+            Past Reports
+          </Link>
+          <LogOutButton className="nav-link"/>
+        </>
+      )}
+      {props.user.id && props.user.role === 'student' && (
+        <>
+          <Link className="nav-link" to="/makeentry">
+            Make an Entry
+          </Link>
+          <Link className="nav-link" to="/paststudententries">
+            Past Entries
           </Link>
           <LogOutButton className="nav-link"/>
         </>
