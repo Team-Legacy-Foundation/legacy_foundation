@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import {
   HashRouter as Router,
   Route,
@@ -21,6 +22,10 @@ import PastStudentEntries from "../PastStudentEntries/PastStudentEntries";
 
 import "./App.css";
 import PastAdminReports from "../PastAdminReports/PastAdminReports";
+import AddStudent from '../AdminHome/AddStudent';
+
+
+
 
 class App extends Component {
   componentDidMount() {
@@ -58,6 +63,8 @@ class App extends Component {
               path="/pastadminreports"
               component={PastAdminReports}
             />
+            <ProtectedRoute exact path="/addstudent" component={AddStudent}/>
+
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />
           </Switch>
