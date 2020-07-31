@@ -37,7 +37,39 @@ class MakeEntry extends Component {
 
   submitInfo = (event) => {
     event.preventDefault();
-    //DO DISPATCH HERE
+    const { pass_class,
+       gpa,
+       absent,
+       tardy,
+       late,
+       truant,
+       clean_attend,
+       detent_hours,
+       after_school,
+       act_or_job,
+       passed_ua,
+       current_service_hours,
+       hw_rm_attended,
+       comments, } = this.state;
+   this.props.dispatch({
+     type: "ADD_ENTRY",
+     payload: {
+       pass_class: pass_class,
+       gpa: gpa,
+       absent: absent,
+       tardy: tardy,
+       late: late,
+       truant: truant,
+       clean_attend: clean_attend,
+       detent_hours: detent_hours,
+       after_school: after_school,
+       act_or_job: act_or_job,
+       passed_ua: passed_ua,
+       current_service_hours: current_service_hours,
+       hw_rm_attended: hw_rm_attended,
+       comments: comments,
+     },
+   });
     this.props.history.push("/home");
   };
 
@@ -329,7 +361,7 @@ class MakeEntry extends Component {
             maxLength={1000}
             onChange={(event) => this.handleChange(event, "comments")} //onChange of input values set local state
           />
-          <Button variant="contained" color="primary" className="button">
+          <Button variant="contained" type="submit" color="primary" className="button">
             Submit entry
           </Button>
         </form>

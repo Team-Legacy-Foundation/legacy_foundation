@@ -45,7 +45,7 @@ CREATE TABLE "entry" (
   "pay_day" DATE,
   "date_submitted" DATE,
   "pass_class" varchar,
-  "gpa" int,
+  "gpa" DECIMAL,
   "clean_attend" int,
   "detent_hours" varchar,
   "act_or_job" varchar,
