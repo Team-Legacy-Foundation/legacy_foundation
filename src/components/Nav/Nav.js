@@ -8,27 +8,39 @@ import logo from "../../images/image.png";
 const Nav = (props) => (
   <div className="nav">
     <Link to="/home">
-      <img className="logo" src={logo} alit="logo" style={{float: "left",
-      width: 250}}/>
-      <h2 className="nav-title">Prime Solo Project</h2>
+      <img
+        className="logo"
+        src={logo}
+        alit="logo"
+        style={{ float: "left", width: 250 }}
+      />
+      {props.user.id && props.user.role === "admin" && (
+        <>
+          <h2 className="nav-title">Admin Dashboard</h2>
+        </>
+      )}
+      ;
     </Link>
     <div className="nav-right">
       <Link className="nav-link" to="/home">
         {/* Show this link if they are logged in or not,
         but call this link 'Home' if they are logged in,
         and call this link 'Login / Register' if they are not */}
-        {props.user.id ? 'Home' : 'Login / Register'}
+        {props.user.id ? "Home" : "Login / Register"}
       </Link>
       {/* Show the link to the info page and the logout button if the user is logged in */}
-      {props.user.id && props.user.role === 'admin' && (
+      {props.user.id && props.user.role === "admin" && (
         <>
           <Link className="nav-link" to="/pastadminreports">
             Past Reports
           </Link>
-          <LogOutButton className="nav-link"/>
+          <Link className="nav-link" to="/pastadminreset">
+          Reset Password
+          </Link>
+          <LogOutButton className="nav-link" />
         </>
       )}
-      {props.user.id && props.user.role === 'student' && (
+      {props.user.id && props.user.role === "student" && (
         <>
           <Link className="nav-link" to="/makeentry">
             Make an Entry
@@ -36,7 +48,7 @@ const Nav = (props) => (
           <Link className="nav-link" to="/paststudententries">
             Past Entries
           </Link>
-          <LogOutButton className="nav-link"/>
+          <LogOutButton className="nav-link" />
         </>
       )}
       {/* Always show this link since the about page is not protected */}

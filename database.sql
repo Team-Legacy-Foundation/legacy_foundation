@@ -6,7 +6,8 @@ CREATE TABLE "user" (
     "admin_id" int,
     "email" varchar,
     "password" varchar,
-    "role" varchar
+    "role" varchar,
+    
     
 );
 
