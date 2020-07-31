@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component}  from 'react';
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
 import { Link } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import MUITable from '../MUITable/MUITable';
 import moment from "moment";
+
 
 
 class AdminHome extends Component {
@@ -13,10 +13,11 @@ class AdminHome extends Component {
 
   render() {
 
-      
-
-
-    return <div>
+  
+    return(
+     
+     <div>
+     
       <h1>Hello there {this.props.user.email}, you are a(n) {this.props.user.role}!</h1>
       {(this.props.user.role === 'admin')&&
                     <div className="navbuttonscontainer">
@@ -24,11 +25,8 @@ class AdminHome extends Component {
                     <Link to="/addstudent"><Button  variant="outline-primary">Update Student</Button></Link> {' '}
                     </div>}
                     
-                    <div>
-        <h2>LCF Student List</h2>
-        <div style={{fontSize: 40,}}>Table placeholder</div>
-        <button>Run report placeholder</button>
-      </div>
+         
+      
 
      <MUITable
             // data={this.props.students
@@ -70,8 +68,12 @@ class AdminHome extends Component {
             ]}
             title={"LCF Student List"}
           />
-                    
-    </div>
+        
+      </div>
+      
+    
+        );
+
   }
 }
 
@@ -80,4 +82,4 @@ const mapStateToProps = (state) => ({
   // students: state.lcfdata.students
 });
 
-export default withRouter(connect(mapStateToProps)(AdminHome));
+export default connect(mapStateToProps)(AdminHome);

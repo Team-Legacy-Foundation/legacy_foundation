@@ -57,7 +57,3 @@ input {
     cursor: pointer;
 }
 
-/* This line position navigation buttons on page */
-.navbuttonscontainer {
-    margin: 3% -40% 0 30%;
-}
