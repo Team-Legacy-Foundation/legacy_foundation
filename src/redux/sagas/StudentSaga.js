@@ -91,8 +91,6 @@ function* getStudents(action) {
         }
 }
 
-
-
 function* StudentSaga() {
     yield takeLatest('REGISTER_STUDENT', registerStudent);
      yield takeLatest('UPDATE_STUDENT', updateStudent);
