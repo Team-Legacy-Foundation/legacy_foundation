@@ -71,6 +71,7 @@ class MakeEntry extends Component {
      },
    });
     this.props.history.push("/home");
+    console.log('state is', this.state)
   };
 
   render() {
@@ -94,7 +95,9 @@ class MakeEntry extends Component {
               backgroundColor: "white",
             }}
             variant="outlined"
+
             required
+
             name="pass_class"
             //sets value of input to value of local state
             value={this.state.pass_class}
@@ -128,7 +131,9 @@ class MakeEntry extends Component {
               width: "20%",
             }}
             variant="outlined"
+
             required
+
             fullWidth
             label="GPA"
             name="GPA"
@@ -147,7 +152,9 @@ class MakeEntry extends Component {
               width: "20%",
             }}
             variant="outlined"
+
             required
+
             fullWidth
             label="absent"
             name="absent"
@@ -166,7 +173,9 @@ class MakeEntry extends Component {
               width: "20%",
             }}
             variant="outlined"
+
             required
+
             fullWidth
             label="tardy"
             name="tardy"
@@ -185,7 +194,9 @@ class MakeEntry extends Component {
               width: "20%",
             }}
             variant="outlined"
+
             required
+
             fullWidth
             label="late"
             name="late"
@@ -204,7 +215,9 @@ class MakeEntry extends Component {
               width: "20%",
             }}
             variant="outlined"
+
             required
+
             fullWidth
             label="truant"
             name="truant"
@@ -227,7 +240,9 @@ class MakeEntry extends Component {
               width: "30%",
             }}
             variant="outlined"
+
             required
+
             fullWidth
             label="attendance"
             name="attendance"
@@ -244,7 +259,9 @@ class MakeEntry extends Component {
               backgroundColor: "white",
             }}
             variant="outlined"
+
             required
+
             name="detent_hours"
             //sets value of input to value of local state
             value={this.state.detent_hours}
@@ -262,7 +279,9 @@ class MakeEntry extends Component {
               backgroundColor: "white",
             }}
             variant="outlined"
+
             required
+
             name="after_school"
             //sets value of input to value of local state
             value={this.state.after_school}
@@ -277,7 +296,9 @@ class MakeEntry extends Component {
               backgroundColor: "white",
             }}
             variant="outlined"
+
             required
+
             name="act_or_job"
             //sets value of input to value of local state
             value={this.state.act_or_job}
@@ -292,7 +313,9 @@ class MakeEntry extends Component {
               backgroundColor: "white",
             }}
             variant="outlined"
+
             required
+
             name="passed_ua"
             //sets value of input to value of local state
             value={this.state.passed_ua}
@@ -309,7 +332,9 @@ class MakeEntry extends Component {
               width: "30%",
             }}
             variant="outlined"
+
             required
+
             fullWidth
             label="service hours"
             name="service hours"
@@ -328,7 +353,9 @@ class MakeEntry extends Component {
               backgroundColor: "white",
             }}
             variant="outlined"
+
             required
+
             name="hw_rm_attended"
             //sets value of input to value of local state
             value={this.state.hw_rm_attended}
@@ -351,7 +378,9 @@ class MakeEntry extends Component {
             //...will expand up to 8 rows
             rowsMax={8}
             variant="outlined"
+
             required
+
             fullWidth
             label="comments"
             name="comments"
