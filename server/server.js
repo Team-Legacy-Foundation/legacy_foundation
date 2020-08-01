@@ -28,7 +28,9 @@ app.use(passport.session());
 
 /* Routes */
 app.use('/api/user', userRouter);
+//app.use('/addstudent', userRouter);
 app.use('/api/student', studentRouter);
+//app.use('/api/user/addstudent', studentRouter)
 
 app.use('/entry', entryRouter)
 
