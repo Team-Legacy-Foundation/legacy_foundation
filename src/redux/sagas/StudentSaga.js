@@ -27,10 +27,6 @@ function* registerStudent(action) {
 }
 
 
-
-
-
-
 function* updateStudent(action) {
     try {
         //clear any errors on the page before
@@ -76,7 +72,7 @@ function* deleteStudent(action) {
 
 function* getStudents(action) {
         try {
-            console.log('we are about to get Students', action.type);
+            //console.log('we are about to get Students', action.type);
 
             const response = yield axios.get(`/api/student/studentlist`);
 
