@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row'
 import Button from "react-bootstrap/Button";
 // import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
+import moment from "moment";
 
 
 
@@ -22,6 +23,7 @@ class AddStudent extends Component {
     student_email: '',
     password: '',
     pif_amount: '',
+    created_at: moment.utc().format()
       }
 
 //This function dispatched our newly added student to the database from state
@@ -29,9 +31,9 @@ class AddStudent extends Component {
       registerStudent = (event) => {
     event.preventDefault();
 
-    console.log( 'we are about to send the sate', this.state);
+    console.log( 'we are about to send the state', this.state);
 
-    if (this.state.first_name &&
+    if (this.state.first_name&&
         this.state.last_name&&
         this.state.grade&&
         this.state.grad_year&&
@@ -58,7 +60,8 @@ class AddStudent extends Component {
             lcf_start_date: this.state.lcf_start_date,
             student_email: this.state.student_email,
             password: this.state.password,
-            pif_amount: this.state.pif_amount 
+            pif_amount: this.state.pif_amount,
+            created_at: this.state.created_at
         },
       });
 
@@ -218,9 +221,9 @@ class AddStudent extends Component {
               </Col>
             </Row>
 
-            <Button onClick={(event)=>this.registerStudent(event)} variant="success" type="submit" style={{ width: '40%', margin: '7% 30% 2%' }}>
+            <Link to="/home"><Button onClick={(event)=>this.registerStudent(event)} variant="success" type="submit" style={{ width: '40%', margin: '7% 30% 2%' }}>
             Submit Student Info
-          </Button>
+          </Button></Link> 
         </Form>
       {/* </Card> */}
       </div>

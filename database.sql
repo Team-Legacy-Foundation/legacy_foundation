@@ -1,14 +1,18 @@
 -- DECIDE WHAT OUR DATABASE WILL BE CALLED: legacy_children_foundation
 
+
 CREATE TABLE "user" (
 	"id" SERIAL PRIMARY KEY,
     "student_id" int,
     "admin_id" int,
     "email" varchar,
     "password" varchar,
-    "role" varchar
+    "role" varchar,
+    "last_login" DATE
     
 );
+
+
 
 CREATE TABLE "admin" (
 	"id" SERIAL PRIMARY KEY,
@@ -27,15 +31,14 @@ CREATE TABLE "student" (
     "last_name" VARCHAR (80) not null,
     "school_id" int,
     "grade" varchar,
-    "grad_year" DATE,
+    "grad_year" varchar,
     "school_attend" varchar,
     "student_email" varchar NOT NULL,
     "pif_amount" decimal,
     "password" VARCHAR (1000) NOT NULL,
-    "created_at" DATE DEFAULT NOW(), --set default to today's date
+    "created_at" DATE,
     "lcf_start_date" DATE,
-    "role" varchar,
-    "last_login" DATE
+    "role" varchar
 );
 
 
@@ -69,7 +72,6 @@ CREATE TABLE "entry" (
   "bonus_comments" varchar,
   "money_to_student" int
 );
-
 
 INSERT INTO "admin" ("first_name","last_name","email","password","created_at","role")
 VALUES ('Mary', 'Dehne', 'legacychildrensfoundation@gmail.com', 'legacy', '07/30/20', 'admin');

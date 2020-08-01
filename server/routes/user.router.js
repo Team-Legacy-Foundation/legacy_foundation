@@ -12,6 +12,55 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
+
+
+
+//Handles POST to the student table to add a new student
+//The password is encrypted before being inserted into the database
+router.post('/addstudent', (req, res, next) => {
+
+    console.log('this is the new student we are about to register', req.body);
+
+    // pull out the incoming object data
+       const first_name = req.body.first_name;
+       const last_name = req.body.last_name;
+       const school_id = req.body.school_id || 0;
+       const grade = req.body.grade;
+       const grad_year = req.body.grad_year;
+       const school_attend = req.body.school_attend;
+       const lcf_id = req.body.lcf_id;
+       const lcf_start_date = req.body.lcf_start_date;
+       const student_email = req.body.student_email;
+       const password = req.body.password;
+       const pif_amount = Number(req.body.pif_amount);
+      const created_at = req.body.created_at;
+       const role = 'student';
+       admin_id = null;
+       
+
+      //initialize the id you will get from the student
+      let student_id = '';
+
+      const queryText = `INSERT INTO "student" 
+                (first_name, last_name, school_id, grade, grad_year, school_attend, lcf_id, lcf_start_date, student_email, password, pif_amount, role, created_at)
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id `;
+          pool.query(queryText, [first_name, last_name, school_id, grade, grad_year, school_attend, lcf_id, lcf_start_date, student_email, password, pif_amount, role, created_at])
+            .then((result) => {
+              console.log('this is the response', result.rows[0].id);
+              student_id = result.rows[0].id;
+              //now lets add student information to the user table 
+              const query2Text = 'INSERT INTO "user" (student_id, admin_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
+              pool.query(query2Text, [student_id, admin_id, student_email, password, role, created_at])
+                .then(() => res.sendStatus(201))
+                .catch(() => res.sendStatus(500))
+
+            }).catch(() => res.sendStatus(500));
+});
+
+
+
+
+
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted

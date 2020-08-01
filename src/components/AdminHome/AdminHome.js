@@ -9,7 +9,11 @@ import moment from "moment";
 
 class AdminHome extends Component {
 
-
+componentWillMount () {
+  this.props.dispatch({
+    type: 'GET_STUDENTS'
+  })
+}
 
   render() {
 
@@ -19,7 +23,7 @@ class AdminHome extends Component {
      <div>
      
       <h1>Hello there {this.props.user.email}, you are a(n) {this.props.user.role}!</h1>
-      {(this.props.user.role === 'admin')&&
+      {this.props.user.role === 'admin'&&
                     <div className="navbuttonscontainer">
                     <Link to="/addstudent"><Button variant="outline-primary">Add Student</Button></Link> {' '} 
                     <Link to="/addstudent"><Button  variant="outline-primary">Update Student</Button></Link> {' '}
@@ -29,32 +33,32 @@ class AdminHome extends Component {
       
 
      <MUITable
-            // data={this.props.students
-            //   .filter(
-            //     (entry) =>
-            //         entry.first_name&&
-            //         entry.last_name&&
-            //         entry.grade&&
-            //         entry.grad_year&&
-            //         entry.school_attend&&
-            //         entry.lcf_id&&
-            //         moment(entry.lcf_start_date).format("MMMM Do YYYY")&&
-            //         entry.student_email&&
-            //         entry.password&&
-            //         entry.pif_amount
-            //   )
-            //   .map((entry) => [
-            //      entry.first_name,
-            //      entry.last_name,
-            //      entry.grade,
-            //      entry.grad_year,
-            //      entry.school_attend,
-            //      entry.lcf_id,
-            //      moment(entry.lcf_start_date).format("MMMM Do YYYY"),
-            //      entry.student_email,
-            //      entry.password,
-            //      entry.pif_amount
-            //   ])}
+            data={this.props.students
+              .filter(
+                (entry) =>
+                    entry.first_name&&
+                    entry.last_name&&
+                    entry.grade&&
+                    entry.grad_year&&
+                    entry.school_attend&&
+                    entry.lcf_id&&
+                    moment(entry.lcf_start_date).format("MMMM Do YYYY")&&
+                    entry.student_email&&
+                    entry.password&&
+                    entry.pif_amount
+              )
+              .map((entry) => [
+                 entry.first_name,
+                 entry.last_name,
+                 entry.grade,
+                 entry.grad_year,
+                 entry.school_attend,
+                 entry.lcf_id,
+                 moment(entry.lcf_start_date).format("MMMM Do YYYY"),
+                 entry.student_email,
+                 entry.password,
+                 entry.pif_amount
+              ])}
             columns={[
               "First Name",
               "Last Name",
@@ -79,7 +83,7 @@ class AdminHome extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  // students: state.lcfdata.students
+  students: state.students.studentlist,
 });
 
 export default connect(mapStateToProps)(AdminHome);
