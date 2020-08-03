@@ -12,7 +12,7 @@ const Nav = (props) => (
         className="logo"
         src={logo}
         alit="logo"
-        style={{ float: "left", width: 250 }}
+        style={{ float: "left", width: 1100 }}
       />
       {props.user.id && props.user.role === "admin" && (
         <>
