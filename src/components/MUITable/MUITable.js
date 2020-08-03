@@ -24,6 +24,7 @@ class MUITable extends Component {
                  responsive: "vertical",
                  tableBodyHeight: "400px",
                 tableBodyMaxHeight: " ",
+                
                 },
 
         }

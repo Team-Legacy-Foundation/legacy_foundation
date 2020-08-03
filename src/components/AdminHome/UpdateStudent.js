@@ -10,7 +10,7 @@ import moment from "moment";
 
 
 
-class AddStudent extends Component {
+class UpdateStudent extends Component {
 
       state = {
     first_name: '',
@@ -26,47 +26,45 @@ class AddStudent extends Component {
     created_at: moment.utc().format()
       }
 
-//This function dispatched our newly added student to the database from state
-//We first validate the inputs to make sure we are not sending empty inputs to the server
-      registerStudent = (event) => {
+
+  updateStudent = (event) => {
     event.preventDefault();
 
     console.log( 'we are about to send the state', this.state);
 
-    if (this.state.first_name&&
-        this.state.last_name&&
-        this.state.grade&&
-        this.state.grad_year&&
-        this.state.school_attend&&
-        this.state.lcf_id&&
-        this.state.lcf_start_date&&
-        this.state.student_email&&
-        this.state.password&&
+    if (this.state.first_name &&
+        this.state.last_name &&
+        this.state.grade &&
+        this.state.grad_year &&
+        this.state.school_attend &&
+        this.state.lcf_id &&
+        this.state.lcf_start_date &&
+        this.state.student_email &&
+        this.state.password &&
         this.state.pif_amount
         ) {
 
         
 
-//send the new student to the server through a redux saga
+//send the updated student to the server through a redux saga
       this.props.dispatch({
-        type: 'REGISTER_STUDENT',
-        payload: {
-            first_name: this.state.first_name,
-            last_name: this.state.last_name,
-            grade: this.state.grade,
-            grad_year: this.state.grad_year,
-            school_attend: this.state.school_attend,
-            lcf_id: this.state.lcf_id,
-            lcf_start_date: this.state.lcf_start_date,
-            student_email: this.state.student_email,
-            password: this.state.password,
-            pif_amount: this.state.pif_amount,
-            created_at: this.state.created_at
-        },
+          type: 'UPDATE_STUDENT',
+          payload: {
+              first_name: this.state.first_name,
+              last_name: this.state.last_name,
+              grade: this.state.grade,
+              grad_year: this.state.grad_year,
+              school_attend: this.state.school_attend,
+              lcf_id: this.state.lcf_id,
+              lcf_start_date: this.state.lcf_start_date,
+              student_email: this.state.student_email,
+              password: this.state.password,
+              pif_amount: this.state.pif_amount,
+              created_at: this.state.created_at
+          },
       });
 
-
-      this.setState({
+        this.setState({
             first_name: '',
             last_name: '',
             grade: '',
@@ -78,12 +76,12 @@ class AddStudent extends Component {
             password: '',
             pif_amount: ''
         });
+
+     
     } else {
-      this.props.dispatch({type: 'ADD_STUDENT_ERROR'});
+      this.props.dispatch({type: 'UPDATE_STUDENT_ERROR'});
     }
-  } // end registerStudent
-
-
+  } // end updateStudent
 
 
 
@@ -102,7 +100,7 @@ class AddStudent extends Component {
                     <Link to="/home"><Button variant="outline-primary">Home</Button></Link> {' '} 
                     </div>
 
-       <h1 style={{   width: '50%', margin: '2% 40%' }}>Add A Student</h1>
+       <h1 style={{   width: '50%', margin: '2% 40%' }}>Update Student Information</h1>
        
         
       {/* <Card border = "info" style={{ width: '90%', margin: '3% auto' }} > */}
@@ -166,8 +164,8 @@ class AddStudent extends Component {
               </Col>
             </Row>
 
-            <Link to="/home"><Button onClick={(event)=>this.registerStudent(event)} variant="success" type="submit" style={{ width: '40%', margin: '7% 30% 2%' }}>
-            Submit Student Info
+            <Link to="/home"><Button onClick={(event)=>this.updateStudent(event)} variant="success" type="submit" style={{ width: '40%', margin: '7% 30% 2%' }}>
+            Update Student Info
           </Button></Link> 
         </Form>
       {/* </Card> */}
@@ -184,4 +182,4 @@ const mapStateToProps = state => ({
   user: state.user,
 });
    
-export default connect(mapStateToProps) (AddStudent);
+export default connect(mapStateToProps) (UpdateStudent);
