@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import logo from "../../images/image.png";
 
+import Grid from '@material-ui/core/Grid';
+import './LoginPage.css';
 
 class LoginPage extends Component {
   state = {
@@ -34,7 +36,13 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <div>
+      <Grid container style={{}}>
+        {/* <div style={{border:'1px solid black', display:'inline', float:'left', maxWidth:'50%'}}>
+          <img src='https://legacychildrensfoundation.com/wp-content/uploads/2020/03/shapes-bg-color.png' width='100%'/>
+        </div> */}
+        
+      {/* <div style={{border:'1px solid black', display:'inline', float:'right', width:'50%', padding:0, margin:0, minHeight:'100% !important'}}> */}
+      <Grid item xs={12} sm={12} md={5} style={{display:'block'}}>
         {this.props.errors.loginMessage && (
           <h2
             className="alert"
@@ -44,12 +52,14 @@ class LoginPage extends Component {
           </h2>
         )}
         <center>
-        </center>
+        <br/><br/>
         <form onSubmit={this.login} className="reglogin">
+          
           <h1>Login</h1>
+          <br/>
           <div>
             <label htmlFor="username">
-              Email:
+              Email:  &nbsp;  &nbsp;  &nbsp;   {/*Creates a blank space, used for lining things up */}
               <input
                 type="text"
                 name="username"
@@ -60,7 +70,7 @@ class LoginPage extends Component {
           </div>
           <div>
             <label htmlFor="password">
-              Password:
+              Password:  &nbsp;
               <input
                 type="password"
                 name="password"
@@ -77,8 +87,10 @@ class LoginPage extends Component {
               value="Log In"
             />
           </div>
+         
         </form>
-        <center>
+        </center>
+        {/* <center>
           <button
             type="button"
             className="link-button"
@@ -86,8 +98,13 @@ class LoginPage extends Component {
           >
             Register
           </button>
-        </center>
-      </div>
+        </center> */}
+        </Grid>
+        <Grid item xs={12} sm={12} md={7} style={{display:'block'}}>
+        <img id='shapes' src='https://legacychildrensfoundation.com/wp-content/uploads/2020/03/shapes-bg-color.png'/>
+        </Grid>
+      {/* </div> */}
+      </Grid>
     );
   }
 }

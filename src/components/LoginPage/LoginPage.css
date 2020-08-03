@@ -1,0 +1,24 @@
+#shapes{
+object-fit:cover;
+width:100% !important;
+max-height:100%;
+}
+
+.reglogin{
+  background-color: #dbd5d5;
+  width: 85%;
+  
+  /* margin: 20px auto; */
+  padding: 15px;
+  border-radius: 2px;
+  
+  
+  
+  height:100%;
+  border: 1px solid;
+  padding: 10px;
+  box-shadow: 5px 10px;
+
+  
+  
+}

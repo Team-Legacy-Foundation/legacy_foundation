@@ -1,6 +1,12 @@
 footer {
-    margin-top: 80px;
+    /* margin-top: 80px; */
     position: fixed;
     bottom:0;
+    background-color: #00003D;
+    padding:1%;
+    width:100% !important;
+    color: white;
+    border: 1px solid purple;
+    text-align:center;
 
 }
