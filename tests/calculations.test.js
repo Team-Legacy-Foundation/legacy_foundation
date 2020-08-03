@@ -44,6 +44,16 @@ axios.defaults.adapter = require("axios/lib/adapters/http");
 // });
 
 //////////////////////////////////////////////////////////////////////////////
+//**************Admins**************** */
+//----------POST a new admin-----------
+
+//---------GET an admin-----------------
+
+//---------PUT an admin----------------
+
+//--------DELETE an admin--------------
+
+//***************students**************** */
 //-------POST a new student (create)----------------------
 let student = null;
 const SERVER_URL = "http://localhost:5000";
@@ -98,9 +108,37 @@ test('Delete the student via HTTP DELETE', async () => {
   expect(response.status).toBe(204);
 });
 
+//**************Entries**************************** */
+//------POST an entry (create)---------------------
+test('Create a new entry via HTTP POST', async () => {
+
+  //figure out if going by id or by lcf_id
+  const newEntry = {student_id:1, pass_class:'yes', gpa:2.3, clean_attend:9, detent_hours:'no', act_or_job:'yes',passed_ua:'yes',current_service_hours:2, hw_rm_attended:'yes',comments:'Testing'};
+  let response;
+  try {
+      response = await axios.post(`${SERVER_URL}/entry`, newEntry);
+  } catch (err) {
+      console.log(err.response.data);
+  }
+  entry = response.data;
+  expect(response.status).toBe(201);
+  expect(typeof(response.data)).toBe(typeof({}));
+  expect(typeof(response.data.id)).toBe(typeof(0));
+  
+  console.log(`Entry created with id ${entry.id} and owner ${student.first_name}`);
+});
+
+/*************************************************** */
 //-----------FAILED cases (i.e. student does not get check)-------------------
 
 //student is failing at least one class
+//WILL THESE BE ON DIFFERENT RESPONSES?
+//Either... post data where example student fails it and check other route?
+//Or just have entry already created and then check calulations?
+//Will have to see how backend works... what is coming from where
+expect(response.data.pass_class).toBe('no');
+expect(response.data.check_this_payday).toBe('no');
+expect(reponse.data.money_to_student).toBe(0);
 
 //student's GPA is less than 2.0 (need to check rounding?)
 
@@ -117,7 +155,7 @@ test('Delete the student via HTTP DELETE', async () => {
 //student is deemed inactive (3 strike rule)
 
 //--------------GPA bonus cases---------------------------------
-//NEED TO HANDLE ROUNDING TOO
+//NEED TO HANDLE ROUNDING TOO (rounding should be done in SQL land?)
 
 //if 2.0
 
@@ -132,6 +170,9 @@ test('Delete the student via HTTP DELETE', async () => {
 //-------------MIDDLE SCHOOLER (base pay of $5)-------------------------------
 
 //if 6th grade
+//will I post a new student here and then run other axios? Where do I look at response?
+expect(response.data.total).toBe(NUMBER);
+
 
 //if 7th grade
 
