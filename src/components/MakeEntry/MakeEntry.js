@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { green } from "@material-ui/core/colors";
 import {
   TextField,
   Grid,
@@ -9,9 +10,21 @@ import {
   Radio,
   Select,
   MenuItem,
-  Button
+  Button,
+  FormControl,
+  FormLabel,
+  withStyles,
 } from "@material-ui/core";
 
+const GreenRadio = withStyles({
+  root: {
+    color: green[400],
+    "&$checked": {
+      color: green[600],
+    },
+  },
+  checked: {},
+})((props) => <Radio color="default" {...props} />);
 
 class MakeEntry extends Component {
   state = {
@@ -30,6 +43,8 @@ class MakeEntry extends Component {
     hw_rm_attended: "",
     comments: "",
   };
+
+  
 
   handleChange = (event, fieldName) => {
     this.setState({ [fieldName]: event.target.value });
@@ -89,40 +104,20 @@ class MakeEntry extends Component {
       <div>
         <h3>This entry is for the week of: PAY PERIOD HERE</h3>
         <form onSubmit={this.submitInfo}>
-          <p>1. Are you passing all your classes?</p>
-          <Select
-            style={{
-              backgroundColor: "white",
-            }}
-            variant="outlined"
-
-            required
-
-            name="pass_class"
-            //sets value of input to value of local state
-            value={this.state.pass_class}
-            onChange={(event) => this.handleChange(event, "pass_class")} //sends input values to local state
-          >
-            <MenuItem value="Yes">Yes</MenuItem>
-            <MenuItem value="No">No</MenuItem>
-          </Select>
-          {/* figure radio buttons out as a stretch goal */}
-          <div>
-            {/* <Radio
-              onChange={(event)=>this.handleChange(event, "pass")}
-              value="yes"
-              label="yes"
-              name="yes"
-              labelPlacement="bottom"
-              />
-              <Radio
-              onChange={(event)=>this.handleChange(event, "pass")}
-              value="no"
-              label="no"
-              name="no"
-              labelPlacement="bottom"
-              /> */}
-          </div>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">
+              1. Are you passing all your classes?
+            </FormLabel>
+            <RadioGroup
+              aria-label="pass_class"
+              name="pass_class"
+              value={this.state.pass_class}
+              onChange={(event) => this.handleChange(event, "pass_class")}
+            >
+              <FormControlLabel value="Yes" control={<GreenRadio />} label="Yes" />
+              <FormControlLabel value="No" control={<Radio />} label="No" />
+            </RadioGroup>
+          </FormControl>
           <p>2. What is your current GPA?</p>
           <TextField
             style={{
@@ -131,9 +126,7 @@ class MakeEntry extends Component {
               width: "20%",
             }}
             variant="outlined"
-
             required
-
             fullWidth
             label="GPA"
             name="GPA"
@@ -152,9 +145,7 @@ class MakeEntry extends Component {
               width: "20%",
             }}
             variant="outlined"
-
             required
-
             fullWidth
             label="absent"
             name="absent"
@@ -173,9 +164,7 @@ class MakeEntry extends Component {
               width: "20%",
             }}
             variant="outlined"
-
             required
-
             fullWidth
             label="tardy"
             name="tardy"
@@ -194,9 +183,7 @@ class MakeEntry extends Component {
               width: "20%",
             }}
             variant="outlined"
-
             required
-
             fullWidth
             label="late"
             name="late"
@@ -215,9 +202,7 @@ class MakeEntry extends Component {
               width: "20%",
             }}
             variant="outlined"
-
             required
-
             fullWidth
             label="truant"
             name="truant"
@@ -240,9 +225,7 @@ class MakeEntry extends Component {
               width: "30%",
             }}
             variant="outlined"
-
             required
-
             fullWidth
             label="attendance"
             name="attendance"
@@ -253,78 +236,62 @@ class MakeEntry extends Component {
             maxLength={1000}
             onChange={(event) => this.handleChange(event, "clean_attend")} //onChange of input values set local state
           />
-          <p>4. Do you have detention hours at school?</p>
-          <Select
-            style={{
-              backgroundColor: "white",
-            }}
-            variant="outlined"
-
-            required
-
-            name="detent_hours"
-            //sets value of input to value of local state
-            value={this.state.detent_hours}
-            onChange={(event) => this.handleChange(event, "detent_hours")} //sends input values to local state
-          >
-            <MenuItem value="Yes">Yes</MenuItem>
-            <MenuItem value="No">No</MenuItem>
-          </Select>
-          <p>
-            5. Are you involved in any after school activity? <br />
-            (At school or at Legacy)
-          </p>
-          <Select
-            style={{
-              backgroundColor: "white",
-            }}
-            variant="outlined"
-
-            required
-
-            name="after_school"
-            //sets value of input to value of local state
-            value={this.state.after_school}
-            onChange={(event) => this.handleChange(event, "after_school")} //sends input values to local state
-          >
-            <MenuItem value="Yes">Yes</MenuItem>
-            <MenuItem value="No">No</MenuItem>
-          </Select>
-          <p>5. Do you have a job?</p>
-          <Select
-            style={{
-              backgroundColor: "white",
-            }}
-            variant="outlined"
-
-            required
-
-            name="act_or_job"
-            //sets value of input to value of local state
-            value={this.state.act_or_job}
-            onChange={(event) => this.handleChange(event, "act_or_job")} //sends input values to local state
-          >
-            <MenuItem value="Yes">Yes</MenuItem>
-            <MenuItem value="No">No</MenuItem>
-          </Select>
-          <p>6. Are you living a drug free life?</p>
-          <Select
-            style={{
-              backgroundColor: "white",
-            }}
-            variant="outlined"
-
-            required
-
-            name="passed_ua"
-            //sets value of input to value of local state
-            value={this.state.passed_ua}
-            onChange={(event) => this.handleChange(event, "passed_ua")} //sends input values to local state
-          >
-            <MenuItem value="Yes">Yes</MenuItem>
-            <MenuItem value="No">No</MenuItem>
-          </Select>
-          <p>7. How many service hours did you do the past 2 weeks?</p>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">
+              4. Do you have detention hours at school?
+            </FormLabel>
+            <RadioGroup
+              aria-label="detent_hours"
+              name="detent_hours"
+              value={this.state.detent_hours}
+              onChange={(event) => this.handleChange(event, "detent_hours")}
+            >
+              <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+              <FormControlLabel value="No" control={<GreenRadio />} label="No" />
+            </RadioGroup>
+          </FormControl>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">
+              5. Are you involved in any after school activity? <br />
+              (At school or at Legacy)
+            </FormLabel>
+            <RadioGroup
+              aria-label="after_school"
+              name="after_school"
+              value={this.state.after_school}
+              onChange={(event) => this.handleChange(event, "after_school")}
+            >
+              <FormControlLabel value="Yes" control={<GreenRadio />} label="Yes" />
+              <FormControlLabel value="No" control={<Radio />} label="No" />
+            </RadioGroup>
+          </FormControl>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">6. Do you have a job?</FormLabel>
+            <RadioGroup
+              aria-label="act_or_job"
+              name="act_or_job"
+              value={this.state.act_or_job}
+              onChange={(event) => this.handleChange(event, "act_or_job")}
+            >
+              <FormControlLabel value="Yes" control={<GreenRadio />} label="Yes" />
+              <FormControlLabel value="No" control={<Radio />} label="No" />
+            </RadioGroup>
+          </FormControl>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">
+              7. Are you living a drug free life?
+            </FormLabel>
+            <RadioGroup
+              aria-label="passed_ua"
+              name="passed_ua"
+              value={this.state.passed_ua}
+              onChange={(event) => this.handleChange(event, "passed_ua")}
+            >
+              <FormControlLabel value="Yes" control={<GreenRadio />} label="Yes" />
+              <FormControlLabel value="No" control={<Radio />} label="No" />
+            </RadioGroup>
+          </FormControl>
+          <p>8. How many service hours did you do the past 2 weeks?</p>
           <TextField
             style={{
               backgroundColor: "white",
@@ -332,9 +299,7 @@ class MakeEntry extends Component {
               width: "30%",
             }}
             variant="outlined"
-
             required
-
             fullWidth
             label="service hours"
             name="service hours"
@@ -347,24 +312,21 @@ class MakeEntry extends Component {
               this.handleChange(event, "current_service_hours")
             } //onChange of input values set local state
           />
-          <p>8. Were you ontime for mandatory homerooms this pay period?</p>
-          <Select
-            style={{
-              backgroundColor: "white",
-            }}
-            variant="outlined"
-
-            required
-
-            name="hw_rm_attended"
-            //sets value of input to value of local state
-            value={this.state.hw_rm_attended}
-            onChange={(event) => this.handleChange(event, "hw_rm_attended")} //sends input values to local state
-          >
-            <MenuItem value="Yes">Yes</MenuItem>
-            <MenuItem value="No">No</MenuItem>
-          </Select>
-          <p>9. Any comments you would like to leave this pay period?</p>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">
+              9. Were you ontime for mandatory homerooms this pay period?
+            </FormLabel>
+            <RadioGroup
+              aria-label="hw_rm_attended"
+              name="hw_rm_attended"
+              value={this.state.hw_rm_attended}
+              onChange={(event) => this.handleChange(event, "hw_rm_attended")}
+            >
+              <FormControlLabel value="Yes" control={<GreenRadio />} label="Yes" />
+              <FormControlLabel value="No" control={<Radio />} label="No" />
+            </RadioGroup>
+          </FormControl>
+          <p>10. Any comments you would like to leave this pay period?</p>
           <TextField
             style={{
               backgroundColor: "white",
@@ -378,9 +340,6 @@ class MakeEntry extends Component {
             //...will expand up to 8 rows
             rowsMax={8}
             variant="outlined"
-
-            required
-
             fullWidth
             label="comments"
             name="comments"
@@ -390,7 +349,12 @@ class MakeEntry extends Component {
             maxLength={1000}
             onChange={(event) => this.handleChange(event, "comments")} //onChange of input values set local state
           />
-          <Button variant="contained" type="submit" color="primary" className="button">
+          <Button
+            variant="contained"
+            type="submit"
+            color="primary"
+            className="button"
+          >
             Submit entry
           </Button>
         </form>
