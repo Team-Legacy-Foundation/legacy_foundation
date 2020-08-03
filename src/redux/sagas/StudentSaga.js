@@ -92,11 +92,29 @@ function* getStudents(action) {
         }
 }
 
+
+function * getStudentEntriesForAdmin (action){
+    try{
+        console.log('We are about to get all entries for student');
+        const response = yield axios.get(`/api/student/studententries`);
+
+        yield put ({
+            type: 'SET_STUDENT_ENTRIES_ADMIN_VIEW',
+            payload: response.data
+        });
+    console.log('Here is the list of entries', response.data);
+    }
+    catch (error) {
+        console.log('Error with getting the list of Student entries:', error);
+    }
+}
+
 function* StudentSaga() {
     yield takeLatest('REGISTER_STUDENT', registerStudent);
      yield takeLatest('UPDATE_STUDENT', updateStudent);
      yield takeLatest('DELETE_STUDENT', deleteStudent);
      yield takeLatest('GET_STUDENTS', getStudents);
+     yield takeLatest('FETCH_ENTRIES_FOR_ADMIN', getStudentEntriesForAdmin);
      
 }
 
