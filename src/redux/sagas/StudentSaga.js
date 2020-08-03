@@ -33,12 +33,13 @@ function* updateStudent(action) {
         yield put({
             type: 'CLEAR_UPDATE_STUDENT_ERROR'
         });
-
+            console.log('we are about to send data for a student update', action.payload);
         //passes the incoming updated student user info from the payload to the server
-        yield axios.post('/api/student/updatestudent', action.payload);
+
+        yield axios.post('/api/user/updatestudent', action.payload);
          yield put({ type: "GET_STUDENTS"});
 
-        console.log('we are about to send data for a student update', action.payload);
+       
     } catch (error) {
         console.log('Error with student update:', error);
         yield put({
@@ -46,6 +47,10 @@ function* updateStudent(action) {
         });
     }
 }
+
+
+
+
 
 
 function* deleteStudent(action) {

@@ -9,7 +9,7 @@ import moment from "moment";
 
 class AdminHome extends Component {
 
-componentWillMount () {
+componentDidMount () {
   this.props.dispatch({
     type: 'GET_STUDENTS'
   })
@@ -26,7 +26,7 @@ componentWillMount () {
       {this.props.user.role === 'admin'&&
                     <div className="navbuttonscontainer">
                     <Link to="/addstudent"><Button variant="outline-primary">Add Student</Button></Link> {' '} 
-                    <Link to="/addstudent"><Button  variant="outline-primary">Update Student</Button></Link> {' '}
+                    <Link to="/updatestudent"><Button  variant="outline-primary">Update Student</Button></Link> {' '}
                     </div>}
                     
          
@@ -51,7 +51,7 @@ componentWillMount () {
               .map((entry) => [
                  entry.first_name,
                  entry.last_name,
-                 entry.grade,
+                 Number(entry.grade),
                  entry.grad_year,
                  entry.school_attend,
                  entry.lcf_id,
