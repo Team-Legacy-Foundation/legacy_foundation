@@ -9,7 +9,16 @@ const {
  * GET route template
  */
 router.get('/', (req, res) => {
-});
+    pool
+      .query("SELECT * from entry")
+      .then((result) => {
+        res.send(result.rows);
+      })
+      .catch((error) => {
+        console.log("Error GET /recommendations", error);
+        res.sendStatus(500);
+      });
+}) //end GET
 
 /**
  * POST route template
