@@ -1,6 +1,15 @@
 import { put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 
+function* fetchEntry() {
+  try {
+    const response = yield axios.get("/entry");
+    yield put({ type: "SET_ENTRY", payload: response.data });
+  } catch (error) {
+    console.log("error fetch music", error);
+  }
+}
+
 function* addEntry(action) {
   console.log('inside addEntry saga',action.payload);
   try {
@@ -13,6 +22,7 @@ function* addEntry(action) {
 
 function* addEntrySaga() {
   yield takeLatest("ADD_ENTRY", addEntry);
+  yield takeLatest("FETCH_ENTRY", fetchEntry);
 }
 
 export default addEntrySaga;
