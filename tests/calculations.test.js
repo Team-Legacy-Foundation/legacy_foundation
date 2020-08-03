@@ -1,7 +1,7 @@
-const axios = require('axios');
+const axios = require("axios");
 
 // override default axios adapter so that it ignores cors for server-side requests
- axios.defaults.adapter = require('axios/lib/adapters/http');
+axios.defaults.adapter = require("axios/lib/adapters/http");
 
 //Bring in need reducers here:
 
@@ -10,7 +10,7 @@ const axios = require('axios');
 // test('Reducer returns default state if state is undefined', () => {
 //   const result = currentItemReducer(undefined, {});
 //   expect(typeof (result)).toBe(typeof ([]));
-  
+
 //   expect(result).toEqual({
 //     emotionValue: 0,
 //     iconsArray: [],
@@ -26,9 +26,7 @@ const axios = require('axios');
 
 //Example from pet hotel:
 
-// 
-
-
+//
 
 // let petOwner = null;
 // let pet = null;
@@ -46,18 +44,58 @@ const axios = require('axios');
 // });
 
 //////////////////////////////////////////////////////////////////////////////
-//-------Create a new student----------------------
-let student=null;
-const SERVER_URL = 'http://localhost:5000';
-test('Create a new student via HTTP POST', async () => {
-    const newStudent = {lcf_id: 100, first_name: 'New', last_name:'Student', grade: 7, school_attend:'Horizon', student_email:'test@example', password:'test', lcf_start_date:'01/01/2020', pif_amount:'3.00', grad_year:'2021'};
-    const response = await axios.post(`${SERVER_URL}/api/user/addstudent`, newStudent);
-    student = response.data;
-    expect(response.status).toBe(201);
-    expect(typeof(response.data)).toBe(typeof({}));
-    expect(typeof(response.data.id)).toBe(typeof(0));
-    console.log(`Student created with id ${student.id}`);
-    // console.log(response.data);
+//-------POST a new student (create)----------------------
+let student = null;
+const SERVER_URL = "http://localhost:5000";
+test("Create a new student via HTTP POST", async () => {
+  const newStudent = {
+    lcf_id: 100,
+    first_name: "New",
+    last_name: "Student",
+    grade: 7,
+    school_attend: "Horizon",
+    student_email: "test@example",
+    password: "test",
+    lcf_start_date: "01/01/2020",
+    pif_amount: 3.00,
+    grad_year: "2021",
+  };
+  const response = await axios.post(
+    `${SERVER_URL}/api/user/addstudent`,
+    newStudent
+  );
+  student = response.data;
+  expect(response.status).toBe(201);
+  //expect(typeof response.data).toBe(typeof {}); I think response right now is set to just get id back?
+  //expect(typeof response.data.id).toBe(typeof 0); was coming back undefined
+  console.log(`Student created with id ${student.id}`);
+  console.log('hi', response.data);
+});
+
+//--------GET a student (fetch)------------------
+test(`Get the student via HTTP GET`, async () => {
+  const response = await axios.get(`${SERVER_URL}/api/user/??????/${student.id}`);
+  expect(response.status).toBe(200);
+  expect(response.data.id).toBe(student.id);
+  expect(typeof(response.data)).toBe(typeof({}));
+  console.log(`student with id ${student.id} successfully retrieved.`);
+})
+
+//---------PUT a student (update)--------------
+test(`Update the student via HTTP PUT`, async () => {
+  const newName = 'Newer';
+  const newStudent = {...student, first_name: newName};
+  const response = await axios.put(`${SERVER_URL}/api/user/????/${student.id}`, newStudent);
+  expect(response.status).toBe(200);
+  expect(response.data.first_name).toBe(newName);
+  console.log(`Student with id ${student.id} name changed to ${newName}`);
+  student = response.data;
+})
+
+//--------DELETE a student (delete)-----------
+test('Delete the student via HTTP DELETE', async () => {
+  const response = await axios.delete(`${SERVER_URL}/api/?????/${student.id}`);
+  expect(response.status).toBe(204);
 });
 
 //-----------FAILED cases (i.e. student does not get check)-------------------
