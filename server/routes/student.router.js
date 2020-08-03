@@ -22,6 +22,25 @@ router.get('/studentlist', (req, res) => {
 
 
 
+router.get('/studententries', (req, res) => {
+    console.log('We are about to get the student entries');
+
+    const queryText = `SELECT * FROM "entry" JOIN "student" ON "student"."id" = "entry"."student_id";`;
+    pool.query(queryText)
+        .then((result) => {
+            console.log('Here is the student entry list', result.rows);
+            res.send(result.rows);
+        }).catch((error) => {
+            console.log(`Error on student entry query ${error}`);
+            res.sendStatus(500);
+        });
+
+});
+
+
+
+
+
 /**
  * POST route template
  */

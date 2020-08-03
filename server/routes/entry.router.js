@@ -23,6 +23,9 @@ router.get('/', (req, res) => {
 /**
  * POST route template
  */
+
+
+ 
 router.post("/", (req, res) => {
   console.log('This means entry router is running')
     // HTTP REQUEST BODY
@@ -30,6 +33,7 @@ router.post("/", (req, res) => {
     const {
       pass_class,
       gpa,
+      student_id,
       absent,
       tardy,
       late,
@@ -50,10 +54,11 @@ router.post("/", (req, res) => {
     }
     
     const queryText = `
-        INSERT INTO "entry" (pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`; //grabs database
+        INSERT INTO "entry" (student_id, pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`; //grabs database
     pool
       .query(queryText, [
+        student_id,
         pass_class,
         gpa,
         clean_attend,

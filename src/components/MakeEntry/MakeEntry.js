@@ -28,6 +28,7 @@ const GreenRadio = withStyles({
 
 class MakeEntry extends Component {
   state = {
+    student_id: this.props.user.student_id,
     pass_class: "",
     gpa: "",
     absent: "",
@@ -53,6 +54,7 @@ class MakeEntry extends Component {
   submitInfo = (event) => {
     event.preventDefault();
     const { pass_class,
+      student_id,
        gpa,
        absent,
        tardy,
@@ -70,6 +72,7 @@ class MakeEntry extends Component {
      type: "ADD_ENTRY",
      payload: {
        pass_class: pass_class,
+       student_id: student_id,
        gpa: gpa,
        absent: absent,
        tardy: tardy,
