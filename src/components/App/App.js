@@ -25,6 +25,7 @@ import PastAdminReports from "../PastAdminReports/PastAdminReports";
 import AddStudent from '../AdminHome/AddStudent';
 import UpdateStudent from '../AdminHome/UpdateStudent';
 import StudentEntries from '../AdminHome/StudentEntries';
+import AdminUpdateEntry from '../AdminHome/AdminUpdateEntry';
 
 
 
@@ -67,7 +68,9 @@ class App extends Component {
             <ProtectedRoute exact path="/addstudent" component={AddStudent}/>
             <ProtectedRoute exact path="/updatestudent" component={UpdateStudent}/>
              <ProtectedRoute exact path="/totalstudententries" component={StudentEntries}/>
-            
+             <ProtectedRoute exact path="/adminentryupdate" component={AdminUpdateEntry}/>
+
+           
            
 
             {/* If none of the other routes matched, we will show a 404. */}

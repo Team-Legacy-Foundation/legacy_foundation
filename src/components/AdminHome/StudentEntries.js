@@ -25,8 +25,7 @@ componentDidMount () {
       <h1>Hello there {this.props.user.email}, you are a(n) {this.props.user.role}!</h1>
       {this.props.user.role === 'admin'&&
                     <div className="navbuttonscontainer">
-                    <Link to="/addstudent"><Button variant="outline-primary">Add Student</Button></Link> {' '} 
-                    <Link to="/updatestudent"><Button  variant="outline-primary">Update Student</Button></Link> {' '}
+                    <Link to="/adminentryupdate" ><Button variant="outline-primary">Update Student Entry</Button></Link> {' '} 
                     </div>}
                     
          
