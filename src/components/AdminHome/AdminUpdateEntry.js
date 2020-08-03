@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 
 class AdminUpdateEntry extends Component {
+  
   state = {
     first_name: '',
     last_name: '',
