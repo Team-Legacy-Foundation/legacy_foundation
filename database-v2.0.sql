@@ -43,7 +43,7 @@ CREATE TABLE "student" (
 	"lcf_start_date" DATE NOT NULL,
 	"role" varchar(255) NOT NULL,
 	"pif_amount" NUMERIC(10,2) NOT NULL,
-	"balance_due" integer NOT NULL,
+	"balance_due" NUMERIC(10,2) NOT NULL DEFAULT 0,
 	CONSTRAINT "student_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -99,6 +99,9 @@ CREATE TABLE "open_transaction" (
 	"gpa_bonus" NUMERIC(10,2) NOT NULL,
 	"amt_to_savings" NUMERIC(10,2) NOT NULL,
 	"money_to_student" NUMERIC(10,2) NOT NULL,
+    "student_debt" NUMERIC(10,2) NOT NULL,
+    "student_debt_payment" NUMERIC(10,2) NOT NULL DEFAULT 0,
+    "student_debt_remaining" NUMERIC(10,2) NOT NULL DEFAULT 0,
 	"total" NUMERIC(10,2) NOT NULL,
 	CONSTRAINT "open_transaction_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -169,6 +172,9 @@ CREATE TABLE "history" (
 	"gpa_bonus" NUMERIC(10,2) NOT NULL,
 	"amt_to_savings" NUMERIC(10,2) NOT NULL,
 	"money_to_student" NUMERIC(10,2) NOT NULL,
+    "student_debt" NUMERIC(10,2) NOT NULL,
+    "student_debt_payment" NUMERIC(10,2) NOT NULL DEFAULT 0,
+    "student_debt_remaining" NUMERIC(10,2) NOT NULL DEFAULT 0,
 	"total" NUMERIC(10,2) NOT NULL,
 	CONSTRAINT "history_pk" PRIMARY KEY ("id")
 ) WITH (
