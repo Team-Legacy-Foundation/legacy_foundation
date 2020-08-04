@@ -15,6 +15,7 @@ import {
   FormLabel,
   withStyles,
 } from "@material-ui/core";
+import Swal from "sweetalert2";
 
 const GreenRadio = withStyles({
   root: {
@@ -50,46 +51,76 @@ class MakeEntry extends Component {
   handleChange = (event, fieldName) => {
     this.setState({ [fieldName]: event.target.value });
   };
-
+  
   submitInfo = (event) => {
     event.preventDefault();
-    const { pass_class,
-      student_id,
-       gpa,
-       absent,
-       tardy,
-       late,
-       truant,
-       clean_attend,
-       detent_hours,
-       after_school,
-       act_or_job,
-       passed_ua,
-       current_service_hours,
-       hw_rm_attended,
-       comments, } = this.state;
-   this.props.dispatch({
-     type: "ADD_ENTRY",
-     payload: {
-       pass_class: pass_class,
-       student_id: student_id,
-       gpa: gpa,
-       absent: absent,
-       tardy: tardy,
-       late: late,
-       truant: truant,
-       clean_attend: clean_attend,
-       detent_hours: detent_hours,
-       after_school: after_school,
-       act_or_job: act_or_job,
-       passed_ua: passed_ua,
-       current_service_hours: current_service_hours,
-       hw_rm_attended: hw_rm_attended,
-       comments: comments,
-     },
-   });
-    this.props.history.push("/home");
-    console.log('state is', this.state)
+        const {
+          pass_class,
+          student_id,
+          gpa,
+          absent,
+          tardy,
+          late,
+          truant,
+          clean_attend,
+          detent_hours,
+          after_school,
+          act_or_job,
+          passed_ua,
+          current_service_hours,
+          hw_rm_attended,
+          comments,
+        } = this.state;
+    Swal.fire({
+      title: "Please confirm details below",
+      html: `1. Passing classes: ${pass_class} </br>
+      2. GPA: ${gpa} </br>
+      3a. Days absent: ${absent} </br>
+      3b. Days tardy: ${tardy} </br>
+      3c. Days late ${late} </br>
+      3d. Days truant ${truant} </br>
+      3e. Days punctual: ${clean_attend} </br>
+      4. Detention hours: ${detent_hours} </br>
+      5. After school activities: ${after_school} </br>
+      6. Job: ${act_or_job} </br>
+      7. Drug free: ${passed_ua} </br>
+      8. service hours: ${current_service_hours} </br>
+      9. homeroom attendence: ${hw_rm_attended} </br>
+      10. comments: ${comments}`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirm my entry",
+    }).then((result) => {
+      if (result.value) {
+        this.props.dispatch({
+          type: "ADD_ENTRY",
+          payload: {
+            pass_class: pass_class,
+            student_id: student_id,
+            gpa: gpa,
+            absent: absent,
+            tardy: tardy,
+            late: late,
+            truant: truant,
+            clean_attend: clean_attend,
+            detent_hours: detent_hours,
+            after_school: after_school,
+            act_or_job: act_or_job,
+            passed_ua: passed_ua,
+            current_service_hours: current_service_hours,
+            hw_rm_attended: hw_rm_attended,
+            comments: comments,
+          },
+        });
+        Swal.fire("Success!", "Your entry has been logged.", "success");
+        this.props.history.push("/home");
+        console.log("state is", this.state);
+      }
+    });
+
+   
   };
 
   render() {
@@ -117,7 +148,11 @@ class MakeEntry extends Component {
               value={this.state.pass_class}
               onChange={(event) => this.handleChange(event, "pass_class")}
             >
-              <FormControlLabel value="Yes" control={<GreenRadio />} label="Yes" />
+              <FormControlLabel
+                value="Yes"
+                control={<GreenRadio />}
+                label="Yes"
+              />
               <FormControlLabel value="No" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
@@ -250,7 +285,11 @@ class MakeEntry extends Component {
               onChange={(event) => this.handleChange(event, "detent_hours")}
             >
               <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="No" control={<GreenRadio />} label="No" />
+              <FormControlLabel
+                value="No"
+                control={<GreenRadio />}
+                label="No"
+              />
             </RadioGroup>
           </FormControl>
           <FormControl component="fieldset">
@@ -264,7 +303,11 @@ class MakeEntry extends Component {
               value={this.state.after_school}
               onChange={(event) => this.handleChange(event, "after_school")}
             >
-              <FormControlLabel value="Yes" control={<GreenRadio />} label="Yes" />
+              <FormControlLabel
+                value="Yes"
+                control={<GreenRadio />}
+                label="Yes"
+              />
               <FormControlLabel value="No" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
@@ -276,7 +319,11 @@ class MakeEntry extends Component {
               value={this.state.act_or_job}
               onChange={(event) => this.handleChange(event, "act_or_job")}
             >
-              <FormControlLabel value="Yes" control={<GreenRadio />} label="Yes" />
+              <FormControlLabel
+                value="Yes"
+                control={<GreenRadio />}
+                label="Yes"
+              />
               <FormControlLabel value="No" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
@@ -290,7 +337,11 @@ class MakeEntry extends Component {
               value={this.state.passed_ua}
               onChange={(event) => this.handleChange(event, "passed_ua")}
             >
-              <FormControlLabel value="Yes" control={<GreenRadio />} label="Yes" />
+              <FormControlLabel
+                value="Yes"
+                control={<GreenRadio />}
+                label="Yes"
+              />
               <FormControlLabel value="No" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
@@ -325,7 +376,11 @@ class MakeEntry extends Component {
               value={this.state.hw_rm_attended}
               onChange={(event) => this.handleChange(event, "hw_rm_attended")}
             >
-              <FormControlLabel value="Yes" control={<GreenRadio />} label="Yes" />
+              <FormControlLabel
+                value="Yes"
+                control={<GreenRadio />}
+                label="Yes"
+              />
               <FormControlLabel value="No" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
@@ -361,6 +416,13 @@ class MakeEntry extends Component {
             Submit entry
           </Button>
         </form>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
     );
   }
