@@ -22,3 +22,21 @@ max-height:100%;
   
   
 }
+
+.loginError {
+      position: fixed;
+      animation-name: loginError;
+      animation-duration: 0.5s;
+      animation-iteration-count: 1;
+      border: solid black 1px;
+}
+
+@keyframes loginError {
+  /*enters from right side and ends in middle of page*/
+  0% {
+    opacity: 0;
+  }
+    100% {
+    opacity: 1;
+  }
+}
