@@ -53,6 +53,8 @@ router.get('/studententries', (req, res) => {
 
 // PUT /api/student/lcf_id
 router.put(`/:lcf_id`, (req, res) => {
+
+    console.log('We are updating a student entry', req.body);
     const entry = req.body;
     const {
        pass_class,
@@ -74,12 +76,25 @@ router.put(`/:lcf_id`, (req, res) => {
        comments,
     } = entry;
     const lcfID = req.params.lcf_id;
-    // setting query text to update the username
-    const queryText = `UPDATE "entry" SET first_name=$1, last_name=$2, lcf_id=$3, pass_class=$4, gpa=$5, clean_attend=$6, detent_hours=$7, act_or_job=$8, passed_ua=$9, current_service_hours=$10, hw_rm_attended=$11, comments=$12 WHERE lcf_id=${lcfID}`;
-    const queryValue = [first_name, last_name, lcfID, pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments];
+    let student_id = '';
+
+    const query1Text = `SELECT id FROM "student" WHERE lcf_id=${lcfID}`;
 
     pool
-        .query(queryText, queryValue)
+     .query(query1Text)
+     .then((result) => {
+         console.log("this is the response", result.rows[0].id);
+         //res.status(201).send(result.rows[0]);
+
+         student_id = result.rows[0].id;
+         //now lets add student information to the user table
+
+    // setting query text to update the username
+    const query2Text = `UPDATE "entry" SET pass_class=$1, gpa=$2, clean_attend=$3, detent_hours=$4, act_or_job=$5, passed_ua=$6, current_service_hours=$7, hw_rm_attended=$8, comments=$9 WHERE student_id=${student_id}`;
+    const query2Value = [pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments];
+
+    pool
+        .query(query2Text, query2Value)
         .then((result) => {
             console.log("Success in updating entry!");
             res.send(result.rows);
@@ -88,8 +103,15 @@ router.put(`/:lcf_id`, (req, res) => {
             console.log(`Error on PUT with query ${error}`);
             res.sendStatus(500); // if there is an error, send server error 500
         });
+  });
+
 });
 // end PUT /api/student/lcf_id
+
+
+
+
+
 
 
 /**
