@@ -252,12 +252,13 @@ class AdminUpdateEntry extends Component {
                      onChange={(event) => this.handleChange(event, "lcf_id")} //onChange of input values set local state
                    />
 
-
+                     <br/>
+                     <br/>
 
             <FormControl component="fieldset">
 
               <FormLabel component="legend" style={{ color: "black" }}>
-                1. Are you passing all your classes?
+                4. Are you passing all your classes?
               </FormLabel>
               <RadioGroup
                 aria-label="pass_class"
@@ -274,7 +275,7 @@ class AdminUpdateEntry extends Component {
               </RadioGroup>
             </FormControl>
             <p>
-              2. What is your current GPA?
+              5. What is your current GPA?
               <TextField
                 style={{
                   backgroundColor: "white",
@@ -296,7 +297,7 @@ class AdminUpdateEntry extends Component {
               />{" "}
             </p>
             <p>
-              3a. How many days were you absent from school this pay period?
+              6a. How many days were you absent from school this pay period?
               <TextField
                 style={{
                   backgroundColor: "white",
@@ -318,7 +319,7 @@ class AdminUpdateEntry extends Component {
               />
             </p>
             <p>
-              3b. How many school days were you tardy this pay period?
+              6b. How many school days were you tardy this pay period?
               <TextField
                 style={{
                   backgroundColor: "white",
@@ -340,7 +341,7 @@ class AdminUpdateEntry extends Component {
               />
             </p>
             <p>
-              3c. How many school days were you late this pay period?
+              6c. How many school days were you late this pay period?
               <TextField
                 style={{
                   backgroundColor: "white",
@@ -362,7 +363,7 @@ class AdminUpdateEntry extends Component {
               />{" "}
             </p>
             <p>
-              3d. How many school days were you truant this pay period?
+              6d. How many school days were you truant this pay period?
               <TextField
                 style={{
                   backgroundColor: "white",
@@ -384,7 +385,7 @@ class AdminUpdateEntry extends Component {
               />{" "}
             </p>
             <p>
-              3e. How many school days were you punctual for this pay period?
+              6e. How many school days were you punctual for this pay period?
               <TextField
                 style={{
                   backgroundColor: "white",
@@ -410,7 +411,7 @@ class AdminUpdateEntry extends Component {
             <br/>
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
-                4. Do you have detention hours at school?
+                7. Do you have detention hours at school?
               </FormLabel>
               <RadioGroup
                 aria-label="detent_hours"
@@ -430,13 +431,13 @@ class AdminUpdateEntry extends Component {
             <br />
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
-                5. Are you involved in any after school activity or job? <br />
+                8. Are you involved in any after school activity or job? <br />
                 (At school or at Legacy)
               </FormLabel>
               <RadioGroup
                 aria-label="after_school"
                 name="after_school"
-                value={this.state.after_school}
+                value={this.state.act_or_job}
                 onChange={(event) => this.handleChange(event, "act_or_job")}
               >
                 <FormControlLabel
@@ -469,7 +470,7 @@ class AdminUpdateEntry extends Component {
             </FormControl> <br/> <br/> */}
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
-                6. Are you living a drug free life?
+                9. Are you living a drug free life?
               </FormLabel>
               <RadioGroup
                 aria-label="passed_ua"
@@ -487,7 +488,7 @@ class AdminUpdateEntry extends Component {
             </FormControl>
             <br />
             <p>
-              7. How many service hours did you do the past 2 weeks?
+              10. How many service hours did you do the past 2 weeks?
               <TextField
                 style={{
                   backgroundColor: "white",
@@ -512,7 +513,7 @@ class AdminUpdateEntry extends Component {
             </p>
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
-                8. Were you ontime for mandatory homerooms this pay period?
+                11. Were you ontime for mandatory homerooms this pay period?
               </FormLabel>
               <RadioGroup
                 aria-label="hw_rm_attended"
@@ -529,7 +530,7 @@ class AdminUpdateEntry extends Component {
               </RadioGroup>
             </FormControl>{" "}
             <br /> <br />
-            <p>9. Any comments you would like to leave this pay period?</p>
+            <p>12. Any comments you would like to leave this pay period?</p>
             <TextField
               style={{
                 backgroundColor: "white",
