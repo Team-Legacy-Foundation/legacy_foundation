@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 
 class AdminUpdateEntry extends Component {
-  
+
   state = {
     first_name: '',
     last_name: '',
@@ -473,6 +473,7 @@ class AdminUpdateEntry extends Component {
           <Button variant="contained" type="submit" color="primary" className="button">
             Submit entry
           </Button>
+            <p></p>
         </form>
       </div>
     );

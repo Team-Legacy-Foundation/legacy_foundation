@@ -51,7 +51,45 @@ router.get('/studententries', (req, res) => {
 });
 
 
+// PUT /api/student/lcf_id
+router.put(`/:lcf_id`, (req, res) => {
+    const entry = req.body;
+    const {
+       pass_class,
+       gpa,
+       first_name,
+       last_name,
+       lcf_id,
+       absent,
+       tardy,
+       late,
+       truant,
+       clean_attend,
+       detent_hours,
+       after_school,
+       act_or_job,
+       passed_ua,
+       current_service_hours,
+       hw_rm_attended,
+       comments,
+    } = entry;
+    const lcfID = req.params.lcf_id;
+    // setting query text to update the username
+    const queryText = `UPDATE "entry" SET first_name=$1, last_name=$2, lcf_id=$3, pass_class=$4, gpa=$5, clean_attend=$6, detent_hours=$7, act_or_job=$8, passed_ua=$9, current_service_hours=$10, hw_rm_attended=$11, comments=$12 WHERE lcf_id=${lcfID}`;
+    const queryValue = [first_name, last_name, lcfID, pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments];
 
+    pool
+        .query(queryText, queryValue)
+        .then((result) => {
+            console.log("Success in updating entry!");
+            res.send(result.rows);
+        })
+        .catch((error) => {
+            console.log(`Error on PUT with query ${error}`);
+            res.sendStatus(500); // if there is an error, send server error 500
+        });
+});
+// end PUT /api/student/lcf_id
 
 
 /**

@@ -20,6 +20,7 @@ function* loginUser(action) {
     // after the user has logged in
     // get the user information from the server
     yield put({type: 'FETCH_USER'});
+    yield put ({type: 'FETCH_ENTRIES_FOR_ADMIN'});
     yield put ({ type: 'GET_STUDENTS' });
     
   } catch (error) {
