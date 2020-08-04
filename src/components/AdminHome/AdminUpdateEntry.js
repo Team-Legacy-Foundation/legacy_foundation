@@ -180,7 +180,6 @@ class AdminUpdateEntry extends Component {
         <Paper elevation={5} style={{ padding: "5%", margin: "5%" }}>
           <form onSubmit={this.submitInfo}>
 
-
          < p >
                     1. Student First Name
                    </p>
