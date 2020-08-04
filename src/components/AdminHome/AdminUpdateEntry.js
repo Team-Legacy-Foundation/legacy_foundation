@@ -42,8 +42,6 @@ const GreenRadio = withStyles({
 class AdminUpdateEntry extends Component {
 
   state = {
-    first_name: '',
-    last_name: '',
     lcf_id: '',
     pass_class: "",
     gpa: "",
@@ -68,8 +66,6 @@ class AdminUpdateEntry extends Component {
   submitInfo = (event) => {
     event.preventDefault();
     const { pass_class,
-       first_name,
-       last_name,
        lcf_id,
        gpa,
        absent,
@@ -98,12 +94,11 @@ class AdminUpdateEntry extends Component {
       4d. Days truant ${truant} </br>
       4e. Days punctual: ${clean_attend} </br>
       5. Detention hours: ${detent_hours} </br>
-      6. After school activities: ${after_school} </br>
-      7. Job: ${act_or_job} </br>
-      8. Drug free: ${passed_ua} </br>
-      9. service hours: ${current_service_hours} </br>
-      10. homeroom attendence: ${hw_rm_attended} </br>
-      11. comments: ${comments}`,
+      6. Job: ${act_or_job} </br>
+      7. Drug free: ${passed_ua} </br>
+      8. service hours: ${current_service_hours} </br>
+      9. homeroom attendence: ${hw_rm_attended} </br>
+      10. comments: ${comments}`,
          icon: "question",
          showCancelButton: true,
          confirmButtonColor: "#3085d6",
