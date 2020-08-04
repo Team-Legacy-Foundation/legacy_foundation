@@ -59,6 +59,8 @@ router.post("/addstudent", (req, res, next) => {
     ])
     .then((result) => {
       console.log("this is the response", result.rows[0].id);
+      //res.status(201).send(result.rows[0]);
+      
       student_id = result.rows[0].id;
       //now lets add student information to the user table
       const query2Text =
@@ -72,7 +74,7 @@ router.post("/addstudent", (req, res, next) => {
           'student',
           new Date(),
         ])
-        .then(() => res.sendStatus(201))
+        .then(() => res.status(201).send(result.rows))
         .catch(function (error) {
           console.log("Sorry, there was an error with your query: ", error);
           res.sendStatus(500); // HTTP SERVER ERROR

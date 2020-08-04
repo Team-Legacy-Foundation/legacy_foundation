@@ -20,6 +20,19 @@ router.get('/studentlist', (req, res) => {
     
 });
 
+router.get('/student/:id', (req, res) => {
+    console.log('We are about to get student with certain id');
+
+    const queryText = `SELECT * FROM student WHERE id=$1;`;
+    pool.query(queryText, [req.params.id])
+        .then((result) => {
+            res.send(result.rows);
+        }).catch((error) => {
+            console.log(`Error on student query ${error}`);
+            res.sendStatus(500);
+        });
+    
+});
 
 
 router.get('/studententries', (req, res) => {
