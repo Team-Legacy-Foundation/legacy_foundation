@@ -27,6 +27,8 @@ function* registerStudent(action) {
 }
 
 
+
+
 function* updateStudent(action) {
     try {
         //clear any errors on the page before
@@ -109,12 +111,29 @@ function * getStudentEntriesForAdmin (action){
     }
 }
 
+
+function* adminentryupdate(action){
+    console.log('We are updating a student entry', action.payload);
+    try {
+        const response = yield axios.put(`/api/student/${action.payload.lcf_id}`, action.payload);
+       
+        yield put({type: 'SET_STUDENT_ENTRIES_ADMIN_VIEW', payload: response.data});
+
+        console.log("Success in updating student entry.");
+    } catch (error) {
+        console.log("error editing student entry", error);
+    }
+}
+
+
+
 function* StudentSaga() {
     yield takeLatest('REGISTER_STUDENT', registerStudent);
      yield takeLatest('UPDATE_STUDENT', updateStudent);
      yield takeLatest('DELETE_STUDENT', deleteStudent);
      yield takeLatest('GET_STUDENTS', getStudents);
      yield takeLatest('FETCH_ENTRIES_FOR_ADMIN', getStudentEntriesForAdmin);
+     yield takeLatest("ADMIN_ENTRY_UPDATE", adminentryupdate);
      
 }
 
