@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 
 import logo from "../../images/image.png";
 
-import Grid from '@material-ui/core/Grid';
+import {
+  Grid,
+  Snackbar,
+} from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import './LoginPage.css';
 
 class LoginPage extends Component {
@@ -40,57 +44,59 @@ class LoginPage extends Component {
         {/* <div style={{border:'1px solid black', display:'inline', float:'left', maxWidth:'50%'}}>
           <img src='https://legacychildrensfoundation.com/wp-content/uploads/2020/03/shapes-bg-color.png' width='100%'/>
         </div> */}
-        
-      {/* <div style={{border:'1px solid black', display:'inline', float:'right', width:'50%', padding:0, margin:0, minHeight:'100% !important'}}> */}
-      <Grid item xs={12} sm={12} md={5} style={{display:'block'}}>
-        {this.props.errors.loginMessage && (
-          <h2
-            className="alert"
-            role="alert"
-          >
-            {this.props.errors.loginMessage}
-          </h2>
-        )}
-        <center>
-        <br/><br/>
-        <form onSubmit={this.login} className="reglogin">
-          
-          <h1>Login</h1>
-          <br/>
-          <div>
-            <label htmlFor="username">
-              Email:  &nbsp;  &nbsp;  &nbsp;   {/*Creates a blank space, used for lining things up */}
-              <input
-                type="text"
-                name="username"
-                value={this.state.username}
-                onChange={this.handleInputChangeFor('username')}
-              />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="password">
-              Password:  &nbsp;
-              <input
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleInputChangeFor('password')}
-              />
-            </label>
-          </div>
-          <div>
-            <input
-              className="log-in"
-              type="submit"
-              name="submit"
-              value="Log In"
-            />
-          </div>
-         
-        </form>
-        </center>
-        {/* <center>
+
+        {/* <div style={{border:'1px solid black', display:'inline', float:'right', width:'50%', padding:0, margin:0, minHeight:'100% !important'}}> */}
+        <Grid item xs={12} sm={12} md={5} style={{ display: "block" }}>
+          <center>
+            <br />
+            <br />
+            <form onSubmit={this.login} className="reglogin">
+              <h1>Login</h1>
+              <br />
+              <div>
+                <label htmlFor="username">
+                  Email: &nbsp; &nbsp; &nbsp;{" "}
+                  {/*Creates a blank space, used for lining things up */}
+                  <input
+                    type="text"
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.handleInputChangeFor("username")}
+                  />
+                </label>
+              </div>
+              <div>
+                <label htmlFor="password">
+                  Password: &nbsp;
+                  <input
+                    type="password"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.handleInputChangeFor("password")}
+                  />
+                </label>
+              </div>
+              <div>
+                <input
+                  className="log-in"
+                  type="submit"
+                  name="submit"
+                  value="Log In"
+                />
+              </div>
+              {this.props.errors.loginMessage && (
+                <Alert className="loginError"
+                  style={{
+                 
+                  }}
+                  severity="error"
+                >
+                  {this.props.errors.loginMessage}
+                </Alert>
+              )}
+            </form>
+          </center>
+          {/* <center>
           <button
             type="button"
             className="link-button"
@@ -100,10 +106,13 @@ class LoginPage extends Component {
           </button>
         </center> */}
         </Grid>
-        <Grid item xs={12} sm={12} md={7} style={{display:'block'}}>
-        <img id='shapes' src='https://legacychildrensfoundation.com/wp-content/uploads/2020/03/shapes-bg-color.png'/>
+        <Grid item xs={12} sm={12} md={7} style={{ display: "block" }}>
+          <img
+            id="shapes"
+            src="https://legacychildrensfoundation.com/wp-content/uploads/2020/03/shapes-bg-color.png"
+          />
         </Grid>
-      {/* </div> */}
+        {/* </div> */}
       </Grid>
     );
   }
