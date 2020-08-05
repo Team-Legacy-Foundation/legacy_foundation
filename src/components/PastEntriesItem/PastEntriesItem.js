@@ -11,35 +11,37 @@ import {
 
 class PastEntriesItem extends Component {
   render() {
-    const gunnarStyle = { minHeight: "500px", minWidth: "100px" };
+    const gunnarStyle = { textAlign:'center' };
     const {entryItem} = this.props
     return (
       <TableRow>
-          <TableCell>{entryItem.id}</TableCell>
-          <TableCell>{entryItem.pay_day}</TableCell>
-          <TableCell>{entryItem.pass_class}</TableCell>
-          <TableCell>{entryItem.gpa}</TableCell>
-          <TableCell>{entryItem.detent_hours}</TableCell>
-          <TableCell>{entryItem.act_or_job}</TableCell>
-          <TableCell>{entryItem.passed_ua}</TableCell>
-          <TableCell>{entryItem.current_service_hours}</TableCell>
-          <TableCell>{entryItem.hm_rm_attended}</TableCell>
-          <TableCell>{entryItem.strikes}</TableCell>
-          <TableCell>{entryItem.inactive}</TableCell>
-          <TableCell>{entryItem.comments}</TableCell>
-          <TableCell>{entryItem.new_charge}</TableCell>
-          <TableCell>{entryItem.reason_for_charge}</TableCell>
-          <TableCell>{entryItem.balance_to_pay}</TableCell>
-          <TableCell>{entryItem.check_this_payday}</TableCell>
-          <TableCell>{entryItem.gpa_bonus_amount}</TableCell>
-          <TableCell>{entryItem.total}</TableCell>
-          <TableCell>{entryItem.amt_to_savings}</TableCell>
-          <TableCell>{entryItem.pif_donations}</TableCell>
-          <TableCell>{entryItem.deduction_amount}</TableCell>
-          <TableCell>{entryItem.deduction_comments}</TableCell>
-          <TableCell>{entryItem.bonus_amount}</TableCell>
-          <TableCell>{entryItem.bonus_comments}</TableCell>
-          <TableCell>{entryItem.money_to_student}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.id}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.pay_day}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.pass_class}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.gpa}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.clean_attend}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.detent_hours}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.act_or_job}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.passed_ua}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.current_service_hours}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.hw_rm_attended}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.comments}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.strikes}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.inactive}</TableCell>
+          
+          <TableCell style={gunnarStyle}>{entryItem.new_charge}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.reason_for_charge}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.balance_to_pay}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.check_this_payday}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.gpa_bonus_amount}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.total}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.amt_to_savings}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.pif_donations}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.deduction_amount}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.deduction_comments}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.bonus_amount}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.bonus_comments}</TableCell>
+          <TableCell style={gunnarStyle}>{entryItem.money_to_student}</TableCell>
         </TableRow>
     );
   }

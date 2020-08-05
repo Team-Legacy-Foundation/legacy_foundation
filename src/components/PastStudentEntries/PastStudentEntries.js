@@ -9,8 +9,9 @@ import {
   TableCell,
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import './PastStudentEntries.css'
-import EntryItem from '../PastEntriesItem/PastEntriesItem'
+import './PastStudentEntries.css';
+import EntryItem from '../PastEntriesItem/PastEntriesItem';
+import Paper from "@material-ui/core/Paper";
 
 class PastStudentEntries extends Component {
   componentDidMount() {
@@ -18,23 +19,38 @@ class PastStudentEntries extends Component {
     this.props.dispatch({ type: "FETCH_ENTRY" });
   }
   render() {
-    const gunnarStyle = { minHeight: "500px", minWidth: "100px" };
+    const gunnarStyle = { minHeight: "500px", minWidth: "150px", textAlign:'center' };
+    
+    if (this.props.entry.entryList.length ===0 ){ //conditional rendering to handle case of no entries for student
+      return (
+        <Paper elevation={5} style={{margin:'5%', padding:'5%', textAlign:'center'}}>
+          <h2>It looks like you don't have any past entries! Check back once you've made one</h2>
+        </Paper>
+      )
+
+    } else {
     return (
-      <div
+      <div style={{margin:'5%'}}>
+      <center>
+        <h4>Scroll along the table to review past entries</h4>
+      </center>
+      <Paper elevation={5}
         style={{
-          width: "90%",
+          
           height: "100%",
           overflow: "scroll",
-          margin: "auto",
-          border: "1px solid black",
+          
+          border: "",
+          
         }}
       >
-        <Table style={{}}>
+        
+        <Table style={{margin:'1%',}}>
           <TableHead>
             <TableRow style={gunnarStyle}>
               <TableCell
                 style={gunnarStyle}
-                style={{ border: "1px solid black" }}
+                
               >
                 Entry ID
               </TableCell>
@@ -53,16 +69,17 @@ class PastStudentEntries extends Component {
               <TableCell style={gunnarStyle}>
                 Did you attend homeroom?
               </TableCell>
+              <TableCell style={gunnarStyle}>Comments</TableCell>
               <TableCell style={gunnarStyle}>Strikes</TableCell>
               <TableCell style={gunnarStyle}>Inactive?</TableCell>
-              <TableCell style={gunnarStyle}>Comments</TableCell>
+              
               <TableCell style={gunnarStyle}>New Charges</TableCell>
               <TableCell style={gunnarStyle}>Reason for Charge</TableCell>
               <TableCell style={gunnarStyle}>Balance to be Paid</TableCell>
               <TableCell style={gunnarStyle}>Check this payday?</TableCell>
               <TableCell style={gunnarStyle}>GPA Bonus Amount</TableCell>
               <TableCell style={gunnarStyle}>Total</TableCell>
-              <TableCell style={gunnarStyle}>$ to Savings</TableCell>
+              <TableCell style={gunnarStyle}>Money to Savings</TableCell>
               <TableCell style={gunnarStyle}>
                 Pay It Forward Contributions
               </TableCell>
@@ -75,15 +92,19 @@ class PastStudentEntries extends Component {
           </TableHead>
           <TableBody>
             {" "}
-            {this.props.entry.entryList.map((entryItem, index) => {
+            {
+            this.props.entry.entryList.map((entryItem, index) => {
               // if (index >= this.props.user.id === entryItem.student_id) {
                 return <EntryItem key={entryItem.id} entryItem={entryItem} />;
               // }
             })}
           </TableBody>
+          
         </Table>
+        </Paper>
+        <div>Total savings to date:</div>
       </div>
-    );
+    );}
   }
 }
 

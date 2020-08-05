@@ -4,6 +4,12 @@ import { connect } from 'react-redux';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
 import logo from "../../images/image.png";
+import HomeIcon from '@material-ui/icons/Home';
+import CreateIcon from '@material-ui/icons/Create';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const Nav = (props) => (
   <div className="nav">
@@ -26,19 +32,22 @@ const Nav = (props) => (
         {/* Show this link if they are logged in or not,
         but call this link 'Home' if they are logged in,
         and call this link 'Login / Register' if they are not */}
-        {props.user.id ? "Home" : "Login / Register"}
+        {props.user.id ? <><HomeIcon></HomeIcon> Home</> : <><ExitToAppIcon></ExitToAppIcon> Login</>}
       </Link>
       {/* Show the link to the info page and the logout button if the user is logged in */}
       {props.user.id && props.user.role === "admin" && (
         <>
         <Link className="nav-link" to="/totalstudententries">
+          <FormatListBulletedIcon></FormatListBulletedIcon>
             Student Entries
           </Link>
         
           <Link className="nav-link" to="/pastadminreports">
+            <PlaylistAddCheckIcon></PlaylistAddCheckIcon>
             Past Reports
           </Link>
           <Link className="nav-link" to="/pastadminreset">
+            <RotateLeftIcon></RotateLeftIcon>
           Reset Password
           </Link>
           <LogOutButton className="nav-link" />
@@ -47,9 +56,11 @@ const Nav = (props) => (
       {props.user.id && props.user.role === "student" && (
         <>
           <Link className="nav-link" to="/makeentry">
+            <CreateIcon></CreateIcon>
             Make an Entry
           </Link>
           <Link className="nav-link" to="/paststudententries">
+          <FormatListBulletedIcon></FormatListBulletedIcon>
             Past Entries
           </Link>
           <LogOutButton className="nav-link" />
