@@ -14,6 +14,10 @@ componentDidMount () {
     type: 'GET_STUDENTS'
   });
 
+   this.props.dispatch({
+     type: 'GET_ADMIN'
+   });
+
   this.props.dispatch({
     type: 'FETCH_ENTRIES_FOR_ADMIN'
   })

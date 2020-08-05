@@ -46,6 +46,10 @@ const Nav = (props) => (
             <PlaylistAddCheckIcon></PlaylistAddCheckIcon>
             Past Reports
           </Link>
+
+           <Link className="nav-link" to="/adminusers">
+            Admin Users
+          </Link>
           <Link className="nav-link" to="/pastadminreset">
             <RotateLeftIcon></RotateLeftIcon>
           Reset Password
@@ -53,6 +57,10 @@ const Nav = (props) => (
           <LogOutButton className="nav-link" />
         </>
       )}
+
+
+
+
       {props.user.id && props.user.role === "student" && (
         <>
           <Link className="nav-link" to="/makeentry">

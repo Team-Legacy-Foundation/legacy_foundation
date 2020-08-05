@@ -22,6 +22,7 @@ function* loginUser(action) {
     yield put({type: 'FETCH_USER'});
     yield put ({type: 'FETCH_ENTRIES_FOR_ADMIN'});
     yield put ({ type: 'GET_STUDENTS' });
+    yield put ({type: 'GET_ADMIN'});
     
   } catch (error) {
     console.log('Error with user login:', error);
