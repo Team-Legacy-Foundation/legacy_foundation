@@ -14,6 +14,74 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
+
+
+
+
+//Handles POST to the student table to add a new student
+//The password is encrypted before being inserted into the database
+router.post("/addadmin", (req, res, next) => {
+  console.log("this is the new admin we are about to register", req.body);
+
+  // pull out the incoming object data
+  const first_name = req.body.first_name;
+  const last_name = req.body.last_name;
+  const email = req.body.email;
+  const password = encryptLib.encryptPassword(req.body.password);
+  const created_at = req.body.created_at;
+  const role = req.body.role;
+  student_id = null;
+
+  //initialize the id you will get from the student
+  let admin_id = "";
+
+  const queryText = `INSERT INTO "admin" 
+                (first_name, last_name, email, password, role, created_at)
+                VALUES($1, $2, $3, $4, $5, $6) RETURNING id `;
+  pool
+    .query(queryText, [
+      first_name,
+      last_name,
+      email,
+      password,
+      role,
+      created_at,
+    ])
+    .then((result) => {
+      console.log("this is the response", result.rows[0].id);
+      //res.status(201).send(result.rows[0]);
+
+      admin_id = result.rows[0].id;
+      //now lets add admin information to the user table
+      const query2Text =
+        'INSERT INTO "user" (admin_id, student_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
+      pool
+        .query(query2Text, [
+          admin_id,
+          student_id,
+          email,
+          password,
+          role,
+          new Date(),
+        ])
+        .then(() => res.status(201).send(result.rows))
+        .catch(function (error) {
+          console.log("Sorry, there was an error with your query: ", error);
+          res.sendStatus(500); // HTTP SERVER ERROR
+        });
+    })
+    .catch(function (error) {
+      console.log("Sorry, there is an error", error);
+      res.sendStatus(500);
+    });
+});
+
+
+
+
+
+
+
 //Handles POST to the student table to add a new student
 //The password is encrypted before being inserted into the database
 router.post("/addstudent", (req, res, next) => {

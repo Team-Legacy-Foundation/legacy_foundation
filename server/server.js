@@ -11,6 +11,7 @@ const passport = require('./strategies/user.strategy');
 // Route includes
 const userRouter = require('./routes/user.router');
 const studentRouter = require('./routes/student.router');
+const adminRouter = require('./routes/admin.router');
 
 const entryRouter = require('./routes/entry.router');
 
@@ -29,10 +30,14 @@ app.use(passport.session());
 /* Routes */
 app.use('/api/user', userRouter);
 //app.use('/addstudent', userRouter);
+
 app.use('/api/student', studentRouter);
 //app.use('/api/user/addstudent', studentRouter)
 
-app.use('/entry', entryRouter)
+
+app.use('/api/admin', adminRouter);
+
+app.use('/entry', entryRouter);
 
 
 // Serve static files

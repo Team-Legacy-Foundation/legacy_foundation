@@ -26,6 +26,7 @@ import AddStudent from '../AdminHome/AddStudent';
 import UpdateStudent from '../AdminHome/UpdateStudent';
 import StudentEntries from '../AdminHome/StudentEntries';
 import AdminUpdateEntry from '../AdminHome/AdminUpdateEntry';
+import AddAdmin from '../AdminHome/AddAdmin';
 
 
 
@@ -77,6 +78,7 @@ class App extends Component {
             <ProtectedRoute exact path="/updatestudent" component={UpdateStudent}/>
              <ProtectedRoute exact path="/totalstudententries" component={StudentEntries}/>
              <ProtectedRoute exact path="/adminentryupdate" component={AdminUpdateEntry}/>
+             <ProtectedRoute exact path= "/adminusers" component={AddAdmin}/>
 
            
            
