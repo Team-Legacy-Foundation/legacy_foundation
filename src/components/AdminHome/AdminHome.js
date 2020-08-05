@@ -9,6 +9,7 @@ import moment from "moment";
 
 class AdminHome extends Component {
 
+
 componentDidMount () {
   this.props.dispatch({
     type: 'GET_STUDENTS'
@@ -24,69 +25,67 @@ componentDidMount () {
 }
 
   render() {
+    return (
+      <div>
+        <h1>
+          Hello there {this.props.user.email}, you are a(n){" "}
+          {this.props.user.role}!{JSON.stringify(this.props.students)}
+        </h1>
+        {this.props.user.role === "admin" && (
+          <div className="navbuttonscontainer">
+            <Link to="/addstudent">
+              <Button variant="outline-primary">Add Student</Button>
+            </Link>{" "}
+            <Link to="/updatestudent">
+              <Button variant="outline-primary">Update Student</Button>
+            </Link>{" "}
+          </div>
+        )}
 
-  
-    return(
-     
-     <div>
-     
-      <h1>Hello there {this.props.user.email}, you are a(n) {this.props.user.role}!</h1>
-      {this.props.user.role === 'admin'&&
-                    <div className="navbuttonscontainer">
-                    <Link to="/addstudent"><Button variant="outline-primary">Add Student</Button></Link> {' '} 
-                    <Link to="/updatestudent"><Button  variant="outline-primary">Update Student</Button></Link> {' '}
-                    </div>}
-                    
-         
-      
-{/*PLEASE NOTE: instead of start date, we want tos how latest activity on this table */}
-{/*This will be tied to whenever a student logs in, it will do a put on that column to show thier latest login */}
-     <MUITable
-            data={this.props.students
-              .filter(
-                (entry) =>
-                    entry.first_name&&
-                    entry.last_name&&
-                    entry.grade&&
-                    entry.grad_year&&
-                    entry.school_attend&&
-                    entry.lcf_id&&
-                    moment(entry.lcf_start_date).format("MMMM Do YYYY")&&
-                    entry.student_email&&
-                    entry.password&&
-                    entry.pif_amount
-              )
-              .map((entry) => [
-                 entry.first_name,
-                 entry.last_name,
-                 Number(entry.grade),
-                 entry.grad_year,
-                 entry.school_attend,
-                 entry.lcf_id,
-                 moment(entry.lcf_start_date).format("MMMM Do YYYY"), //This will change "last login" at some point
-                 entry.student_email,
-                 //entry.password,
-                 entry.pif_amount
-              ])}
-            columns={[
-              "First Name",
-              "Last Name",
-              "Grade",
-              "Graduation Year",
-              "School Name",
-              "LCF ID",
-              "LCF Start Date", //This will change "last login" at some point
-              "Student Email",
-              "Student PIF Amount ($)"
-            ]}
-            title={"LCF Student List"}
-          />
-        
+        {/*PLEASE NOTE: instead of start date, we want tos how latest activity on this table */}
+        {/*This will be tied to whenever a student logs in, it will do a put on that column to show thier latest login */}
+        <MUITable
+          data={this.props.students
+            .filter(
+              (entry) =>
+                entry.first_name &&
+                entry.last_name &&
+                entry.grade &&
+                entry.grad_year &&
+                entry.school_attend &&
+                entry.lcf_id &&
+                moment(entry.lcf_start_date).format("MMMM Do YYYY") &&
+                entry.student_email &&
+                entry.password &&
+                entry.pif_amount
+            )
+            .map((entry) => [
+              entry.first_name,
+              entry.last_name,
+              Number(entry.grade),
+              entry.grad_year,
+              entry.school_attend,
+              entry.lcf_id,
+              moment(entry.lcf_start_date).format("MMMM Do YYYY"), //This will change "last login" at some point
+              entry.student_email,
+              //entry.password,
+              entry.pif_amount,
+            ])}
+          columns={[
+            "First Name",
+            "Last Name",
+            "Grade",
+            "Graduation Year",
+            "School Name",
+            "LCF ID",
+            "LCF Start Date", //This will change "last login" at some point
+            "Student Email",
+            "Student PIF Amount ($)",
+          ]}
+          title={"LCF Student List"}
+        />
       </div>
-      
-    
-        );
-
+    );
   }
 }
 
