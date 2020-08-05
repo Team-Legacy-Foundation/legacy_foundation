@@ -9,12 +9,72 @@ import Select from "@material-ui/core/Select";
 // import red from '@material-ui/core/colors/red';
 
 
+// import { createMuiTheme } from '@material-ui/core';
+// import green from '@material-ui/core/colors/green';
+
+// This is the base preset for the custom material-table component since most of the tables
+// display at least these columns.
+// const tablePreferences = {
+//   moreInfoColumnIndex: 3,
+//   columns: [
+//     {
+//       name: 'Artwork',
+//       options: {
+//         filter: false,
+//         sort: false
+//       }
+//     },
+//     {
+//       name: 'Name',
+//       options: {
+//         filter: true
+//       }
+//     },
+//     {
+//       name: 'More Info',
+//       options: {
+//         filter: false,
+//         sort: false
+//       }
+//     },
+//     {
+//       name: 'Player Range',
+//       options: {
+//         filter: true,
+//         sort: false
+//       }
+//     },
+//     {
+//       name: 'Play Time',
+//       options: {
+//         filter: true,
+//         sort: false
+//       }
+//     }
+//   ],
+//   options: {
+//     selectableRows: 'none',
+//     responsive: 'standard',
+//     // Don't show the default print or download buttons that come with the default table.
+//     print: false,
+//     download: false,
+//     filter: true,
+//     filterType: 'dropdown'
+//   },
+//   theme: createMuiTheme({
+//     palette: { type: 'dark' },
+//     primary: green,
+//     typography: { useNextVariants: true }
+//   })
+// };
+
+// export default tablePreferences;
+
+
 class MUITable extends Component {
 
         state = {
-            title: this.props.title,
-            data: this.props.data,
-            columns: this.props.columns,
+           
             setResponsive: "vertical",
             setTableBodyHeight: "400px",
             setTableBodyMaxHeight: " ",
@@ -33,6 +93,8 @@ class MUITable extends Component {
 
 
     render(){
+
+
         return(
 
              <React.Fragment>
@@ -74,9 +136,9 @@ class MUITable extends Component {
                     </FormControl>
 
               <MUIDataTable
-                    title={this.state.title}
-                    data={this.state.data}
-                    columns={this.state.columns}
+                    title={this.props.title}
+                    data={this.props.data}
+                    columns={this.props.columns}
                     options={this.state.options}
                     // theme={ createMuiTheme({ 
                     //             palette: { type: 'dark' },
