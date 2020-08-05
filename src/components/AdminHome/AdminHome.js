@@ -25,6 +25,110 @@ componentDidMount () {
 }
 
   render() {
+
+
+    const columns = [
+      {
+        name: "Delete",
+        options: {
+          filter: false,
+          sort: false,
+          empty: true,
+          customBodyRenderLite: (dataIndex) => {
+            return (
+              <button
+                onClick={() => {
+                  const { data } = this.props;
+                  data.shift();
+                  this.setState({ data });
+                }}
+              >
+                Delete
+              </button>
+            );
+          },
+        },
+      },
+      {
+        name: "Edit",
+        options: {
+          filter: false,
+          sort: false,
+          empty: true,
+          customBodyRenderLite: (dataIndex, rowIndex) => {
+            return (
+              <button
+                onClick={() =>
+                  window.alert(
+                    `Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`
+                  )
+                }
+              >
+                Edit
+              </button>
+            );
+          },
+        },
+      },
+      {
+        name: "First Name",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        label: "Last Name",
+        name: "Last Name",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "Grade",
+        options: {
+          filter: false,
+        },
+      },
+      {
+        name: "Graduation Year",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "School Name",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "LCF ID",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "LCF Start Date",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "Student Email",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "Student PIF Amount ($)",
+        options: {
+          filter: true,
+        },
+      },
+    ];
+
+
     return (
       <div>
       
@@ -68,7 +172,8 @@ componentDidMount () {
               //entry.password,
               entry.pif_amount,
             ])}
-          title={"LCF Student List"}
+            columns={columns}
+            title={"LCF Student List"}
         />
       </div>
     );

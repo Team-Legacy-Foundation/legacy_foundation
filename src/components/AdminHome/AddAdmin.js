@@ -31,6 +31,10 @@ class AddAdmin extends Component {
 }
 
 
+componentDidUpdate() {
+  console.log('update table')
+}
+
 //This function dispatched our newly added admin to the database from state
 //We first validate the inputs to make sure we are not sending empty inputs to the server
       registerAdmin = (event) => {
@@ -88,6 +92,14 @@ class AddAdmin extends Component {
 
   
     render () {
+      const data = this.props.admin
+                .map((entry) => [
+                entry.first_name,
+                entry.last_name,
+                entry.email,
+                entry.role,
+                moment(entry.created_at).format("MMMM Do YYYY")
+              ])
       return (
         
       <div>
@@ -95,32 +107,23 @@ class AddAdmin extends Component {
                     <Link to="/home"><Button variant="outline-primary">Home</Button></Link> {' '} 
                     </div>
 
+{/* {this.props.videos.map(videoObj => {
+      return (
+        videoObj.path ? [videoObj.title, videoObj.description, videoObj.visibility, `...${videoObj.path.slice(-40)}`, ''] : []
+      );
+    });} */}
 
-
-       <MUITable
-            data={this.props.admin
-              .filter(
-                (entry) =>
-                    entry.first_name&&
-                    entry.last_name&&
-                    entry.email&&
-                    entry.role&&
-                    moment(entry.created_at).format("MMMM Do YYYY")
-              )
-              .map((entry) => [
-                 entry.first_name,
-                entry.last_name,
-                entry.email,
-                entry.role,
-                moment(entry.created_at).format("MMMM Do YYYY")
-              ])}
+        {console.log('this.props.admin', this.props.admin)}
+    <MUITable
+            data={data}
             columns={[
-              "First Name",
-              "Last Name",
-              "Admin Email",
-              "Role",
-              "Creation Date"
+              {name: "First Name"},
+              {name: "Last Name"},
+              {name: "Admin Email" },
+              {name: "Role"},
+              {name: "Creation Date"}
             ]}
+            // options={}
             title={"LCF Admin List"}
           />
 

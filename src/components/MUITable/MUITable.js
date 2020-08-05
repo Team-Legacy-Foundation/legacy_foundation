@@ -8,7 +8,6 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 // import { createMuiTheme } from '@material-ui/core';
 // import red from '@material-ui/core/colors/red';
-
 //MAKE SURE TO NOT USE PROPS IN STATE
 class MUITable extends Component {
   componentDidMount() {
@@ -37,106 +36,7 @@ class MUITable extends Component {
   };
 
   render() {
-    const columns = [
-      {
-        name: "Delete",
-        options: {
-          filter: false,
-          sort: false,
-          empty: true,
-          customBodyRenderLite: (dataIndex) => {
-            return (
-              <button
-                onClick={() => {
-                  const { data } = this.props;
-                  data.shift();
-                  this.setState({ data });
-                }}
-              >
-                Delete
-              </button>
-            );
-          },
-        },
-      },
-      {
-        name: "Edit",
-        options: {
-          filter: false,
-          sort: false,
-          empty: true,
-          customBodyRenderLite: (dataIndex, rowIndex) => {
-            return (
-              <button
-                onClick={() =>
-                  window.alert(
-                    `Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`
-                  )
-                }
-              >
-                Edit
-              </button>
-            );
-          },
-        },
-      },
-      {
-        name: "First Name",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        label: "Last Name",
-        name: "Last Name",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "Grade",
-        options: {
-          filter: false,
-        },
-      },
-      {
-        name: "Graduation Year",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "School Name",
-        options: {
-          filter: true,
-          sort: false,
-        },
-      },
-      {
-        name: "LCF ID",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "LCF Start Date",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "Student Email",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "Student PIF Amount ($)",
-        options: {
-          filter: true,
-        },
-      },
-    ];
+    
     return (
       <React.Fragment>
         <FormControl>
@@ -184,7 +84,7 @@ class MUITable extends Component {
         <MUIDataTable
           title={this.props.title}
           data={this.props.data}
-          columns={columns}
+          columns={this.props.columns}
           options={this.state.options}
           // theme={ createMuiTheme({
           //             palette: { type: 'dark' },
@@ -195,6 +95,7 @@ class MUITable extends Component {
       </React.Fragment>
     );
   }
+
 }
 
 const mapStateToProps = (state) => ({
