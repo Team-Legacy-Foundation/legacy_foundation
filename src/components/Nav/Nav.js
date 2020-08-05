@@ -38,12 +38,20 @@ const Nav = (props) => (
           <Link className="nav-link" to="/pastadminreports">
             Past Reports
           </Link>
+
+           <Link className="nav-link" to="/adminusers">
+            Admin Users
+          </Link>
           <Link className="nav-link" to="/pastadminreset">
           Reset Password
           </Link>
           <LogOutButton className="nav-link" />
         </>
       )}
+
+
+
+
       {props.user.id && props.user.role === "student" && (
         <>
           <Link className="nav-link" to="/makeentry">
