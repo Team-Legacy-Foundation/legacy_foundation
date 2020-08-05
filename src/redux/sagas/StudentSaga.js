@@ -88,6 +88,7 @@ function* getStudents(action) {
                 payload: response.data
             });
 
+
             console.log('Here is the list of student', response.data);
         } catch (error) {
             console.log('Error with getting the list of Students:', error);

@@ -32,6 +32,14 @@ import AdminUpdateEntry from '../AdminHome/AdminUpdateEntry';
 class App extends Component {
   componentDidMount() {
     this.props.dispatch({ type: "FETCH_USER" });
+
+    // this.props.dispatch({
+    //   type: "GET_STUDENTS",
+    // });
+
+    // this.props.dispatch({
+    //   type: "FETCH_ENTRIES_FOR_ADMIN",
+    // });
   }
 
   render() {
