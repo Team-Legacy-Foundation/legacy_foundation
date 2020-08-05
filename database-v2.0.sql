@@ -43,6 +43,7 @@ CREATE TABLE "student" (
 	"lcf_start_date" DATE NOT NULL,
 	"role" varchar(255) NOT NULL,
 	"pif_amount" NUMERIC(10,2) NOT NULL,
+	"inactive" varchar(255) DEFAULT 'no',
 	"balance_due" NUMERIC(10,2) NOT NULL DEFAULT 0,
 	CONSTRAINT "student_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -67,6 +68,8 @@ CREATE TABLE "entry" (
 	"hw_rm_attended" varchar(255) NOT NULL,
 	"inactive" varchar(255) NOT NULL,
 	"comments" varchar(255) NOT NULL,
+	"bonus_amount" NUMERIC(10,2) NOT NULL DEFAULT 0,
+	"bonus_comments" varchar(255),
 	CONSTRAINT "entry_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
