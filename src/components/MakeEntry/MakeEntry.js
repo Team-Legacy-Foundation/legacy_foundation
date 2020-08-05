@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { green } from "@material-ui/core/colors";
+import { green, yellow } from "@material-ui/core/colors";
 import {
   TextField,
   Grid,
@@ -24,6 +24,16 @@ const GreenRadio = withStyles({
     color: green[400],
     "&$checked": {
       color: green[600],
+    },
+  },
+  checked: {},
+})((props) => <Radio color="default" {...props} />);
+
+const YellowRadio = withStyles({
+  root: {
+    color: yellow[400],
+    "&$checked": {
+      color: yellow[600],
     },
   },
   checked: {},
@@ -280,7 +290,7 @@ class MakeEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<Radio />} label="No" />
+                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
               </RadioGroup>
             </FormControl>
             <p>2. What is your current GPA?</p>
@@ -429,7 +439,7 @@ class MakeEntry extends Component {
                 value={this.state.detent_hours}
                 onChange={(event) => this.handleChange(event, "detent_hours")}
               >
-                <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+                <FormControlLabel value="Yes" control={<YellowRadio />} label="Yes" />
                 <FormControlLabel
                   value="No"
                   control={<GreenRadio />}
@@ -455,7 +465,7 @@ class MakeEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<Radio />} label="No" />
+                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
               </RadioGroup>
             </FormControl>
             <br />
@@ -493,7 +503,7 @@ class MakeEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<Radio />} label="No" />
+                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
               </RadioGroup>
             </FormControl>
             <br />
@@ -536,7 +546,7 @@ class MakeEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<Radio />} label="No" />
+                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
               </RadioGroup>
             </FormControl>{" "}
             <br /> <br />
