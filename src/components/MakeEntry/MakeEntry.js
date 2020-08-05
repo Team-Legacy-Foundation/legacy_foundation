@@ -257,6 +257,7 @@ class MakeEntry extends Component {
 
     return (
       <div>
+
         <br />
         <h3 style={{ textAlign: "center" }}>
           This entry is for the week of: PAY PERIOD HERE
