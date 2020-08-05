@@ -4,6 +4,7 @@ import loginMode from './loginModeReducer';
 import user from './userReducer';
 import students from './studentReducer';
 import entry from './entryReducer'
+import admin from './adminReducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   user, // will have an id and username if someone is logged in
   students, //combined reducer for all things student related
   entry, //combined reducer for all things entry related
+  admin, //will combine reducer for all things admin related
 });
 
 export default rootReducer;

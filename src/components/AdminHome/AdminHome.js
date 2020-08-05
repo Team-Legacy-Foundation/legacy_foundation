@@ -8,15 +8,21 @@ import moment from "moment";
 
 
 class AdminHome extends Component {
-  componentDidMount() {
-    this.props.dispatch({
-      type: "GET_STUDENTS",
-    });
 
-    this.props.dispatch({
-      type: "FETCH_ENTRIES_FOR_ADMIN",
-    });
-  }
+
+componentDidMount () {
+  this.props.dispatch({
+    type: 'GET_STUDENTS'
+  });
+
+   this.props.dispatch({
+     type: 'GET_ADMIN'
+   });
+
+  this.props.dispatch({
+    type: 'FETCH_ENTRIES_FOR_ADMIN'
+  })
+}
 
   render() {
     return (

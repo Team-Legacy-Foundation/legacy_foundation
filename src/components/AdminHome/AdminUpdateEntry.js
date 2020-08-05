@@ -42,7 +42,8 @@ const GreenRadio = withStyles({
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class AdminUpdateEntry extends Component {
   state = {
-    lcf_id: "",
+
+    lcf_id: '',
     pass_class: "",
     gpa: 0,
     absent: 0,
@@ -100,23 +101,25 @@ class AdminUpdateEntry extends Component {
 
   submitInfo = (event) => {
     event.preventDefault();
-    const {
-      pass_class,
-      lcf_id,
-      gpa,
-      absent,
-      tardy,
-      late,
-      truant,
-      clean_attend,
-      detent_hours,
-      after_school,
-      act_or_job,
-      passed_ua,
-      current_service_hours,
-      hw_rm_attended,
-      comments,
-    } = this.state;
+
+
+    const { pass_class,
+       lcf_id,
+       gpa,
+       absent,
+       tardy,
+       late,
+       truant,
+       clean_attend,
+       detent_hours,
+       after_school,
+       act_or_job,
+       passed_ua,
+       current_service_hours,
+       hw_rm_attended,
+       comments, } = this.state;
+
+
 
     Swal.fire({
       title: "Please confirm details below",
@@ -134,39 +137,40 @@ class AdminUpdateEntry extends Component {
       8. service hours: ${current_service_hours} </br>
       9. homeroom attendence: ${hw_rm_attended} </br>
       10. comments: ${comments}`,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Confirm my entry",
-    }).then((result) => {
-      if (result.value) {
-        this.props.dispatch({
-          type: "ADMIN_ENTRY_UPDATE",
-          payload: {
-            pass_class: pass_class,
-            gpa: gpa,
-            lcf_id: lcf_id,
-            absent: absent,
-            tardy: tardy,
-            late: late,
-            truant: truant,
-            clean_attend: clean_attend,
-            detent_hours: detent_hours,
-            after_school: after_school,
-            act_or_job: act_or_job,
-            passed_ua: passed_ua,
-            current_service_hours: current_service_hours,
-            hw_rm_attended: hw_rm_attended,
-            comments: comments,
-          },
-        });
-        Swal.fire("Success!", "Your entry update has been logged.", "success");
-        this.props.history.push("/home");
-        console.log("state is", this.state);
-      }
-    });
-  };
+         icon: "question",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Confirm my entry",
+       }).then((result) => {
+         if (result.value) {
+            this.props.dispatch({
+              type: "ADMIN_ENTRY_UPDATE",
+              payload: {
+                pass_class: pass_class,
+                gpa: gpa,
+                lcf_id: lcf_id,
+                absent: absent,
+                tardy: tardy,
+                late: late,
+                truant: truant,
+                clean_attend: clean_attend,
+                detent_hours: detent_hours,
+                after_school: after_school,
+                act_or_job: act_or_job,
+                passed_ua: passed_ua,
+                current_service_hours: current_service_hours,
+                hw_rm_attended: hw_rm_attended,
+                comments: comments,
+              },
+            });
+           Swal.fire("Success!", "Your entry update has been logged.", "success");
+           this.props.history.push("/home");
+           console.log("state is", this.state);
+         }
+       });
+    }
+
 
   navToStudentEntries = () => {
     //goes to details page

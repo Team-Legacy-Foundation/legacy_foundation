@@ -117,7 +117,7 @@ router.put(`/:lcf_id`, (req, res) => {
 /**
  * POST route template
  */
-router.post('/', (req, res) => {
+// router.post('/', (req, res) => {
 // const student = req.body;
 
 // const {
@@ -169,6 +169,6 @@ router.post('/', (req, res) => {
 //       console.log("Sorry, there was an error with your query: ", error);
 //       res.sendStatus(500); // HTTP SERVER ERROR
 //     });
-});
+// });
 
 module.exports = router;
