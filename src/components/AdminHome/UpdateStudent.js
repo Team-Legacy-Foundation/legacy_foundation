@@ -22,7 +22,8 @@ class UpdateStudent extends Component {
     student_email: "",
     password: "",
     pif_amount: "",
-    created_at: moment.utc().format(),
+    //created_at: moment.utc().format(), on update, we dont want to do another created at
+    //created at is only run once, when the student is added for the first time
   };
 
   componentDidMount() {
@@ -77,7 +78,7 @@ class UpdateStudent extends Component {
           student_email: this.state.student_email,
           password: this.state.password,
           pif_amount: this.state.pif_amount,
-          created_at: this.state.created_at,
+          //created_at: this.state.created_at,
         },
       });
 
@@ -106,6 +107,7 @@ class UpdateStudent extends Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <div>
         <div className="navbuttonscontainer">
@@ -120,8 +122,10 @@ class UpdateStudent extends Component {
           {JSON.stringify(this.props.students)} */}
         </h1>
 
+
         <Card border = "info" style={{ width: '90%', margin: '3% auto', padding: '2%' }} >
         <Form className="addstudent">
+
           <Row>
             <Col>
               <Form.Label>First Name</Form.Label>
