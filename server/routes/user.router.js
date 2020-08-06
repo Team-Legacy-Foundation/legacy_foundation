@@ -158,8 +158,10 @@ router.post("/addstudent", (req, res, next) => {
 
 //Handles POST to the student table to add a new student
 //The password is encrypted before being inserted into the database
-router.post("/updatestudent", (req, res, next) => {
+router.post("/updatestudent/:lcf_id", (req, res, next) => {
   console.log("this is the new student we are about to update", req.body);
+  let id = req.params.lcf_id;
+  console.log('id should be', id)
 
   // pull out the incoming object data
   const first_name = req.body.first_name;
@@ -182,7 +184,7 @@ router.post("/updatestudent", (req, res, next) => {
 
 
   const queryText = `UPDATE "student" SET first_name =$1, last_name=$2, school_id=$3, grade=$4, grad_year=$5, school_attend=$6, lcf_id=$7, lcf_start_date=$8, student_email=$9, password=$10, pif_amount=$11, role=$12, created_at=$13
-                WHERE lcf_id =${lcf_id} RETURNING id`;
+                WHERE lcf_id =$14 RETURNING id`;
   pool
     .query(queryText, [
       first_name,
@@ -198,6 +200,7 @@ router.post("/updatestudent", (req, res, next) => {
       pif_amount,
       role,
       created_at,
+      id
     ])
     .then((result) => {
       console.log("this is the response", result.rows[0].id);

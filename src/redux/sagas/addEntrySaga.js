@@ -6,7 +6,7 @@ function* fetchEntry() {
     const response = yield axios.get("/entry");
     yield put({ type: "SET_ENTRY", payload: response.data });
   } catch (error) {
-    console.log("error fetch music", error);
+    console.log("error fetch ", error);
   }
 }
 
