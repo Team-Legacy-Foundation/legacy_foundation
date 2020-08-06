@@ -30,7 +30,6 @@ class UpdateStudent extends Component {
     this.props.dispatch({
       type: "GET_STUDENTS",
     });
-
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
@@ -38,18 +37,6 @@ class UpdateStudent extends Component {
 
   updateStudent = (event) => {
     event.preventDefault();
-    // this.setState({
-    //   first_name: "",
-    //   last_name: "",
-    //   grade: "",
-    //   grad_year: "",
-    //   school_attend: "",
-    //   lcf_id: "",
-    //   lcf_start_date: "",
-    //   student_email: "",
-    //   password: "",
-    //   pif_amount: "",
-    // });
     console.log("we are about to send the state", this.state);
 
     if (
@@ -81,19 +68,6 @@ class UpdateStudent extends Component {
           //created_at: this.state.created_at,
         },
       });
-
-      this.setState({
-        first_name: "",
-        last_name: "",
-        grade: "",
-        grad_year: "",
-        school_attend: "",
-        lcf_id: "",
-        lcf_start_date: "",
-        student_email: "",
-        password: "",
-        pif_amount: "",
-      });
     } else {
       this.props.dispatch({ type: "UPDATE_STUDENT_ERROR" });
     }
@@ -110,6 +84,9 @@ class UpdateStudent extends Component {
     console.log(this.props);
     return (
       <div>
+        {JSON.stringify(
+          this.props.students[0] && this.props.students[0].first_name
+        )}
         <div className="navbuttonscontainer">
           <Link to="/home">
             <Button variant="outline-primary">Home</Button>
@@ -118,12 +95,12 @@ class UpdateStudent extends Component {
 
         <h1 style={{ width: "50%", margin: "2% 40%" }}>
           Update Student Information
-          {/* {JSON.stringify(this.props.user)}
-          {JSON.stringify(this.props.students)} */}
         </h1>
 
         {/* <Card border = "info" style={{ width: '90%', margin: '3% auto' }} > */}
-        <Form className="addstudent"> {/* <== does this className need to change? */}
+        <Form className="addstudent">
+          {" "}
+          {/* <== does this className need to change? */}
           <Row>
             <Col>
               <Form.Label>First Name</Form.Label>
@@ -241,7 +218,6 @@ class UpdateStudent extends Component {
               />
             </Col>
           </Row>
-
           <Link to="/home">
             <Button
               onClick={(event) => this.updateStudent(event)}
