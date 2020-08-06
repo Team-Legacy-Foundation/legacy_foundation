@@ -76,8 +76,9 @@ test("Create a new student via HTTP POST", async () => {
   );
   student = response.data[0];
   expect(response.status).toBe(201);
-  //expect(typeof response.data).toBe(typeof {}); I think response right now is set to just get id back?
-  //expect(typeof response.data.id).toBe(typeof 0); was coming back undefined
+  expect(typeof response.data).toBe(typeof []); //I think response right now is set to just get id back?
+  expect(typeof student.id).toBe(typeof 0);
+  expect(student.id >0);
   console.log(`Student created with id ${student.id}`);
   console.log('hi', response.data);
 });
@@ -110,6 +111,7 @@ test(`Update the student via HTTP PUT`, async () => {
   const newStudent = {...student, first_name: newName};
   const response = await axios.put(`${SERVER_URL}/api/student/${student.lcf_id}`, newStudent);
   expect(response.status).toBe(200);
+  //config reminds you of what you send
   student = JSON.parse(response.config.data);
   expect(student.first_name).toBe(newName);
   //DOES not change in database? So not sure actually working?
