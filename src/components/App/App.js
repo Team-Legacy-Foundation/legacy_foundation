@@ -75,7 +75,7 @@ class App extends Component {
               component={PastAdminReports}
             />
             <ProtectedRoute exact path="/addstudent" component={AddStudent}/>
-            <ProtectedRoute exact path="/updatestudent" component={UpdateStudent}/>
+            <ProtectedRoute exact path="/updatestudent/:lcf_id" component={UpdateStudent}/>
              <ProtectedRoute exact path="/totalstudententries" component={StudentEntries}/>
              <ProtectedRoute exact path="/adminentryupdate" component={AdminUpdateEntry}/>
              <ProtectedRoute exact path= "/adminusers" component={AddAdmin}/>
