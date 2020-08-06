@@ -27,6 +27,8 @@ import UpdateStudent from '../AdminHome/UpdateStudent';
 import StudentEntries from '../AdminHome/StudentEntries';
 import AdminUpdateEntry from '../AdminHome/AdminUpdateEntry';
 import AddAdmin from '../AdminHome/AddAdmin';
+import AdminResetPassword from '../AdminHome/AdminResetPassword';
+import StudentResetPassword from '../StudentHome/ResetStudentPassword';
 
 
 
@@ -64,6 +66,7 @@ class App extends Component {
             they will see the info page instead. */}
             <ProtectedRoute exact path="/info" component={InfoPage} />
             <ProtectedRoute exact path="/makeentry" component={MakeEntry} />
+            <ProtectedRoute exact path="/resetstudentpassword" component={StudentResetPassword}/>
             <ProtectedRoute
               exact
               path="/paststudententries"
@@ -79,6 +82,8 @@ class App extends Component {
              <ProtectedRoute exact path="/totalstudententries" component={StudentEntries}/>
              <ProtectedRoute exact path="/adminentryupdate" component={AdminUpdateEntry}/>
              <ProtectedRoute exact path= "/adminusers" component={AddAdmin}/>
+             <ProtectedRoute exact path="/resetadminpassword" component={AdminResetPassword}/>
+              
 
            
            

@@ -128,6 +128,26 @@ function* adminentryupdate(action){
 
 
 
+function* resetStudentPassword(action) {
+    try{
+            //clear any errors on the page before
+            yield put({ type: 'CLEAR_RESET_STUDENT_PASSWORD_ERROR' });
+
+             //passes the incoming new student password info from the payload to the server
+             console.log('we are about to reset the student password', action.payload);
+             const response = yield axios.put(`/api/user/studentpasswordreset/${action.payload.student_id}`, action.payload);
+             
+             yield put({ type: "SET_USER", payload: response.data });
+            console.log("Success in updating new password or email.");
+
+    }catch(error){
+          console.log("error editing password or email", error);
+    }
+}
+
+
+
+
 function* StudentSaga() {
     yield takeLatest('REGISTER_STUDENT', registerStudent);
      yield takeLatest('UPDATE_STUDENT', updateStudent);
@@ -135,6 +155,7 @@ function* StudentSaga() {
      yield takeLatest('GET_STUDENTS', getStudents);
      yield takeLatest('FETCH_ENTRIES_FOR_ADMIN', getStudentEntriesForAdmin);
      yield takeLatest("ADMIN_ENTRY_UPDATE", adminentryupdate);
+     yield takeLatest('RESET_STUDENT_PASSWORD', resetStudentPassword);
      
 }
 

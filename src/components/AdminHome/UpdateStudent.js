@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from 'react-bootstrap/Row'
 import Button from "react-bootstrap/Button";
-// import Card from 'react-bootstrap/Card';
+import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import moment from "moment";
 
@@ -93,14 +93,21 @@ class UpdateStudent extends Component {
           </Link>{" "}
         </div>
 
-        <h1 style={{ width: "50%", margin: "2% 40%" }}>
+        <h1 style={{ width: "50%", margin: "2% 35%" }}>
           Update Student Information
         </h1>
 
+<<<<<<< HEAD
         {/* <Card border = "info" style={{ width: '90%', margin: '3% auto' }} > */}
         <Form className="addstudent">
           {" "}
           {/* <== does this className need to change? */}
+=======
+
+        <Card border = "info" style={{ width: '90%', margin: '3% auto', padding: '2%' }} >
+        <Form className="addstudent">
+
+>>>>>>> 0939b09001ca5f54dd28489f528b50dc14c39885
           <Row>
             <Col>
               <Form.Label>First Name</Form.Label>
@@ -229,7 +236,7 @@ class UpdateStudent extends Component {
             </Button>
           </Link>
         </Form>
-        {/* </Card> */}
+        </Card>
       </div>
     );
   }
