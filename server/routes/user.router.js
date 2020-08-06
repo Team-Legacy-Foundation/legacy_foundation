@@ -259,4 +259,75 @@ router.post("/logout", (req, res) => {
   res.sendStatus(200);
 });
 
+
+
+// PUT /api/user/adminpasswordreset/admin_id
+router.put(`/adminpasswordreset/:admin_id`, (req, res) => {
+  console.log('we are about to change the admin password:', req.body);
+  const newPassword = encryptLib.encryptPassword(req.body.password);
+  const adminID = req.params.admin_id;
+  const email = req.body.email;
+  // setting query text to update the username
+  const queryText = `UPDATE "admin" SET password=$1, email=$2 WHERE id=$3 `;
+
+  pool
+    .query(queryText, [newPassword, email, adminID])
+    .then((result) => {
+      console.log("Success in updating password or email!");
+
+      const query2Text = `UPDATE "user" SET password=$1, email=$2 WHERE admin_id=$3`;
+      const queryValue = [newPassword, email, adminID];
+      pool
+        .query(query2Text, queryValue)
+             .then(() => res.sendStatus(201).res.send(result.rows))
+          .catch(function (error) {
+          console.log("Sorry, there was an error with your query: ", error);
+          res.sendStatus(500); // HTTP SERVER ERROR
+        });
+      
+    })
+    .catch((error) => {
+      console.log(`Error on PUT with query ${error}`);
+      res.sendStatus(500); // if there is an error, send server error 500
+    });
+});
+// end PUT /user/api/admin_id
+
+
+
+
+// PUT /api/user/studentpasswordreset/student_id
+router.put(`/studentpasswordreset/:student_id`, (req, res) => {
+  console.log('we are about to change the student password:', req.body);
+  const newPassword = encryptLib.encryptPassword(req.body.password);
+  const studentID = req.params.student_id;
+  const email = req.body.email;
+  // setting query text to update the username
+  const queryText = `UPDATE "student" SET password=$1, student_email=$2 WHERE id=$3 `;
+
+  pool
+    .query(queryText, [newPassword, email, studentID])
+    .then((result) => {
+      console.log("Success in updating password or email for student!");
+
+      const query2Text = `UPDATE "user" SET password=$1, email=$2 WHERE student_id=$3`;
+      const queryValue = [newPassword, email, studentID];
+      pool
+        .query(query2Text, queryValue)
+        .then(() => res.sendStatus(201).res.send(result.rows))
+        .catch(function (error) {
+          console.log("Sorry, there was an error with your query: ", error);
+          res.sendStatus(500); // HTTP SERVER ERROR
+        });
+
+    })
+    .catch((error) => {
+      console.log(`Error on PUT with query ${error}`);
+      res.sendStatus(500); // if there is an error, send server error 500
+    });
+});
+// end PUT /api/user/studentpasswordreset/student_id
+
+
+
 module.exports = router;
