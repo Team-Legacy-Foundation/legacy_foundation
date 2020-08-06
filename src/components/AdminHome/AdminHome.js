@@ -25,7 +25,7 @@ class AdminHome extends Component {
   render() {
     const columns = [
       {
-        name: "Delete",
+        name: "Deactivate",
         options: {
           filter: false,
           sort: false,
@@ -39,7 +39,7 @@ class AdminHome extends Component {
                   this.setState({ data });
                 }}
               >
-                Delete
+                Deactivate
               </button>
             );
           },

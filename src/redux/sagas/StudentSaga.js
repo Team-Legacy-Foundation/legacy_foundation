@@ -38,7 +38,7 @@ function* updateStudent(action) {
             console.log('we are about to send data for a student update', action.payload);
         //passes the incoming updated student user info from the payload to the server
 
-        yield axios.post('/api/user/updatestudent', action.payload);
+        yield axios.put(`/api/student/updatestudent/${action.payload.lcf_id}`, action.payload);
          yield put({ type: "GET_STUDENTS"});
 
        
