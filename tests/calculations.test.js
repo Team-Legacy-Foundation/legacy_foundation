@@ -67,7 +67,7 @@ test("Create a new student via HTTP POST", async () => {
     student_email: "test@example",
     password: "test",
     lcf_start_date: "01/01/2020",
-    pif_amount: 3.00,
+    pif_amount: 3.0,
     grad_year: "2021",
   };
   const response = await axios.post(
@@ -78,23 +78,25 @@ test("Create a new student via HTTP POST", async () => {
   expect(response.status).toBe(201);
   expect(typeof response.data).toBe(typeof []); //I think response right now is set to just get id back?
   expect(typeof student.id).toBe(typeof 0);
-  expect(student.id >0);
+  expect(student.id > 0);
   console.log(`Student created with id ${student.id}`);
-  console.log('hi', response.data);
+  console.log("hi", response.data);
 });
 
 //--------GET a student (fetch)------------------
 test(`Get the student via HTTP GET`, async () => {
-  const response = await axios.get(`${SERVER_URL}/api/student/student/${student.id}`);
+  const response = await axios.get(
+    `${SERVER_URL}/api/student/student/${student.id}`
+  );
   expect(response.status).toBe(200);
   // expect(response.data.id).toBe(student.id);
   // expect(typeof(response.data)).toBe(typeof({}));
   console.log(`student with id ${student.id} successfully retrieved.`);
-})
+});
 
 //---------PUT a student (update)--------------
 test(`Update the student via HTTP PUT`, async () => {
-  const newName = 'Newer';
+  const newName = "Newer";
   //I will likely have to type out all of sudent here agian since not getting all data back...
   student = {
     lcf_id: 100,
@@ -105,57 +107,82 @@ test(`Update the student via HTTP PUT`, async () => {
     student_email: "test@example",
     password: "test",
     lcf_start_date: "01/01/2020",
-    pif_amount: 3.00,
+    pif_amount: 3.0,
     grad_year: "2021",
   };
-  const newStudent = {...student, first_name: newName};
-  const response = await axios.put(`${SERVER_URL}/api/student/${student.lcf_id}`, newStudent);
-  expect(response.status).toBe(200);
+  const newStudent = { ...student, first_name: newName };
+  //const response = await axios.put(`${SERVER_URL}/api/student/${student.lcf_id}`, newStudent);
+  const response = await axios.post(
+    `${SERVER_URL}/api/user/updatestudent/${student.lcf_id}`,
+    newStudent
+  );
+  expect(response.status).toBe(201); //since using POST at the moment
+
   //config reminds you of what you send
-  student = JSON.parse(response.config.data);
-  expect(student.first_name).toBe(newName);
-  //DOES not change in database? So not sure actually working?
-  console.log(`Student with LCFid ${student.lcf_id} name changed to ${newName}`);
-console.log('check response', student)
-  
-  
-})
+  //student = JSON.parse(response.config.data);
+  //expect(student.first_name).toBe(newName);
+
+  console.log(
+    `Student with LCFid ${student.lcf_id} name changed to ${newName}`
+  );
+  console.log("check response", student);
+});
 //One work around: simply do a post and instead of checking post, use a get
 //to try and check if it appears in the database
 //Since dealing with double inserts, I can't always get back
 //what I want all the time
 
-//--------DELETE a student (delete)-----------
-test('Delete the student via HTTP DELETE', async () => {
+//--------DELETE a student (delete)----------- more like "archive"
+test("Delete the student via HTTP DELETE", async () => {
   const response = await axios.delete(`${SERVER_URL}/api/?????/${student.id}`);
   expect(response.status).toBe(204);
 });
 
 //**************Entries**************************** */
 //------POST an entry (create)---------------------
-test('Create a new entry via HTTP POST', async () => {
-
+test("Create a new entry via HTTP POST", async () => {
   //figure out if going by id or by lcf_id
-  const newEntry = {student_id:1, pass_class:'yes', gpa:2.3, clean_attend:9, detent_hours:'no', act_or_job:'yes',passed_ua:'yes',current_service_hours:2, hw_rm_attended:'yes',comments:'Testing'};
+  const newEntry = {
+    student_id: 1,
+    pass_class: "yes",
+    gpa: 2.3,
+    clean_attend: 9,
+    detent_hours: "no",
+    act_or_job: "yes",
+    passed_ua: "yes",
+    current_service_hours: 2,
+    hw_rm_attended: "yes",
+    comments: "Testing",
+  };
   let response;
   try {
-      response = await axios.post(`${SERVER_URL}/entry`, newEntry);
+    response = await axios.post(`${SERVER_URL}/entry`, newEntry);
   } catch (err) {
-      console.log(err.response.data);
+    console.log(err.response.data);
   }
   entry = response.data;
   expect(response.status).toBe(201);
   //expect(typeof(response.data)).toBe(typeof({}));
   //expect(typeof(response.data.id)).toBe(typeof(0));
-  
-  console.log(`Entry created with id ${entry.id} and student ${student.first_name}`);
-  
+
+  console.log(
+    `Entry created with id ${entry[0].id} and student ${student.first_name}`
+  );
+  console.log("Entry which is reponse.data is", entry);
 });
 
-//----------------DELETE an entry------------------------
-test('Delete the entry via HTTP DELETE', async () => {
-  
-  const response = await axios.delete(`${SERVER_URL}/entry/${entry.id}`);
+//--------------GET an entry-------------------
+test(`Get an entry via HTTP GET`, async () => {
+  const response = await axios.get(`${SERVER_URL}/entry/${entry[0].id}`);
+  expect(response.status).toBe(200);
+  expect(response.data[0].id).toBe(entry[0].id);
+
+  console.log(`response.data is`, response.data);
+});
+
+//----------------DELETE an entry------------------------ //should we just soft delete?
+test("Delete the entry via HTTP DELETE", async () => {
+  const response = await axios.delete(`${SERVER_URL}/entry/${entry[0].id}`);
   expect(response.status).toBe(204);
 });
 
@@ -167,13 +194,83 @@ test('Delete the entry via HTTP DELETE', async () => {
 //Either... post data where example student fails it and check other route?
 //Or just have entry already created and then check calulations?
 //Will have to see how backend works... what is coming from where
+test("Create a new entry via HTTP POST where student is failing a class", async () => {
+  //figure out if going by id or by lcf_id
+  const newEntry = {
+    student_id: 1,
+    pass_class: "no",
+    gpa: 2.3,
+    clean_attend: 9,
+    detent_hours: "no",
+    act_or_job: "yes",
+    passed_ua: "yes",
+    current_service_hours: 2,
+    hw_rm_attended: "yes",
+    comments: "Pass class? NOPE",
+  };
+  let response;
+  try {
+    response = await axios.post(`${SERVER_URL}/entry`, newEntry);
+  } catch (err) {
+    console.log(err.response.data);
+  }
+  fail = response.data;
+  expect(response.status).toBe(201);
+});
 
-
-// expect(response.data.pass_class).toBe('no');
+test(`Get the entry that was just posted via HTTP GET`, async () => {
+  const response = await axios.get(`${SERVER_URL}/entry/${fail[0].id}`);
+  expect(response.status).toBe(200);
+  expect(response.data[0].id).toBe(fail[0].id);
+  expect(response.data[0].pass_class).toBe('no');
 // expect(response.data.check_this_payday).toBe('no');
 // expect(reponse.data.money_to_student).toBe(0);
+});
+
+test("Delete the entry via HTTP DELETE", async () => {
+  const response = await axios.delete(`${SERVER_URL}/entry/${fail[0].id}`);
+  expect(response.status).toBe(204);
+});
+
 
 //student's GPA is less than 2.0 (need to check rounding?)
+test("Create a new entry via HTTP POST where student GPA is below 2.0", async () => {
+  //figure out if going by id or by lcf_id
+  const newEntry = {
+    student_id: 1,
+    pass_class: "yes",
+    gpa: 1.90,
+    clean_attend: 9,
+    detent_hours: "no",
+    act_or_job: "yes",
+    passed_ua: "yes",
+    current_service_hours: 2,
+    hw_rm_attended: "yes",
+    comments: "Pass class? NOPE",
+  };
+  let response;
+  try {
+    response = await axios.post(`${SERVER_URL}/entry`, newEntry);
+  } catch (err) {
+    console.log(err.response.data);
+  }
+  fail = response.data;
+  expect(response.status).toBe(201);
+});
+
+test(`Get the entry that was just posted via HTTP GET`, async () => {
+  const response = await axios.get(`${SERVER_URL}/entry/${fail[0].id}`);
+  expect(response.status).toBe(200);
+  expect(response.data[0].id).toBe(fail[0].id);
+  expect(response.data[0].gpa).toBe("1.9"); //do we need to make sure this comes back as a number???
+// expect(response.data.check_this_payday).toBe('no');
+// expect(reponse.data.money_to_student).toBe(0);
+});
+
+test("Delete the entry via HTTP DELETE", async () => {
+  const response = await axios.delete(`${SERVER_URL}/entry/${fail[0].id}`);
+  expect(response.status).toBe(204);
+});
 
 //student has detention hours
 
@@ -185,7 +282,7 @@ test('Delete the entry via HTTP DELETE', async () => {
 
 //student did not attend manadatory homeroom
 
-//student is deemed inactive (3 strike rule)
+//student is deemed inactive
 
 //--------------GPA bonus cases---------------------------------
 //NEED TO HANDLE ROUNDING TOO (rounding should be done in SQL land?)
@@ -206,7 +303,6 @@ test('Delete the entry via HTTP DELETE', async () => {
 //will I post a new student here and then run other axios? Where do I look at response?
 
 //expect(response.data.total).toBe(NUMBER);
-
 
 //if 7th grade
 
