@@ -29,7 +29,7 @@ componentDidMount () {
 
     const columns = [
       {
-        name: "Delete",
+        name: "Deactivate",
         options: {
           filter: false,
           sort: false,
@@ -43,7 +43,7 @@ componentDidMount () {
                   this.setState({ data });
                 }}
               >
-                Delete
+                Deactivate
               </button>
             );
           },
