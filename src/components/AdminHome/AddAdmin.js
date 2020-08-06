@@ -150,8 +150,8 @@ componentDidUpdate() {
                 <Form.Label>Role</Form.Label>
                 <Form.Control as="select" onChange={(event)=>this.setState({role: event.target.value})}>
                      <option value="">Pick From Below</option>
-                    <option value="Admin">Regular Admin</option>
-                    <option value="Super Admin">Super Admin</option>
+                    <option value="admin">Regular Admin</option>
+                    <option value="super admin">Super Admin</option>
                   
                  </Form.Control>
             </Col>

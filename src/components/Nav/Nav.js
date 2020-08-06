@@ -20,7 +20,7 @@ const Nav = (props) => (
         alit="logo"
         style={{ float: "left", width: 1100 }}
       />
-      {props.user.id && props.user.role === "admin" && (
+      {props.user.id && props.user.role === "admin"&& (
         <>
           <h2 className="nav-title">Admin Dashboard</h2>
         </>
@@ -50,7 +50,7 @@ const Nav = (props) => (
            <Link className="nav-link" to="/adminusers">
             Admin Users
           </Link>
-          <Link className="nav-link" to="/pastadminreset">
+          <Link className="nav-link" to="/resetadminpassword">
             <RotateLeftIcon></RotateLeftIcon>
           Reset Password
           </Link>
@@ -71,6 +71,11 @@ const Nav = (props) => (
           <FormatListBulletedIcon></FormatListBulletedIcon>
             Past Entries
           </Link>
+        <Link className="nav-link" to="/resetstudentpassword">
+          <RotateLeftIcon></RotateLeftIcon>
+           Reset Password
+          </Link>
+          
           <LogOutButton className="nav-link" />
         </>
       )}
