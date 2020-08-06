@@ -1,4 +1,5 @@
 const express = require('express');
+const encryptLib = require("../modules/encryption");
 const pool = require('../modules/pool');
 const router = express.Router();
 
@@ -52,59 +53,71 @@ router.get('/studententries', (req, res) => {
 
 
 // PUT /api/student/lcf_id
-router.put(`/:lcf_id`, (req, res) => {
+router.put(`/updatestudent/:lcf_id`, (req, res) => {
 
-    console.log('We are updating a student entry', req.body);
-    const entry = req.body;
-    const {
-       pass_class,
-       gpa,
-       first_name,
-       last_name,
-       lcf_id,
-       absent,
-       tardy,
-       late,
-       truant,
-       clean_attend,
-       detent_hours,
-       after_school,
-       act_or_job,
-       passed_ua,
-       current_service_hours,
-       hw_rm_attended,
-       comments,
-    } = entry;
-    const lcfID = req.params.lcf_id;
-    let student_id = '';
+      console.log("this is the new student we are about to update", req.body);
 
-    const query1Text = `SELECT id FROM "student" WHERE lcf_id=${lcfID}`;
+      // pull out the incoming object data
+      const first_name = req.body.first_name;
+      const last_name = req.body.last_name;
+      const school_id = req.body.school_id || 0;
+      const grade = Number(req.body.grade);
+      const grad_year = req.body.grad_year;
+      const school_attend = req.body.school_attend;
+      const lcf_id = req.body.lcf_id;
+      const lcf_start_date = req.body.lcf_start_date;
+      const student_email = req.body.student_email;
+      const password = encryptLib.encryptPassword(req.body.password);
+      const pif_amount = Number(req.body.pif_amount).toFixed(2);
+      const created_at = req.body.created_at;
+      const role = "student";
+      admin_id = null;
 
-    pool
-     .query(query1Text)
-     .then((result) => {
-         console.log("this is the response", result.rows[0].id);
-         //res.status(201).send(result.rows[0]);
+      //initialize the id you will get from the student
+      let student_id = "";
 
-         student_id = result.rows[0].id;
-         //now lets add student information to the user table
-
-    // setting query text to update the username
-    const query2Text = `UPDATE "entry" SET pass_class=$1, gpa=$2, clean_attend=$3, detent_hours=$4, act_or_job=$5, passed_ua=$6, current_service_hours=$7, hw_rm_attended=$8, comments=$9 WHERE student_id=${student_id}`;
-    const query2Value = [pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments];
-
-    pool
-        .query(query2Text, query2Value)
+      const queryText = `UPDATE "student" SET first_name =$1, last_name=$2, school_id=$3, grade=$4, grad_year=$5, school_attend=$6, lcf_id=$7, lcf_start_date=$8, student_email=$9, password=$10, pif_amount=$11, role=$12, created_at=$13
+                WHERE lcf_id =${lcf_id} RETURNING id`;
+      pool
+        .query(queryText, [
+          first_name,
+          last_name,
+          school_id,
+          grade,
+          grad_year,
+          school_attend,
+          lcf_id,
+          lcf_start_date,
+          student_email,
+          password,
+          pif_amount,
+          role,
+          created_at,
+        ])
         .then((result) => {
-            console.log("Success in updating entry!");
-            res.send(result.rows);
+          console.log("this is the response", result.rows[0].id);
+          student_id = result.rows[0].id;
+          //now lets add student information to the user table
+          const query2Text = `UPDATE "user" SET student_id=$1, admin_id=$2, email=$3, password=$4, role=$5, last_login=$6 WHERE student_id =${student_id}`;
+          pool
+            .query(query2Text, [
+              student_id,
+              admin_id,
+              student_email,
+              password,
+              "student",
+              new Date(),
+            ])
+            .then(() => res.sendStatus(201))
+            .catch(function (error) {
+              console.log("Sorry, there was an error with your query: ", error);
+              res.sendStatus(500); // HTTP SERVER ERROR
+            });
         })
-        .catch((error) => {
-            console.log(`Error on PUT with query ${error}`);
-            res.sendStatus(500); // if there is an error, send server error 500
+        .catch(function (error) {
+          console.log("Sorry, there is an error", error);
+          res.sendStatus(500);
         });
-  });
-
 });
 // end PUT /api/student/lcf_id
 

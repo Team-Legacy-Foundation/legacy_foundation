@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from 'react-bootstrap/Row'
 import Button from "react-bootstrap/Button";
-import Card from 'react-bootstrap/Card';
+// import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import moment from "moment";
 
@@ -12,16 +12,19 @@ import moment from "moment";
 
 class UpdateStudent extends Component {
   state = {
-    first_name: "",
-    last_name: "",
-    grade: "",
-    grad_year: "",
-    school_attend: "",
-    lcf_id: "",
-    lcf_start_date: "",
-    student_email: "",
+    first_name: this.props.students[0] && this.props.students[0].first_name,
+    last_name: this.props.students[0] && this.props.students[0].last_name,
+    grade: this.props.students[0] && this.props.students[0].grade,
+    grad_year: this.props.students[0] && this.props.students[0].grad_year,
+    school_attend:
+      this.props.students[0] && this.props.students[0].school_attend,
+    lcf_id: this.props.students[0] && this.props.students[0].lcf_id,
+    lcf_start_date:
+      this.props.students[0] && this.props.students[0].lcf_start_date,
+    student_email:
+      this.props.students[0] && this.props.students[0].student_email,
     password: "",
-    pif_amount: "",
+    pif_amount: this.props.students[0] && this.props.students[0].pif_amount,
     //created_at: moment.utc().format(), on update, we dont want to do another created at
     //created at is only run once, when the student is added for the first time
   };
@@ -30,6 +33,11 @@ class UpdateStudent extends Component {
     this.props.dispatch({
       type: "GET_STUDENTS",
     });
+
+    if (this.props.student) {
+      this.setState([...this.props.student]);
+    }
+
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
@@ -68,6 +76,7 @@ class UpdateStudent extends Component {
           //created_at: this.state.created_at,
         },
       });
+      this.props.history.push("/home")
     } else {
       this.props.dispatch({ type: "UPDATE_STUDENT_ERROR" });
     }
@@ -81,33 +90,24 @@ class UpdateStudent extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div>
-        {JSON.stringify(
-          this.props.students[0] && this.props.students[0].first_name
-        )}
         <div className="navbuttonscontainer">
           <Link to="/home">
             <Button variant="outline-primary">Home</Button>
           </Link>{" "}
         </div>
-
-        <h1 style={{ width: "50%", margin: "2% 35%" }}>
+        <h1 style={{ width: "50%", margin: "2% 40%" }}>
           Update Student Information
+          {JSON.stringify(
+            this.props.students[0] && this.props.students[0].first_name
+          )}
         </h1>
 
-<<<<<<< HEAD
         {/* <Card border = "info" style={{ width: '90%', margin: '3% auto' }} > */}
         <Form className="addstudent">
           {" "}
           {/* <== does this className need to change? */}
-=======
-
-        <Card border = "info" style={{ width: '90%', margin: '3% auto', padding: '2%' }} >
-        <Form className="addstudent">
-
->>>>>>> 0939b09001ca5f54dd28489f528b50dc14c39885
           <Row>
             <Col>
               <Form.Label>First Name</Form.Label>
@@ -225,7 +225,6 @@ class UpdateStudent extends Component {
               />
             </Col>
           </Row>
-          <Link to="/home">
             <Button
               onClick={(event) => this.updateStudent(event)}
               variant="success"
@@ -234,9 +233,8 @@ class UpdateStudent extends Component {
             >
               Update Student Info
             </Button>
-          </Link>
         </Form>
-        </Card>
+        {/* </Card> */}
       </div>
     );
   }
