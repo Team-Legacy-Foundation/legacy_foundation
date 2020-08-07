@@ -41,9 +41,30 @@ function* getAdmin (action){
 }
 
 
+function* resetAdminPassword(action){
+    try{
+            //clear any errors on the page before
+            yield put({ type: 'CLEAR_RESET_ADMIN_PASSWORD_ERROR' });
+
+             //passes the incoming new admin user info from the payload to the server
+             console.log('we are about to reset the admin password', action.payload);
+             const response = yield axios.put(`/api/user/adminpasswordreset/${action.payload.admin_id}`, action.payload);
+             
+             yield put({ type: "SET_USER", payload: response.data });
+            console.log("Success in updating new password.");
+
+    }catch(error){
+          console.log("error editing username", error);
+    }
+}
+
+
+
+
 function* AdminSaga() {
     yield takeLatest('REGISTER_ADMIN', registerAdmin);
     yield takeLatest('GET_ADMIN', getAdmin);
+    yield takeLatest('RESET_ADMIN_PASSWORD', resetAdminPassword);
 }
 
 export default AdminSaga;

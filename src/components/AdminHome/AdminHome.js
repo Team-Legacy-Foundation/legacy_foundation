@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import MUITable from "../MUITable/MUITable";
 import moment from "moment";
 import { withRouter } from "react-router";
+//import { response } from "express";
 
 
 class AdminHome extends Component {
@@ -23,24 +24,69 @@ class AdminHome extends Component {
   }
 
   render() {
+
     const columns = [
       {
-        name: "Delete",
+        name: "Deactivate",
         options: {
           filter: false,
           sort: false,
           empty: true,
           customBodyRenderLite: (dataIndex) => {
+            const studentsArray = this.filterStudentArray(this.props.students);
+            const student = studentsArray[dataIndex];
             return (
-              <button
-                onClick={() => {
-                  const { data } = this.props;
-                  data.shift();
-                  this.setState({ data });
-                }}
-              >
-                Delete
-              </button>
+              <div>
+                {student.status === "active" ? (
+                  <button
+                    onClick={(event) => {
+                      event.preventDefault();
+                      const studentsArray = this.filterStudentArray(
+                        this.props.students
+                      );
+                      const student = studentsArray[dataIndex];
+                      {
+                        //send the updated student to the server through a redux saga
+                        this.props.dispatch({
+                          type: "DEACTIVATE_STUDENT",
+                          payload: {
+                            lcf_id: student.lcf_id,
+                          },
+                        });
+                        this.props.dispatch({
+                          type: "GET_STUDENTS",
+                        });
+                      }
+                    }}
+                  >
+                    Deactivate
+                  </button>
+                ) : (
+                  <button
+                    onClick={(event) => {
+                      event.preventDefault();
+                      const studentsArray = this.filterStudentArray(
+                        this.props.students
+                      );
+                      const student = studentsArray[dataIndex];
+                      {
+                        //send the updated student to the server through a redux saga
+                        this.props.dispatch({
+                          type: "ACTIVATE_STUDENT",
+                          payload: {
+                            lcf_id: student.lcf_id,
+                          },
+                        });
+                        this.props.dispatch({
+                          type: "GET_STUDENTS",
+                        });
+                      }
+                    }}
+                  >
+                    Activate
+                  </button>
+                )}
+              </div>
             );
           },
         },
@@ -57,7 +103,9 @@ class AdminHome extends Component {
                 onClick={() => {
                   // const studentsArray = this.getStudentArray(this.props.students);
                   // const student = studentsArray[dataIndex];
-                  const studentsArray = this.filterStudentArray(this.props.students);
+                  const studentsArray = this.filterStudentArray(
+                    this.props.students
+                  );
                   const student = studentsArray[dataIndex];
                   console.log(student);
                   /* a possible refactor:
@@ -69,12 +117,55 @@ class AdminHome extends Component {
                   */
                   console.log(`students lcf_id should be: ${student.lcf_id}`); //NOTE: lcf_id could change position
                   //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
+                    
+                  this.props.history.push({
+                    pathname:`/updatestudent/${student.lcf_id}`,
+                    // state: {lcf_id: student.lcf_id}
+                    // pathname:`/updatestudent/${dataIndex}`,
+                    // state: {id: dataIndex}
+                  }); //this pushes admin to edit page for select student
+                  // this.props.dispatch({
+                  //   type: "EDIT_STUDENT",
+                  //   payload: {
+                  //     lcf_id: student.lcf_id,
+                  //   },
+                  // });
 
-                  this.props.history.push(`/updatestudent/${student.lcf_id}`); //this pushes admin to edit page for select student
-                  }
-                }
+                  this.props.dispatch({
+                    type: "GET_STUDENT_FOR_EDIT", payload: student.lcf_id
+                  });
+
+                }}
               >
                 Edit
+              </button>
+            );
+          },
+        },
+      },
+      {
+        name: "Reset Password",
+        options: {
+          filter: false,
+          sort: false,
+          empty: true,
+          customBodyRenderLite: (dataIndex, rowIndex) => {
+            return (
+              <button
+                onClick={() => {
+                  // const studentsArray = this.getStudentArray(this.props.students);
+                  // const student = studentsArray[dataIndex];
+                  const studentsArray = this.filterStudentArray(
+                    this.props.students
+                  );
+                  const student = studentsArray[dataIndex];
+                  console.log(`students lcf_id should be: ${student.lcf_id}`); //NOTE: lcf_id could change position
+                  //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
+
+                  this.props.history.push(`/updatepassword/${student.lcf_id}`); //this pushes admin to edit page for select student
+                }}
+              >
+                Reset Password
               </button>
             );
           },
@@ -178,29 +269,30 @@ class AdminHome extends Component {
         entry.student_email &&
         entry.password &&
         entry.pif_amount
-    )
-  }
+    );
+  };
 
   // this IS A SELECTOR: it takes some state, and it
   // returns some derived state. In other words, if you
   // have students, you can always calculate the array
   // that MUI needs from there.
   getStudentArray = (students) => {
-    const studentsArray = this.filterStudentArray(students)
-      .map((entry, index) => [
-        entry.first_name,    // 0
-        entry.last_name,     // 1
+    const studentsArray = this.filterStudentArray(students).map(
+      (entry, index) => [
+        entry.first_name, // 0
+        entry.last_name, // 1
         Number(entry.grade), // 2
-        entry.grad_year,     // 3
+        entry.grad_year, // 3
         entry.school_attend, // 4
-        entry.lcf_id,        // 5
+        entry.lcf_id, // 5
         moment(entry.lcf_start_date).format("MMMM Do YYYY"), //This will change "last login" at some point
         entry.student_email,
         //entry.password,
         entry.pif_amount,
-      ]);
+      ]
+    );
     return studentsArray;
-  }
+  };
 }
 
 const mapStateToProps = (state) => ({

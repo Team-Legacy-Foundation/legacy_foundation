@@ -20,6 +20,18 @@ router.get('/', (req, res) => {
       });
 }) //end GET
 
+router.get('/:id', (req, res) => {
+  pool
+    .query("SELECT * from entry WHERE id=$1",[req.params.id])
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((error) => {
+      console.log("Error GET /recommendations", error);
+      res.sendStatus(500);
+    });
+}) //end GET
+
 /**
  * POST route template
  */
@@ -54,8 +66,10 @@ router.post("/", (req, res) => {
     }
     
     const queryText = `
+
         INSERT INTO "entry" (lcf_id, pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`; //grabs database
+
     pool
       .query(queryText, [
         lcf_id,
@@ -73,8 +87,8 @@ router.post("/", (req, res) => {
         // result.rows: 'INSERT 0 1';
         // it worked!
         console.log('post worked!')
-        res.sendStatus(201); //created
-        //res.status(201).send(result);
+        //res.sendStatus(201); //created
+        res.status(201).send(result.rows);
       })
       .catch(function (error) {
         console.log("Sorry, there was an error with your query: ", error);
@@ -88,7 +102,7 @@ router.delete("/:id", (req, res) => {
   pool
     .query('DELETE FROM entry WHERE id=$1', [req.params.id])
     .then((result) => {
-      res.sendStatus(200);
+      res.sendStatus(204); //No Content
     })
     .catch((error) => {
       console.log("Error DELETE /api/order", error);

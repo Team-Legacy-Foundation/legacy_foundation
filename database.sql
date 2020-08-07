@@ -38,7 +38,8 @@ CREATE TABLE "student" (
     "password" VARCHAR (1000) NOT NULL,
     "created_at" DATE,
     "lcf_start_date" DATE,
-    "role" varchar
+    "role" varchar,
+    "status" varchar
 );
 
 

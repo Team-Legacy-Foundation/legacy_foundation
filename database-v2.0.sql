@@ -33,7 +33,7 @@ CREATE TABLE "student" (
 	"last_name" varchar(255) NOT NULL,
 	"school_attend" varchar(255) NOT NULL,
 	"school_id" integer,
-	"student_email" varchar(255) NOT NULL,
+	"student_email" varchar(255) NOT NULL UNIQUE,
 	"password" varchar(255) NOT NULL,
 	"grade" integer NOT NULL,
 	"grad_year" integer NOT NULL,
@@ -41,6 +41,7 @@ CREATE TABLE "student" (
 	"lcf_start_date" DATE NOT NULL,
 	"role" varchar(255) NOT NULL,
 	"pif_amount" NUMERIC(10,2) NOT NULL,
+	"strikes" integer,
 	"inactive" varchar(255) DEFAULT 'no',
 	"balance_due" NUMERIC(10,2) NOT NULL DEFAULT 0,
 	CONSTRAINT "student_pk" PRIMARY KEY ("id")
@@ -62,9 +63,7 @@ CREATE TABLE "entry" (
 	"act_or_job" varchar(255) NOT NULL,
 	"passed_ua" varchar(255) NOT NULL,
 	"current_service_hours" integer NOT NULL,
-	"strikes" integer NOT NULL,
 	"hw_rm_attended" varchar(255) NOT NULL,
-	-- "inactive" varchar(255) NOT NULL,
 	"comments" varchar(255) NOT NULL,
 	"bonus_amount" NUMERIC(10,2) NOT NULL DEFAULT 0,
 	"bonus_comments" varchar(255),
@@ -81,7 +80,7 @@ CREATE TABLE "open_transaction" (
 	"first_name" varchar(255) NOT NULL,
 	"last_name" varchar(255) NOT NULL,
 	"pay_day" DATE NOT NULL,
-	"date_submitted" DATE NOT NULL,
+	"date_submitted" DATE NOT NULL DEFAULT NOW(),
 	"pass_class" varchar(255) NOT NULL,
 	"gpa" NUMERIC(10,2) NOT NULL,
 	"clean_attend" integer NOT NULL,
@@ -90,8 +89,6 @@ CREATE TABLE "open_transaction" (
 	"passed_ua" varchar(255) NOT NULL,
 	"current_service_hours" integer NOT NULL,
 	"hw_rm_attended" varchar(255) NOT NULL,
-	"strikes" integer NOT NULL,
-	-- "inactive" varchar(255) NOT NULL,
 	"comments" varchar(255) NOT NULL,
 	"attend_payment" NUMERIC(10,2) NOT NULL,
 	"pif_donations" NUMERIC(10,2) NOT NULL,
@@ -124,7 +121,7 @@ CREATE TABLE "gpa_rates" (
 
 CREATE TABLE "daily_rates" (
 	"id" serial NOT NULL,
-	"year" integer NOT NULL,
+	"school_year" integer NOT NULL,
 	"amount" NUMERIC(10,2) NOT NULL,
 	CONSTRAINT "daily_rates_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -140,7 +137,7 @@ CREATE TABLE "charge_student" (
 	"date" DATE NOT NULL,
 	"type" varchar(255) NOT NULL,
 	"description" varchar(255) NOT NULL,
-	"amount" NUMERIC(10,2)(255) NOT NULL,
+	"amount" NUMERIC(10,2) NOT NULL,
 	CONSTRAINT "charge_student_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -154,7 +151,7 @@ CREATE TABLE "history" (
 	"first_name" varchar(255) NOT NULL,
 	"last_name" varchar(255) NOT NULL,
 	"pay_day" DATE NOT NULL,
-	"date_submitted" DATE NOT NULL,
+	"date_submitted" DATE NOT NULL DEFAULT NOW(),
 	"pass_class" varchar(255) NOT NULL,
 	"gpa" NUMERIC(10,2) NOT NULL,
 	"clean_attend" integer NOT NULL,
@@ -163,8 +160,6 @@ CREATE TABLE "history" (
 	"passed_ua" varchar(255) NOT NULL,
 	"current_service_hours" integer NOT NULL,
 	"hw_rm_attended" varchar(255) NOT NULL,
-	"strikes" integer NOT NULL,
-	-- "inactive" varchar(255) NOT NULL,
 	"comments" varchar(255) NOT NULL,
 	"attend_payment" NUMERIC(10,2) NOT NULL,
 	"pif_donations" NUMERIC(10,2) NOT NULL,
@@ -184,37 +179,37 @@ CREATE TABLE "history" (
 
 INSERT INTO gpa_rates(gpa, amount)
 VALUES
-( 2, 0 )
-( 2.1, 0 )
-( 2.2, 0 )
-( 2.3, 0 )
-( 2.4, 0 )
-( 2.5, 20 )
-( 2.6, 20 )
-( 2.7, 20 )
-( 2.8, 20 )
-( 2.9, 20 )
-( 3, 40 )
-( 3.1, 40 )
-( 3.2, 40 )
-( 3.3, 40 )
-( 3.4, 40 )
-( 3.5, 60 )
-( 3.6, 60 )
-( 3.7, 60 )
-( 3.8, 60 )
-( 3.9, 60 )
-( 4, 80 )
+( 2, 0 ),
+( 2.1, 0 ),
+( 2.2, 0 ),
+( 2.3, 0 ),
+( 2.4, 0 ),
+( 2.5, 20 ),
+( 2.6, 20 ),
+( 2.7, 20 ),
+( 2.8, 20 ),
+( 2.9, 20 ),
+( 3, 40 ),
+( 3.1, 40 ),
+( 3.2, 40 ),
+( 3.3, 40 ),
+( 3.4, 40 ),
+( 3.5, 60 ),
+( 3.6, 60 ),
+( 3.7, 60 ),
+( 3.8, 60 ),
+( 3.9, 60 ),
+( 4, 80 );
 
 
 INSERT INTO daily_rates(school_year, amount)
 VALUES
-( 6, 5 )
-( 7, 5 )
-( 8, 5 )
-( 9, 10 )
-( 10, 10 )
-( 11, 10 )
-( 12, 10 )
+( 6, 5 ),
+( 7, 5 ),
+( 8, 5 ),
+( 9, 10 ),
+( 10, 10 ),
+( 11, 10 ),
+( 12, 10 );
 
 

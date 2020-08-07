@@ -30,7 +30,7 @@ router.post("/addadmin", (req, res, next) => {
   const password = encryptLib.encryptPassword(req.body.password);
   const created_at = req.body.created_at;
   const role = req.body.role;
-  student_id = null;
+  lcf_id = null;
 
   //initialize the id you will get from the student
   let admin_id = "";
@@ -54,11 +54,11 @@ router.post("/addadmin", (req, res, next) => {
       admin_id = result.rows[0].id;
       //now lets add admin information to the user table
       const query2Text =
-        'INSERT INTO "user" (admin_id, student_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
+        'INSERT INTO "user" (admin_id, lcf_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
       pool
         .query(query2Text, [
           admin_id,
-          student_id,
+          lcf_id,
           email,
           password,
           role,
@@ -101,14 +101,15 @@ router.post("/addstudent", (req, res, next) => {
   const pif_amount = Number(req.body.pif_amount).toFixed(2);
   const created_at = req.body.created_at;
   const role = "student";
+  const status = "active";
   admin_id = null;
 
   //initialize the id you will get from the student
   let student_id = "";
 
   const queryText = `INSERT INTO "student" 
-                (first_name, last_name, school_id, grade, grad_year, school_attend, lcf_id, lcf_start_date, student_email, password, pif_amount, role, created_at)
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id `;
+                (first_name, last_name, school_id, grade, grad_year, school_attend, lcf_id, lcf_start_date, student_email, password, pif_amount, role, created_at, status)
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id `;
   pool
     .query(queryText, [
       first_name,
@@ -124,6 +125,7 @@ router.post("/addstudent", (req, res, next) => {
       pif_amount,
       role,
       created_at,
+      status,
     ])
     .then((result) => {
       console.log("this is the response", result.rows[0].id);
@@ -154,77 +156,6 @@ router.post("/addstudent", (req, res, next) => {
     });
 });
 
-
-
-//Handles POST to the student table to add a new student
-//The password is encrypted before being inserted into the database
-router.post("/updatestudent", (req, res, next) => {
-  console.log("this is the new student we are about to update", req.body);
-
-  // pull out the incoming object data
-  const first_name = req.body.first_name;
-  const last_name = req.body.last_name;
-  const school_id = req.body.school_id || 0;
-  const grade = Number(req.body.grade);
-  const grad_year = req.body.grad_year;
-  const school_attend = req.body.school_attend;
-  const lcf_id = req.body.lcf_id;
-  const lcf_start_date = req.body.lcf_start_date;
-  const student_email = req.body.student_email;
-  const password = encryptLib.encryptPassword(req.body.password);
-  const pif_amount = Number(req.body.pif_amount).toFixed(2);
-  const created_at = req.body.created_at;
-  const role = "student";
-  admin_id = null;
-
-  //initialize the id you will get from the student
-  let student_id = "";
-
-
-  const queryText = `UPDATE "student" SET first_name =$1, last_name=$2, school_id=$3, grade=$4, grad_year=$5, school_attend=$6, lcf_id=$7, lcf_start_date=$8, student_email=$9, password=$10, pif_amount=$11, role=$12, created_at=$13
-                WHERE lcf_id =${lcf_id} RETURNING id`;
-  pool
-    .query(queryText, [
-      first_name,
-      last_name,
-      school_id,
-      grade,
-      grad_year,
-      school_attend,
-      lcf_id,
-      lcf_start_date,
-      student_email,
-      password,
-      pif_amount,
-      role,
-      created_at,
-    ])
-    .then((result) => {
-      console.log("this is the response", result.rows[0].id);
-      student_id = result.rows[0].id;
-      //now lets add student information to the user table
-      const query2Text =
-        `UPDATE "user" SET student_id=$1, admin_id=$2, email=$3, password=$4, role=$5, last_login=$6 WHERE student_id =${student_id}`;
-      pool
-        .query(query2Text, [
-          student_id,
-          admin_id,
-          student_email,
-          password,
-          'student',
-          new Date(),
-        ])
-        .then(() => res.sendStatus(201))
-        .catch(function (error) {
-          console.log("Sorry, there was an error with your query: ", error);
-          res.sendStatus(500); // HTTP SERVER ERROR
-        });
-    })
-    .catch(function (error) {
-      console.log("Sorry, there is an error", error);
-      res.sendStatus(500);
-    });
-});
 
 
 
@@ -258,5 +189,76 @@ router.post("/logout", (req, res) => {
   req.logout();
   res.sendStatus(200);
 });
+
+
+
+// PUT /api/user/adminpasswordreset/admin_id
+router.put(`/adminpasswordreset/:admin_id`, (req, res) => {
+  console.log('we are about to change the admin password:', req.body);
+  const newPassword = encryptLib.encryptPassword(req.body.password);
+  const adminID = req.params.admin_id;
+  const email = req.body.email;
+  // setting query text to update the username
+  const queryText = `UPDATE "admin" SET password=$1, email=$2 WHERE id=$3 `;
+
+  pool
+    .query(queryText, [newPassword, email, adminID])
+    .then((result) => {
+      console.log("Success in updating password or email!");
+
+      const query2Text = `UPDATE "user" SET password=$1, email=$2 WHERE admin_id=$3`;
+      const queryValue = [newPassword, email, adminID];
+      pool
+        .query(query2Text, queryValue)
+             .then(() => res.sendStatus(201).res.send(result.rows))
+          .catch(function (error) {
+          console.log("Sorry, there was an error with your query: ", error);
+          res.sendStatus(500); // HTTP SERVER ERROR
+        });
+      
+    })
+    .catch((error) => {
+      console.log(`Error on PUT with query ${error}`);
+      res.sendStatus(500); // if there is an error, send server error 500
+    });
+});
+// end PUT /user/api/admin_id
+
+
+
+
+// PUT /api/user/studentpasswordreset/student_id
+router.put(`/studentpasswordreset/:student_id`, (req, res) => {
+  console.log('we are about to change the student password:', req.body);
+  const newPassword = encryptLib.encryptPassword(req.body.password);
+  const studentID = req.params.student_id;
+  const email = req.body.email;
+  // setting query text to update the username
+  const queryText = `UPDATE "student" SET password=$1, student_email=$2 WHERE id=$3 `;
+
+  pool
+    .query(queryText, [newPassword, email, studentID])
+    .then((result) => {
+      console.log("Success in updating password or email for student!");
+
+      const query2Text = `UPDATE "user" SET password=$1, email=$2 WHERE student_id=$3`;
+      const queryValue = [newPassword, email, studentID];
+      pool
+        .query(query2Text, queryValue)
+        .then(() => res.sendStatus(201).res.send(result.rows))
+        .catch(function (error) {
+          console.log("Sorry, there was an error with your query: ", error);
+          res.sendStatus(500); // HTTP SERVER ERROR
+        });
+
+    })
+    .catch((error) => {
+      console.log(`Error on PUT with query ${error}`);
+      res.sendStatus(500); // if there is an error, send server error 500
+    });
+});
+// end PUT /api/user/studentpasswordreset/student_id
+
+
 
 module.exports = router;

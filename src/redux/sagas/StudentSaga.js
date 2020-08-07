@@ -19,14 +19,48 @@ function* registerStudent(action) {
          yield put({ type: "GET_STUDENTS"});
       
 
-        console.log('we are about to send data for a new student', action.payload);
+        //console.log('we are about to send data for a new student', action.payload);
     }catch(error){
         console.log('Error with student registration:', error);
         yield put ({ type: 'STUDENT_REGISTRATION_FAILED' });
     }
 }
 
+function* deactivateStudent(action) {
+  try {
+    //clear any errors on the page before
+    yield put({ type: "CLEAR_ADD_STUDENT_ERROR" });
 
+    //passes the incoming new student user info from the payload to the server
+    yield axios.put("/api/student/deactivate", action.payload);
+    //console.log(action.payload)
+
+    yield put({ type: "GET_STUDENTS" });
+
+    console.log("we are about to send data for a new student", action.payload);
+  } catch (error) {
+    console.log("Error with student registration:", error);
+    yield put({ type: "STUDENT_REGISTRATION_FAILED" });
+  }
+}
+
+function* activateStudent(action) {
+  try {
+    //clear any errors on the page before
+    yield put({ type: "CLEAR_ADD_STUDENT_ERROR" });
+
+    //passes the incoming new student user info from the payload to the server
+    yield axios.put("/api/student/activate", action.payload);
+    console.log(action.payload);
+
+    yield put({ type: "GET_STUDENTS" });
+
+    //console.log("we are about to send data for a new student", action.payload);
+  } catch (error) {
+    console.log("Error with student registration:", error);
+    yield put({ type: "STUDENT_REGISTRATION_FAILED" });
+  }
+}
 
 
 function* updateStudent(action) {
@@ -35,10 +69,10 @@ function* updateStudent(action) {
         yield put({
             type: 'CLEAR_UPDATE_STUDENT_ERROR'
         });
-            console.log('we are about to send data for a student update', action.payload);
+            //console.log('we are about to send data for a student update', action.payload);
         //passes the incoming updated student user info from the payload to the server
 
-        yield axios.post('/api/user/updatestudent', action.payload);
+        yield axios.put(`/api/student/updatestudent/${action.payload.lcf_id}`, action.payload);
          yield put({ type: "GET_STUDENTS"});
 
        
@@ -48,6 +82,31 @@ function* updateStudent(action) {
             type: 'STUDENT_UPDATE_FAILED'
         });
     }
+}
+
+function* updatePassword(action) {
+  try {
+    //clear any errors on the page before
+    yield put({
+      type: "CLEAR_UPDATE_STUDENT_ERROR",
+    });
+    console.log(
+      "we are about to send data for a student update",
+      action.payload
+    );
+    //passes the incoming updated student user info from the payload to the server
+
+    yield axios.put(
+      `/api/student/updatepassword/${action.payload.lcf_id}`,
+      action.payload
+    );
+    yield put({ type: "GET_STUDENTS" });
+  } catch (error) {
+    console.log("Error with student update:", error);
+    yield put({
+      type: "STUDENT_UPDATE_FAILED",
+    });
+  }
 }
 
 
@@ -89,7 +148,7 @@ function* getStudents(action) {
             });
 
 
-            console.log('Here is the list of student', response.data);
+            //console.log('Here is the list of student', response.data);
         } catch (error) {
             console.log('Error with getting the list of Students:', error);
         }
@@ -105,7 +164,7 @@ function * getStudentEntriesForAdmin (action){
             type: 'SET_STUDENT_ENTRIES_ADMIN_VIEW',
             payload: response.data
         });
-    console.log('Here is the list of entries', response.data);
+    //console.log('Here is the list of entries', response.data);
     }
     catch (error) {
         console.log('Error with getting the list of Student entries:', error);
@@ -128,13 +187,52 @@ function* adminentryupdate(action){
 
 
 
+function* resetStudentPassword(action) {
+    try{
+            //clear any errors on the page before
+            yield put({ type: 'CLEAR_RESET_STUDENT_PASSWORD_ERROR' });
+
+             //passes the incoming new student password info from the payload to the server
+             console.log('we are about to reset the student password', action.payload);
+             const response = yield axios.put(`/api/user/studentpasswordreset/${action.payload.student_id}`, action.payload);
+             
+             yield put({ type: "SET_USER", payload: response.data });
+            console.log("Success in updating new password or email.");
+
+    }catch(error){
+          console.log("error editing password or email", error);
+    }
+}
+
+function* getStudentForEdit(action){
+  try {
+    console.log('Wait what is action here?', action)
+      const response = yield axios.get(`/api/student/student/${action.payload}`);
+console.log('inside get of student');
+      yield put({
+          type: 'EDIT_STUDENT',
+          payload: response.data
+      });   
+  } catch (error) {
+      console.log('Error with getting the list of Students:', error);
+  }
+}
+
+
+
 function* StudentSaga() {
     yield takeLatest('REGISTER_STUDENT', registerStudent);
      yield takeLatest('UPDATE_STUDENT', updateStudent);
+     yield takeLatest('UPDATE_PASSWORD', updatePassword);
      yield takeLatest('DELETE_STUDENT', deleteStudent);
      yield takeLatest('GET_STUDENTS', getStudents);
      yield takeLatest('FETCH_ENTRIES_FOR_ADMIN', getStudentEntriesForAdmin);
      yield takeLatest("ADMIN_ENTRY_UPDATE", adminentryupdate);
+     yield takeLatest('RESET_STUDENT_PASSWORD', resetStudentPassword);
+     yield takeLatest('DEACTIVATE_STUDENT', deactivateStudent);
+     yield takeLatest('ACTIVATE_STUDENT', activateStudent);
+     //yield takeLatest('EDIT_STUDENT', editStudent)
+     yield takeLatest('GET_STUDENT_FOR_EDIT', getStudentForEdit)
      
 }
 

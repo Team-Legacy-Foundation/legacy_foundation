@@ -15,8 +15,7 @@ const UserPage = (props) => (
     ) : ( //else if they are not an admin (i.e. student) they are shown this page
  <StudentHome/>
     )}
-    {/* <p>Your ID is: {props.user.id}</p>
-    <LogOutButton className="log-in" /> */}
+  {/* <LogOutButton className="log-in" /> */}
   </div>
 );
 
