@@ -24,6 +24,7 @@ import "./App.css";
 import PastAdminReports from "../PastAdminReports/PastAdminReports";
 import AddStudent from '../AdminHome/AddStudent';
 import UpdateStudent from '../AdminHome/UpdateStudent';
+import UpdatePassword from "../AdminHome/UpdatePassword";
 import StudentEntries from '../AdminHome/StudentEntries';
 import AdminUpdateEntry from '../AdminHome/AdminUpdateEntry';
 import AddAdmin from '../AdminHome/AddAdmin';
@@ -66,7 +67,11 @@ class App extends Component {
             they will see the info page instead. */}
             <ProtectedRoute exact path="/info" component={InfoPage} />
             <ProtectedRoute exact path="/makeentry" component={MakeEntry} />
-            <ProtectedRoute exact path="/resetstudentpassword" component={StudentResetPassword}/>
+            <ProtectedRoute
+              exact
+              path="/resetstudentpassword"
+              component={StudentResetPassword}
+            />
             <ProtectedRoute
               exact
               path="/paststudententries"
@@ -77,16 +82,33 @@ class App extends Component {
               path="/pastadminreports"
               component={PastAdminReports}
             />
-            <ProtectedRoute exact path="/addstudent" component={AddStudent}/>
-            <ProtectedRoute exact path="/updatestudent/:lcf_id" component={UpdateStudent}/>
-             <ProtectedRoute exact path="/totalstudententries" component={StudentEntries}/>
-             <ProtectedRoute exact path="/adminentryupdate" component={AdminUpdateEntry}/>
-             <ProtectedRoute exact path= "/adminusers" component={AddAdmin}/>
-             <ProtectedRoute exact path="/resetadminpassword" component={AdminResetPassword}/>
-              
-
-           
-           
+            <ProtectedRoute exact path="/addstudent" component={AddStudent} />
+            <ProtectedRoute
+              exact
+              path="/updatestudent/:lcf_id"
+              component={UpdateStudent}
+            />
+            <ProtectedRoute
+              exact
+              path="/updatepassword/:lcf_id"
+              component={UpdatePassword}
+            />
+            <ProtectedRoute
+              exact
+              path="/totalstudententries"
+              component={StudentEntries}
+            />
+            <ProtectedRoute
+              exact
+              path="/adminentryupdate"
+              component={AdminUpdateEntry}
+            />
+            <ProtectedRoute exact path="/adminusers" component={AddAdmin} />
+            <ProtectedRoute
+              exact
+              path="/resetadminpassword"
+              component={AdminResetPassword}
+            />
 
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />

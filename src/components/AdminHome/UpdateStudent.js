@@ -29,6 +29,22 @@ class UpdateStudent extends Component {
     //created at is only run once, when the student is added for the first time
   };
 
+  filterStudentArray = (students) => {
+    return students.filter(
+      (entry) =>
+        entry.first_name &&
+        entry.last_name &&
+        entry.grade &&
+        entry.grad_year &&
+        entry.school_attend &&
+        entry.lcf_id &&
+        moment(entry.lcf_start_date).format("MMMM Do YYYY") &&
+        entry.student_email &&
+        entry.password &&
+        entry.pif_amount
+    );
+  };
+
   componentDidMount() {
     this.props.dispatch({
       type: "GET_STUDENTS",
@@ -81,7 +97,6 @@ class UpdateStudent extends Component {
       this.props.dispatch({ type: "UPDATE_STUDENT_ERROR" });
     }
   }; // end updateStudent
-
 
   //This function handles storing input values into state on change
   handleInputChangeFor = (propertyName) => (event) => {

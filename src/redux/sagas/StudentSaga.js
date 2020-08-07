@@ -84,6 +84,31 @@ function* updateStudent(action) {
     }
 }
 
+function* updatePassword(action) {
+  try {
+    //clear any errors on the page before
+    yield put({
+      type: "CLEAR_UPDATE_STUDENT_ERROR",
+    });
+    console.log(
+      "we are about to send data for a student update",
+      action.payload
+    );
+    //passes the incoming updated student user info from the payload to the server
+
+    yield axios.put(
+      `/api/student/updatepassword/${action.payload.lcf_id}`,
+      action.payload
+    );
+    yield put({ type: "GET_STUDENTS" });
+  } catch (error) {
+    console.log("Error with student update:", error);
+    yield put({
+      type: "STUDENT_UPDATE_FAILED",
+    });
+  }
+}
+
 
 
 
@@ -185,6 +210,7 @@ function* resetStudentPassword(action) {
 function* StudentSaga() {
     yield takeLatest('REGISTER_STUDENT', registerStudent);
      yield takeLatest('UPDATE_STUDENT', updateStudent);
+     yield takeLatest('UPDATE_PASSWORD', updatePassword);
      yield takeLatest('DELETE_STUDENT', deleteStudent);
      yield takeLatest('GET_STUDENTS', getStudents);
      yield takeLatest('FETCH_ENTRIES_FOR_ADMIN', getStudentEntriesForAdmin);
