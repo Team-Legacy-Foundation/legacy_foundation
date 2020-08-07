@@ -115,9 +115,9 @@ let id = url_array[url_array.length-1];
       this.state.grad_year &&
       this.state.school_attend &&
       this.state.lcf_id &&
-      this.state.lcf_start_date &&
+      // this.state.lcf_start_date &&
       this.state.student_email &&
-      this.state.password &&
+      // this.state.password &&
       this.state.pif_amount
     ) {
       //send the updated student to the server through a redux saga
