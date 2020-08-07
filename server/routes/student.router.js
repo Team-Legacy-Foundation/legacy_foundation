@@ -24,7 +24,7 @@ router.get('/studentlist', (req, res) => {
 router.get('/student/:id', (req, res) => {
     console.log('We are about to get student with certain id');
 
-    const queryText = `SELECT * FROM student WHERE id=$1;`;
+    const queryText = `SELECT * FROM student WHERE lcf_id=$1;`;
     pool.query(queryText, [req.params.id])
         .then((result) => {
             res.send(result.rows);
@@ -55,7 +55,7 @@ router.get('/studententries', (req, res) => {
 // PUT /api/student/lcf_id
 router.put(`/updatestudent/:lcf_id`, (req, res) => {
 
-      console.log("this is the new student we are about to update", req.body);
+      //console.log("this is the new student we are about to update", req.body);
 
       // pull out the incoming object data
       const first_name = req.body.first_name;
@@ -123,7 +123,7 @@ router.put(`/updatestudent/:lcf_id`, (req, res) => {
 
 router.put(`/updatepassword/:lcf_id`, (req, res) => {
 
-      console.log("this is the new student we are about to update", req.body);
+      //console.log("this is the new student we are about to update", req.body);
 
       // pull out the incoming object data
        const password = encryptLib.encryptPassword(req.body.password);

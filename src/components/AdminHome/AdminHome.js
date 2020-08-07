@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import MUITable from "../MUITable/MUITable";
 import moment from "moment";
 import { withRouter } from "react-router";
+//import { response } from "express";
 
 
 class AdminHome extends Component {
@@ -116,8 +117,24 @@ class AdminHome extends Component {
                   */
                   console.log(`students lcf_id should be: ${student.lcf_id}`); //NOTE: lcf_id could change position
                   //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
+                    
+                  this.props.history.push({
+                    pathname:`/updatestudent/${student.lcf_id}`,
+                    // state: {lcf_id: student.lcf_id}
+                    // pathname:`/updatestudent/${dataIndex}`,
+                    // state: {id: dataIndex}
+                  }); //this pushes admin to edit page for select student
+                  // this.props.dispatch({
+                  //   type: "EDIT_STUDENT",
+                  //   payload: {
+                  //     lcf_id: student.lcf_id,
+                  //   },
+                  // });
 
-                  this.props.history.push(`/updatestudent/${student.lcf_id}`); //this pushes admin to edit page for select student
+                  this.props.dispatch({
+                    type: "GET_STUDENT_FOR_EDIT", payload: student.lcf_id
+                  });
+
                 }}
               >
                 Edit

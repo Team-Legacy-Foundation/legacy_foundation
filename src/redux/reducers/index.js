@@ -5,6 +5,7 @@ import user from './userReducer';
 import students from './studentReducer';
 import entry from './entryReducer'
 import admin from './adminReducer';
+import editStudent from './editStudentReducer'
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   students, //combined reducer for all things student related
   entry, //combined reducer for all things entry related
   admin, //will combine reducer for all things admin related
+  editStudent
 });
 
 export default rootReducer;
