@@ -121,6 +121,46 @@ router.put(`/updatestudent/:lcf_id`, (req, res) => {
 });
 // end PUT /api/student/lcf_id
 
+router.put(`/updatepassword/:lcf_id`, (req, res) => {
+
+      console.log("this is the new student we are about to update", req.body);
+
+      // pull out the incoming object data
+       const password = encryptLib.encryptPassword(req.body.password);
+       const lcf_id = req.body.lcf_id;
+    
+
+      //initialize the id you will get from the student
+      let student_id = "";
+
+      const queryText = `UPDATE "student" SET password=$1
+                WHERE lcf_id =${lcf_id} RETURNING id`;
+      pool
+        .query(queryText, [
+          password,
+        ])
+        .then((result) => {
+          console.log("this is the response", result.rows[0].id);
+          student_id = result.rows[0].id;
+          //now lets add student information to the user table
+          const query2Text = `UPDATE "user" SET password=$1 WHERE student_id =${student_id}`;
+          pool
+            .query(query2Text, [
+              password,
+            ])
+            .then(() => res.sendStatus(201))
+            .catch(function (error) {
+              console.log("Sorry, there was an error with your query: ", error);
+              res.sendStatus(500); // HTTP SERVER ERROR
+            });
+        })
+        .catch(function (error) {
+          console.log("Sorry, there is an error", error);
+          res.sendStatus(500);
+        });
+});
+// end PUT /api/student/lcf_id
+
 // PUT /api/student/lcf_id
 router.put("/deactivate", (req, res) => {
  // grabs id and places it in path

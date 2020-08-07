@@ -32,8 +32,8 @@ class AdminHome extends Component {
           sort: false,
           empty: true,
           customBodyRenderLite: (dataIndex) => {
-             const studentsArray = this.filterStudentArray(this.props.students);
-              const student = studentsArray[dataIndex];
+            const studentsArray = this.filterStudentArray(this.props.students);
+            const student = studentsArray[dataIndex];
             return (
               <div>
                 {student.status === "active" ? (
@@ -121,6 +121,34 @@ class AdminHome extends Component {
                 }}
               >
                 Edit
+              </button>
+            );
+          },
+        },
+      },
+      {
+        name: "Reset Password",
+        options: {
+          filter: false,
+          sort: false,
+          empty: true,
+          customBodyRenderLite: (dataIndex, rowIndex) => {
+            return (
+              <button
+                onClick={() => {
+                  // const studentsArray = this.getStudentArray(this.props.students);
+                  // const student = studentsArray[dataIndex];
+                  const studentsArray = this.filterStudentArray(
+                    this.props.students
+                  );
+                  const student = studentsArray[dataIndex];
+                  console.log(`students lcf_id should be: ${student.lcf_id}`); //NOTE: lcf_id could change position
+                  //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
+
+                  this.props.history.push(`/updatepassword/${student.lcf_id}`); //this pushes admin to edit page for select student
+                }}
+              >
+                Reset Password
               </button>
             );
           },
