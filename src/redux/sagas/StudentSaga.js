@@ -26,7 +26,41 @@ function* registerStudent(action) {
     }
 }
 
+function* deactivateStudent(action) {
+  try {
+    //clear any errors on the page before
+    yield put({ type: "CLEAR_ADD_STUDENT_ERROR" });
 
+    //passes the incoming new student user info from the payload to the server
+    yield axios.put("/api/student/deactivate", action.payload);
+    console.log(action.payload)
+
+    yield put({ type: "GET_STUDENTS" });
+
+    console.log("we are about to send data for a new student", action.payload);
+  } catch (error) {
+    console.log("Error with student registration:", error);
+    yield put({ type: "STUDENT_REGISTRATION_FAILED" });
+  }
+}
+
+function* activateStudent(action) {
+  try {
+    //clear any errors on the page before
+    yield put({ type: "CLEAR_ADD_STUDENT_ERROR" });
+
+    //passes the incoming new student user info from the payload to the server
+    yield axios.put("/api/student/activate", action.payload);
+    console.log(action.payload);
+
+    yield put({ type: "GET_STUDENTS" });
+
+    console.log("we are about to send data for a new student", action.payload);
+  } catch (error) {
+    console.log("Error with student registration:", error);
+    yield put({ type: "STUDENT_REGISTRATION_FAILED" });
+  }
+}
 
 
 function* updateStudent(action) {
@@ -156,6 +190,8 @@ function* StudentSaga() {
      yield takeLatest('FETCH_ENTRIES_FOR_ADMIN', getStudentEntriesForAdmin);
      yield takeLatest("ADMIN_ENTRY_UPDATE", adminentryupdate);
      yield takeLatest('RESET_STUDENT_PASSWORD', resetStudentPassword);
+     yield takeLatest('DEACTIVATE_STUDENT', deactivateStudent);
+     yield takeLatest('ACTIVATE_STUDENT', activateStudent);
      
 }
 
