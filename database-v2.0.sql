@@ -1,14 +1,12 @@
 CREATE TABLE "user" (
-	"id" serial NOT NULL,
-	"lcf_id" integer NOT NULL,
-	"admin_id" integer NOT NULL,
-	"email" varchar(255) NOT NULL,
-	"password" varchar(255) NOT NULL,
-	"role" varchar(255) NOT NULL,
-	"last_login" DATE NOT NULL,
-	CONSTRAINT "user_pk" PRIMARY KEY ("id")
-) WITH (
-  OIDS=FALSE
+	"id" SERIAL PRIMARY KEY,
+    "lcf_id" int,
+    "admin_id" int,
+    "email" varchar,
+    "password" varchar,
+    "role" varchar,
+    "last_login" DATE
+    
 );
 
 
@@ -17,7 +15,7 @@ CREATE TABLE "admin" (
 	"id" serial NOT NULL,
 	"first_name" varchar(255) NOT NULL,
 	"last_name" varchar(255) NOT NULL,
-	"email" varchar(255) NOT NULL,
+	"email" VARCHAR (320) UNIQUE NOT NULL,
 	"password" varchar(255) NOT NULL,
 	"created_at" DATE NOT NULL DEFAULT 'now()',
 	"role" varchar(255) NOT NULL,
@@ -55,7 +53,7 @@ CREATE TABLE "student" (
 CREATE TABLE "entry" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL,
-	"pay_day" DATE NOT NULL,
+	"pay_day" DATE,
 	"date_submitted" DATE NOT NULL,
 	"gpa" NUMERIC(10,2) NOT NULL,
 	"clean_attend" integer NOT NULL,
@@ -66,7 +64,7 @@ CREATE TABLE "entry" (
 	"current_service_hours" integer NOT NULL,
 	"strikes" integer NOT NULL,
 	"hw_rm_attended" varchar(255) NOT NULL,
-	"inactive" varchar(255) NOT NULL,
+	-- "inactive" varchar(255) NOT NULL,
 	"comments" varchar(255) NOT NULL,
 	"bonus_amount" NUMERIC(10,2) NOT NULL DEFAULT 0,
 	"bonus_comments" varchar(255),
@@ -93,7 +91,7 @@ CREATE TABLE "open_transaction" (
 	"current_service_hours" integer NOT NULL,
 	"hw_rm_attended" varchar(255) NOT NULL,
 	"strikes" integer NOT NULL,
-	"inactive" varchar(255) NOT NULL,
+	-- "inactive" varchar(255) NOT NULL,
 	"comments" varchar(255) NOT NULL,
 	"attend_payment" NUMERIC(10,2) NOT NULL,
 	"pif_donations" NUMERIC(10,2) NOT NULL,
@@ -166,7 +164,7 @@ CREATE TABLE "history" (
 	"current_service_hours" integer NOT NULL,
 	"hw_rm_attended" varchar(255) NOT NULL,
 	"strikes" integer NOT NULL,
-	"inactive" varchar(255) NOT NULL,
+	-- "inactive" varchar(255) NOT NULL,
 	"comments" varchar(255) NOT NULL,
 	"attend_payment" NUMERIC(10,2) NOT NULL,
 	"pif_donations" NUMERIC(10,2) NOT NULL,
@@ -184,5 +182,39 @@ CREATE TABLE "history" (
   OIDS=FALSE
 );
 
+INSERT INTO gpa_rates(gpa, amount)
+VALUES
+( 2, 0 )
+( 2.1, 0 )
+( 2.2, 0 )
+( 2.3, 0 )
+( 2.4, 0 )
+( 2.5, 20 )
+( 2.6, 20 )
+( 2.7, 20 )
+( 2.8, 20 )
+( 2.9, 20 )
+( 3, 40 )
+( 3.1, 40 )
+( 3.2, 40 )
+( 3.3, 40 )
+( 3.4, 40 )
+( 3.5, 60 )
+( 3.6, 60 )
+( 3.7, 60 )
+( 3.8, 60 )
+( 3.9, 60 )
+( 4, 80 )
+
+
+INSERT INTO daily_rates(school_year, amount)
+VALUES
+( 6, 5 )
+( 7, 5 )
+( 8, 5 )
+( 9, 10 )
+( 10, 10 )
+( 11, 10 )
+( 12, 10 )
 
 

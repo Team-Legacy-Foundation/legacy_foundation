@@ -45,7 +45,7 @@ const YellowRadio = withStyles({
 //Either can work, but I think just asking one question is easier
 class MakeEntry extends Component {
   state = {
-    student_id: this.props.user.student_id,
+    lcf_id: this.props.user.lcf_id,
     pass_class: "",
     gpa: 0,
     absent: 0,
@@ -106,7 +106,7 @@ class MakeEntry extends Component {
     event.preventDefault();
     const {
       pass_class,
-      student_id,
+      lcf_id,
       gpa,
       absent,
       tardy,
@@ -147,7 +147,7 @@ class MakeEntry extends Component {
           type: "ADD_ENTRY",
           payload: {
             pass_class: pass_class,
-            student_id: student_id,
+            lcf_id: lcf_id,
             gpa: gpa,
             absent: absent,
             tardy: tardy,
@@ -588,6 +588,7 @@ class MakeEntry extends Component {
           </form>
         </Paper>
         <br />
+        {console.log(this.props.user)}
       </div>
     );
   }

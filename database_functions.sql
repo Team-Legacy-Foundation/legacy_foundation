@@ -99,14 +99,14 @@ AS $BODY$INSERT INTO history(
 	WHERE open_transaction.lcf_id = history.lcf_id
 	$BODY$;
 
---------------------------------JUST EASY FUNCTION TO DO THE CHARGE TO STUDENT--------------------------------------
+-- --------------------------------JUST EASY FUNCTION TO DO THE CHARGE TO STUDENT--------------------------------------
 
-----CALL charge_student() TO CALL THIS FUNCTION
+-- ----CALL charge_student() TO CALL THIS FUNCTION
 
-CREATE OR REPLACE PROCEDURE charge_student(
-	)
-LANGUAGE 'sql'
-AS $BODY$	UPDATE student
-	SET balance_due = balance_due + amount
-	FROM charge_student
-	WHERE student.lcf_id = charge_student.lcf_id$BODY$;
+-- CREATE OR REPLACE PROCEDURE charge_student(
+-- 	)
+-- LANGUAGE 'sql'
+-- AS $BODY$	UPDATE student
+-- 	SET balance_due = balance_due + amount
+-- 	FROM charge_student
+-- 	WHERE student.lcf_id = charge_student.lcf_id$BODY$;
