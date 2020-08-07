@@ -10,21 +10,27 @@ import moment from "moment";
 
 
 
+   
+
 class UpdateStudent extends Component {
+  
+// let url_array=document.location.href.split("/");
+    
+// let id = url_array[url_array.length-1];
+  
   state = {
-    first_name: this.props.students[0] && this.props.students[0].first_name,
-    last_name: this.props.students[0] && this.props.students[0].last_name,
-    grade: this.props.students[0] && this.props.students[0].grade,
-    grad_year: this.props.students[0] && this.props.students[0].grad_year,
-    school_attend:
-      this.props.students[0] && this.props.students[0].school_attend,
-    lcf_id: this.props.students[0] && this.props.students[0].lcf_id,
-    lcf_start_date:
-      this.props.students[0] && this.props.students[0].lcf_start_date,
-    student_email:
-      this.props.students[0] && this.props.students[0].student_email,
+    
+    first_name: "",
+    last_name:"",
+    grade:"",
+    grad_year: "",
+    school_attend:  "", 
+    lcf_id:"",
+    lcf_start_date:"",
+    student_email:"",
     password: "",
-    pif_amount: this.props.students[0] && this.props.students[0].pif_amount,
+    pif_amount: "",
+    isLoaded: false
     //created_at: moment.utc().format(), on update, we dont want to do another created at
     //created at is only run once, when the student is added for the first time
   };
@@ -46,18 +52,57 @@ class UpdateStudent extends Component {
   };
 
   componentDidMount() {
+
+    if (!this.state.isLoaded){
+    let url_array=document.location.href.split("/");
+    
+let id = url_array[url_array.length-1];
+
+
     this.props.dispatch({
       type: "GET_STUDENTS",
     });
 
-    if (this.props.student) {
-      this.setState([...this.props.student]);
-    }
+    this.props.dispatch({
+      type: "GET_STUDENT_FOR_EDIT", payload: id
+    });
+
+    // if (this.props.student) {
+    //   this.setState([...this.props.student]);
+    // }
 
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
+
+    this.props.students.map((item, index) => {
+      if(item.lcf_id === Number(id)){
+        console.log('HELLO',item)
+        this.setState({
+          first_name: item.first_name,
+          last_name: item.last_name,
+          grade:item.grade,
+    grad_year: item.grad_year,
+    school_attend:  item.school_attend, 
+    lcf_id: item.lcf_id,
+    lcf_start_date: item.lcf_start_date,
+    student_email:item.student_email,
+    password: "",
+    pif_amount: item.pif_amount,
+
+        })
+       } else {
+          console.log('FAIL', item.lcf_id)
+          console.log(id)
+        }
+      
+    })
   }
+  this.setState({isLoaded: true})
+  }
+
+  
+  
 
   updateStudent = (event) => {
     event.preventDefault();
@@ -106,10 +151,16 @@ class UpdateStudent extends Component {
   };
 
   render() {
+    console.log('state is', this.state)
+    //console.log('this should be it', this.props.location.state.lcf_id);
+    console.log('this is now props.editStudent', this.props.editStudent)
+
     return (
       <div>
         <h1 style={{ width: "50%", margin: "2% 40%" }}>
           Update Student Information
+          
+          
         </h1>
 
         {/* <Card border = "info" style={{ width: '90%', margin: '3% auto' }} > */}
@@ -144,6 +195,7 @@ class UpdateStudent extends Component {
               <Form.Label>Grade</Form.Label>
               <Form.Control
                 as="select"
+                value={this.state.grade}
                 onChange={(event) =>
                   this.setState({ grade: event.target.value })
                 }
@@ -253,6 +305,7 @@ class UpdateStudent extends Component {
 const mapStateToProps = (state) => ({
   user: state.user,
   students: state.students.studentlist,
+  editStudent: state.editStudent
 });
    
 export default connect(mapStateToProps) (UpdateStudent);

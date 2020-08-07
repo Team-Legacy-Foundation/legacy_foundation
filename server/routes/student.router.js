@@ -24,7 +24,7 @@ router.get('/studentlist', (req, res) => {
 router.get('/student/:id', (req, res) => {
     console.log('We are about to get student with certain id');
 
-    const queryText = `SELECT * FROM student WHERE id=$1;`;
+    const queryText = `SELECT * FROM student WHERE lcf_id=$1;`;
     pool.query(queryText, [req.params.id])
         .then((result) => {
             res.send(result.rows);
