@@ -88,6 +88,7 @@ router.post("/addstudent", (req, res, next) => {
   console.log("this is the new student we are about to register", req.body);
 
   // pull out the incoming object data
+  
   const first_name = req.body.first_name;
   const last_name = req.body.last_name;
   const school_id = req.body.school_id || 0;
@@ -101,44 +102,48 @@ router.post("/addstudent", (req, res, next) => {
   const pif_amount = Number(req.body.pif_amount).toFixed(2);
   const created_at = req.body.created_at;
   const role = "student";
-  const status = "active";
+  const inactive = "no";
+  const strikes = 0;
+  const balance_due = 0; //just created an account, so no balance due
   admin_id = null;
 
   //initialize the id you will get from the student
-  let student_id = "";
+  //let lcf_id = "";
 
   const queryText = `INSERT INTO "student" 
-                (first_name, last_name, school_id, grade, grad_year, school_attend, lcf_id, lcf_start_date, student_email, password, pif_amount, role, created_at, status)
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id `;
+                (lcf_id, first_name, last_name, school_attend, school_id, student_email, password, grade, grad_year, created_at,   lcf_start_date, role,   pif_amount, strikes, inactive, balance_due)
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING id `;
   pool
     .query(queryText, [
+      lcf_id,
       first_name,
       last_name,
-      school_id,
-      grade,
-      grad_year,
       school_attend,
-      lcf_id,
-      lcf_start_date,
+      school_id,
       student_email,
       password,
-      pif_amount,
-      role,
+      grade,
+      grad_year,
       created_at,
-      status,
+      lcf_start_date,
+      role,
+      pif_amount,
+      strikes,
+      inactive,
+      balance_due
     ])
     .then((result) => {
       console.log("this is the response", result.rows[0].id);
       //res.status(201).send(result.rows[0]);
       
-      student_id = result.rows[0].id;
+      //lcf_id = result.rows[0].id;
       //now lets add student information to the user table
       const query2Text =
-        'INSERT INTO "user" (student_id, admin_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
+        'INSERT INTO "user" (lcf_id, admin_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
       pool
         .query(query2Text, [
-          student_id,
-          admin_id,
+          lcf_id,
+          null,
           student_email,
           password,
           'student',

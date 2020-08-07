@@ -33,7 +33,7 @@ function* getAdmin (action){
                 payload: response.data
             });
 
-            console.log('Here is the list of admins', response.data);
+            //console.log('Here is the list of admins', response.data);
         } catch (error) {
             console.log('Error with getting the list of Admins:', error);
         }

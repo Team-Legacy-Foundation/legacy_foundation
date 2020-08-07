@@ -65,6 +65,7 @@ class MakeEntry extends Component {
     hw_rm_attended: null,
     comments: null,
     error: false,
+    
   };
 
   handleChange = (event, fieldName) => {
@@ -125,6 +126,7 @@ class MakeEntry extends Component {
       current_service_hours,
       hw_rm_attended,
       comments,
+      
     } = this.state;
     if (pass_class === null || detent_hours === null || act_or_job === null || passed_ua === null || current_service_hours === null || current_service_hours === undefined || current_service_hours === "" || hw_rm_attended === null) {
       this.setState({
@@ -178,6 +180,7 @@ class MakeEntry extends Component {
             current_service_hours: current_service_hours,
             hw_rm_attended: hw_rm_attended,
             comments: comments,
+            
           },
         });
         Swal.fire("Success!", "Your entry has been logged.", "success");

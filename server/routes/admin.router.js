@@ -9,7 +9,7 @@ router.get('/adminlist', (req, res) => {
     const queryText = `SELECT * FROM admin;`;
     pool.query(queryText)
         .then((result) => {
-            console.log('Here is the admin list', result.rows);
+            //console.log('Here is the admin list', result.rows);
             res.send(result.rows);
         }).catch((error) => {
             console.log(`Error on admin query ${error}`);
