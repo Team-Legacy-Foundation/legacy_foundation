@@ -30,7 +30,7 @@ router.post("/addadmin", (req, res, next) => {
   const password = encryptLib.encryptPassword(req.body.password);
   const created_at = req.body.created_at;
   const role = req.body.role;
-  student_id = null;
+  lcf_id = null;
 
   //initialize the id you will get from the student
   let admin_id = "";
@@ -54,11 +54,11 @@ router.post("/addadmin", (req, res, next) => {
       admin_id = result.rows[0].id;
       //now lets add admin information to the user table
       const query2Text =
-        'INSERT INTO "user" (admin_id, student_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
+        'INSERT INTO "user" (admin_id, lcf_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
       pool
         .query(query2Text, [
           admin_id,
-          student_id,
+          lcf_id,
           email,
           password,
           role,

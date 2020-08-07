@@ -39,7 +39,7 @@ router.get('/student/:id', (req, res) => {
 router.get('/studententries', (req, res) => {
     console.log('We are about to get the student entries');
 
-    const queryText = `SELECT * FROM "entry" JOIN "student" ON "student"."id" = "entry"."student_id";`;
+    const queryText = `SELECT * FROM "entry" JOIN "student" ON "student"."lcf_id" = "entry"."lcf_id";`;
     pool.query(queryText)
         .then((result) => {
             console.log('Here is the student entry list', result.rows);

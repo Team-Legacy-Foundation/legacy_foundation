@@ -45,7 +45,7 @@ router.post("/", (req, res) => {
     const {
       pass_class,
       gpa,
-      student_id,
+      lcf_id,
       absent,
       tardy,
       late,
@@ -66,11 +66,13 @@ router.post("/", (req, res) => {
     }
     
     const queryText = `
-        INSERT INTO "entry" (student_id, pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning id;`; //grabs database
+
+        INSERT INTO "entry" (lcf_id, pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`; //grabs database
+
     pool
       .query(queryText, [
-        student_id,
+        lcf_id,
         pass_class,
         gpa,
         clean_attend,
@@ -93,6 +95,7 @@ router.post("/", (req, res) => {
         res.sendStatus(500); // HTTP SERVER ERROR
       });
 }); // end POST
+
 
 
 router.delete("/:id", (req, res) => {
