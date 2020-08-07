@@ -96,7 +96,8 @@ AS $BODY$INSERT INTO history(
 	WHERE student.lcf_id = open_transaction.lcf_id;
 	DELETE FROM open_transaction
 	USING history
-	WHERE open_transaction.lcf_id = history.lcf_id
+	WHERE open_transaction.lcf_id = history.lcf_id;
+	delete from entry
 	$BODY$;
 
 -- --------------------------------JUST EASY FUNCTION TO DO THE CHARGE TO STUDENT--------------------------------------
