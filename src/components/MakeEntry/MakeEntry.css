@@ -1,0 +1,21 @@
+.error {
+      position: fixed;
+      right: 0;
+      margin-top: 25%;
+      margin-right: 10%;
+      z-index: 2000000;
+      animation-name: error;
+      animation-duration: 0.5s;
+      animation-iteration-count: 1;
+      border: solid black 1px;
+}
+
+@keyframes error {
+  /*enters from right side and ends in middle of page*/
+  0% {
+    opacity: 0;
+  }
+    100% {
+    opacity: 1;
+  }
+}
