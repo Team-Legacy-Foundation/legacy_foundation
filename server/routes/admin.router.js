@@ -18,6 +18,40 @@ router.get('/adminlist', (req, res) => {
 
 });
 
+router.get('/calc', (req, res) => {
+    console.log('running the calculations for entries');
+    const queryText = 'CALL calc()';
+    pool.query(queryText)
+    .then((result) => {
+        res.sendStatus(200)
+    }).catch((error) => {
+        console.log('error running the calculations', error);
+        res.sendStatus(500);
+    });
+});
 
+router.get('/pending', (req, res) => {
+    console.log('Grabbing all pending transactions');
+    const queryText = 'SELECT * FROM open_transaction'
+    pool.query(queryText)
+    .then((result) => {
+        res.send(result.rows).status(200);
+    }).catch((error)=> {
+        console.log('Problem with grabbing pending transactions')
+        res.sendStatus(500);
+    });
+});
+
+router.get('/confirm', (req, res) => {
+    console.log('Finalizing transactions');
+    const queryText = 'CALL confirm()';
+    pool.query(queryText)
+    .then((result) => {
+        res.sendStatus(200)
+    }).catch((error) => {
+        console.log('error pushing to history records', error);
+        res.sendStatus(500);
+    });
+});
 
 module.exports = router;

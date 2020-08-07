@@ -12,7 +12,7 @@ const moment = require('moment');
  */
 router.get('/', (req, res) => {
     pool
-      .query("SELECT * from entry")
+      .query("SELECT * from entry") 
       .then((result) => {
         res.send(result.rows);
       })

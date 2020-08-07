@@ -1,13 +1,16 @@
 import React, {Component}  from 'react';
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
-import Button from "react-bootstrap/Button";
+import { Link, Redirect } from 'react-router-dom';
+import Button from "react-bootstrap/Button"; //why not button from MUI?
 import MUITable from '../MUITable/MUITable';
 import moment from "moment";
 
 
 
 class StudentEntries extends Component {
+  state = {
+    redirect: false
+  }
 
 componentDidMount () {
   this.props.dispatch({
@@ -15,13 +18,26 @@ componentDidMount () {
   })
 }
 
+runReport() {
+  this.props.dispatch({type: 'FETCH_CALCULATIONS'})
+  this.forceUpdate();
+  // this.renderRedirect();
+}
+renderRedirect = () => {
+//this.props.history.push("/opentransactions");
+  // if (this.props.calculations.length > 0) {
+  //     return  <Redirect to = '/opentransactions'/>
+  //   }
+    
+  }
+
   render() {
 
-  
+
     return(
      
      <div>
-     
+     {/* {this.renderRedirect()} */}
       
       {this.props.user.role === 'admin'&&
                     <div className="navbuttonscontainer">
@@ -93,7 +109,8 @@ componentDidMount () {
             ]}
             title={"LCF Student Entry List"}
           />
-        
+          {/*When clicked, push admin to new page and want calculations to show up on that page */}
+        <Button style={{margin:'3%'}} onClick={(event)=>this.runReport(event)}>Run Report</Button> 
       </div>
       
     
@@ -106,6 +123,7 @@ const mapStateToProps = (state) => ({
   user: state.user,
   students: state.students.studentlist,
   entries: state.students.studententriesadmin,
+  calculations: state.calculations.calculations
 });
 
 export default connect(mapStateToProps)(StudentEntries);

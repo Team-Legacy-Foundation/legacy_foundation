@@ -39,12 +39,22 @@ const Nav = (props) => (
         <>
         <Link className="nav-link" to="/totalstudententries">
           <FormatListBulletedIcon></FormatListBulletedIcon>
-            Student Entries
+            Current Entries
           </Link>
         
           <Link className="nav-link" to="/pastadminreports">
             <PlaylistAddCheckIcon></PlaylistAddCheckIcon>
             Past Reports
+          </Link>
+
+          <Link className="nav-link" to="/opentransactions">
+            
+           Pending Payroll
+          </Link>
+
+          <Link className="nav-link" to="/chargestudent">
+            
+           Create New Deduction
           </Link>
 
            <Link className="nav-link" to="/adminusers">
