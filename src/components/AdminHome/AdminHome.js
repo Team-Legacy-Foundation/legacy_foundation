@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import MUITable from "../MUITable/MUITable";
 import moment from "moment";
 import { withRouter } from "react-router";
+import Swal from "sweetalert2";
 //import { response } from "express";
 
 
@@ -53,6 +54,11 @@ class AdminHome extends Component {
                             lcf_id: student.lcf_id,
                           },
                         });
+                        Swal.fire({
+                          icon: "Success",
+                          title: "Deactivation",
+                          text: `Student number ${student.lcf_id} activation status has been successfully deactivated` ,
+                        });
                         this.props.dispatch({
                           type: "GET_STUDENTS",
                         });
@@ -77,6 +83,11 @@ class AdminHome extends Component {
                             lcf_id: student.lcf_id,
                           },
                         });
+                           Swal.fire({
+                             icon: "Success",
+                             title: "Activation",
+                             text: `Student number ${student.lcf_id} activation status has been successfully activated`,
+                           });
                         this.props.dispatch({
                           type: "GET_STUDENTS",
                         });
