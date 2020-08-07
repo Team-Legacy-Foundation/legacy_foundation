@@ -12,7 +12,7 @@ router.get('/studentlist', (req, res) => {
     const queryText = `SELECT * FROM student;`;
     pool.query(queryText)
         .then((result) => {
-            console.log('Here is the student list', result.rows);
+            //console.log('Here is the student list', result.rows);
             res.send(result.rows);
         }).catch((error) => {
             console.log(`Error on student query ${error}`);
@@ -67,59 +67,61 @@ router.put(`/updatestudent/:lcf_id`, (req, res) => {
       const lcf_id = req.body.lcf_id;
       const lcf_start_date = req.body.lcf_start_date;
       const student_email = req.body.student_email;
-      const password = encryptLib.encryptPassword(req.body.password);
+      //const password = encryptLib.encryptPassword(req.body.password);
       const pif_amount = Number(req.body.pif_amount).toFixed(2);
-      const created_at = req.body.created_at;
+      //const created_at = req.body.created_at;
       const role = "student";
       admin_id = null;
 
       //initialize the id you will get from the student
       let student_id = "";
 
-      const queryText = `UPDATE "student" SET first_name =$1, last_name=$2, school_id=$3, grade=$4, grad_year=$5, school_attend=$6, lcf_id=$7, lcf_start_date=$8, student_email=$9, password=$10, pif_amount=$11, role=$12, created_at=$13
-                WHERE lcf_id =${lcf_id} RETURNING id`;
+      const queryText = `UPDATE "student" SET lcf_id=$1, first_name =$2, last_name=$3, school_attend=$4, school_id=$5, student_email=$6, grade=$7, grad_year=$8, lcf_start_date=$9, role=$10, pif_amount=$11  
+                WHERE lcf_id =$1 RETURNING id`;
       pool
         .query(queryText, [
+          lcf_id,
           first_name,
           last_name,
+          school_attend,
           school_id,
+          student_email,
+          
           grade,
           grad_year,
-          school_attend,
-          lcf_id,
           lcf_start_date,
-          student_email,
-          password,
-          pif_amount,
           role,
-          created_at,
+          pif_amount,
         ])
         .then((result) => {
           console.log("this is the response", result.rows[0].id);
-          student_id = result.rows[0].id;
+          //student_id = result.rows[0].id;
           //now lets add student information to the user table
-          const query2Text = `UPDATE "user" SET student_id=$1, admin_id=$2, email=$3, password=$4, role=$5, last_login=$6 WHERE student_id =${student_id}`;
+          const query2Text = `UPDATE "user" SET lcf_id=$1, admin_id=$2, email=$3, role=$4 WHERE lcf_id =$1`;
           pool
             .query(query2Text, [
-              student_id,
+              lcf_id,
               admin_id,
               student_email,
-              password,
-              "student",
-              new Date(),
+              
+              role,
+             
             ])
             .then(() => res.sendStatus(201))
             .catch(function (error) {
-              console.log("Sorry, there was an error with your query: ", error);
+              console.log("Sorry, there was an error with your query (student update): ", error);
               res.sendStatus(500); // HTTP SERVER ERROR
             });
         })
         .catch(function (error) {
-          console.log("Sorry, there is an error", error);
+          console.log("Sorry, there is an error with the student update", error);
           res.sendStatus(500);
         });
 });
 // end PUT /api/student/lcf_id
+
+
+
 
 router.put(`/updatepassword/:lcf_id`, (req, res) => {
 
@@ -134,16 +136,16 @@ router.put(`/updatepassword/:lcf_id`, (req, res) => {
       let student_id = "";
 
       const queryText = `UPDATE "student" SET password=$1
-                WHERE lcf_id =${lcf_id} RETURNING id`;
+                WHERE lcf_id =${lcf_id}`;
       pool
         .query(queryText, [
           password,
         ])
         .then((result) => {
-          console.log("this is the response", result.rows[0].id);
-          student_id = result.rows[0].id;
+          //console.log("this is the response in update password", result.rows[0].id);
+          //student_id = result.rows[0].id;
           //now lets add student information to the user table
-          const query2Text = `UPDATE "user" SET password=$1 WHERE student_id =${student_id}`;
+          const query2Text = `UPDATE "user" SET password=$1 WHERE lcf_id =${lcf_id}`;
           pool
             .query(query2Text, [
               password,
@@ -165,7 +167,7 @@ router.put(`/updatepassword/:lcf_id`, (req, res) => {
 router.put("/deactivate", (req, res) => {
  // grabs id and places it in path
  const lcf_id = req.body.lcf_id;
-  let queryText = `UPDATE student SET status = 'inactive' WHERE  lcf_id = $1`;
+  let queryText = `UPDATE student SET inactive = 'yes' WHERE  lcf_id = $1`;
   pool
     .query(queryText, [lcf_id])
 
@@ -183,7 +185,7 @@ router.put("/deactivate", (req, res) => {
 router.put("/activate", (req, res) => {
   // grabs id and places it in path
   const lcf_id = req.body.lcf_id;
-  let queryText = `UPDATE student SET status = 'active' WHERE  lcf_id = $1`;
+  let queryText = `UPDATE student SET inactive = 'no' WHERE  lcf_id = $1`;
   pool
     .query(queryText, [lcf_id])
 

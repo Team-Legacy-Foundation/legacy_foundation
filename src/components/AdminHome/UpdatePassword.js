@@ -11,7 +11,7 @@ import moment from "moment";
 class UpdatePassword extends Component {
   state = {
     password: "",
-    lcf_id: this.props.students[0] && this.props.students[0].lcf_id,
+   
   };
 
   componentDidMount() {
@@ -22,21 +22,32 @@ class UpdatePassword extends Component {
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
+
+    
+
+
+  
+
   }
 
   updatePassword = (event) => {
     event.preventDefault();
-    console.log("we are about to send the state", this.state);
 
-    if (this.state.password && this.state.lcf_id) {
+    let url_array=document.location.href.split("/");
+    
+let id = url_array[url_array.length-1];
+    console.log("we are about to send the state",id, this.state);
+
+    if (this.state.password) {
       //send the updated student to the server through a redux saga
       this.props.dispatch({
         type: "UPDATE_PASSWORD",
         payload: {
           password: this.state.password,
-          lcf_id: this.state.lcf_id,
+          lcf_id: id,
         },
       });
+      
       this.props.history.push("/home");
     } else {
       this.props.dispatch({ type: "UPDATE_STUDENT_ERROR" });

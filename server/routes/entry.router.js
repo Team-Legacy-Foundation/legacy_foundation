@@ -5,6 +5,8 @@ const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
 
+const moment = require('moment');
+
 /**
  * GET route template
  */
@@ -58,6 +60,7 @@ router.post("/", (req, res) => {
       current_service_hours,
       hw_rm_attended,
       comments,
+      
     } = entry;
     if (entry === undefined) {
         // stop, dont touch the database
@@ -65,15 +68,17 @@ router.post("/", (req, res) => {
         return;
     }
     
+    const date = new Date();
     const queryText = `
 
-        INSERT INTO "entry" (lcf_id, pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`; //grabs database
+        INSERT INTO "entry" (lcf_id, pass_class, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`; //grabs database
 
     pool
       .query(queryText, [
         lcf_id,
         pass_class,
+        date,
         gpa,
         clean_attend,
         detent_hours,

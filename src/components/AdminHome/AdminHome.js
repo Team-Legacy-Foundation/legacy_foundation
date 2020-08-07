@@ -37,7 +37,7 @@ class AdminHome extends Component {
             const student = studentsArray[dataIndex];
             return (
               <div>
-                {student.status === "active" ? (
+                {student.inactive === "no" ? (
                   <button
                     onClick={(event) => {
                       event.preventDefault();
@@ -236,9 +236,7 @@ class AdminHome extends Component {
             <Link to="/addstudent">
               <Button variant="outline-primary">Add Student</Button>
             </Link>{" "}
-            <Link to="/updatestudent">
-              <Button variant="outline-primary">Update Student</Button>
-            </Link>{" "}
+            
           </div>
         )}
 
