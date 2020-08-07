@@ -16,8 +16,10 @@ import {
   withStyles,
   Slider
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
+import "./MakeEntry.css";
 
 const GreenRadio = withStyles({
   root: {
@@ -46,20 +48,21 @@ const YellowRadio = withStyles({
 class MakeEntry extends Component {
   state = {
     student_id: this.props.user.student_id,
-    pass_class: "",
+    pass_class: null,
     gpa: 0,
     absent: 0,
     tardy: 0,
     late: 0,
     truant: 0,
     clean_attend: 0,
-    detent_hours: "",
+    detent_hours: null,
     // after_school: "",
-    act_or_job: "",
-    passed_ua: "",
+    act_or_job: null,
+    passed_ua: null,
     current_service_hours: 0,
-    hw_rm_attended: "",
-    comments: "",
+    hw_rm_attended: null,
+    comments: null,
+    error: false,
   };
 
   handleChange = (event, fieldName) => {
@@ -121,6 +124,18 @@ class MakeEntry extends Component {
       hw_rm_attended,
       comments,
     } = this.state;
+    if (pass_class === null || detent_hours === null || act_or_job === null || passed_ua === null || current_service_hours === null || current_service_hours === undefined || current_service_hours === "" || hw_rm_attended === null) {
+      this.setState({
+        error: true,
+      })
+
+      setTimeout(() => {
+           this.setState({
+             error: false,
+           });
+      }, 5000);
+      return;
+    }
     Swal.fire({
       title: "Please confirm details below",
       html: `1. Passing classes: ${pass_class} </br>
@@ -267,8 +282,12 @@ class MakeEntry extends Component {
 
     return (
       <div>
-
         <br />
+        {this.state.error === true && (
+          <Alert className="error" style={{}} severity="error">
+            Please fill out all of the required fields
+          </Alert>
+        )}
         <h3 style={{ textAlign: "center" }}>
           This entry is for the week of: PAY PERIOD HERE
         </h3>
@@ -290,7 +309,11 @@ class MakeEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
+                <FormControlLabel
+                  value="No"
+                  control={<YellowRadio />}
+                  label="No"
+                />
               </RadioGroup>
             </FormControl>
             <p>2. What is your current GPA?</p>
@@ -439,7 +462,11 @@ class MakeEntry extends Component {
                 value={this.state.detent_hours}
                 onChange={(event) => this.handleChange(event, "detent_hours")}
               >
-                <FormControlLabel value="Yes" control={<YellowRadio />} label="Yes" />
+                <FormControlLabel
+                  value="Yes"
+                  control={<YellowRadio />}
+                  label="Yes"
+                />
                 <FormControlLabel
                   value="No"
                   control={<GreenRadio />}
@@ -465,7 +492,11 @@ class MakeEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
+                <FormControlLabel
+                  value="No"
+                  control={<YellowRadio />}
+                  label="No"
+                />
               </RadioGroup>
             </FormControl>
             <br />
@@ -503,7 +534,11 @@ class MakeEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
+                <FormControlLabel
+                  value="No"
+                  control={<YellowRadio />}
+                  label="No"
+                />
               </RadioGroup>
             </FormControl>
             <br />
@@ -546,7 +581,11 @@ class MakeEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
+                <FormControlLabel
+                  value="No"
+                  control={<YellowRadio />}
+                  label="No"
+                />
               </RadioGroup>
             </FormControl>{" "}
             <br /> <br />
