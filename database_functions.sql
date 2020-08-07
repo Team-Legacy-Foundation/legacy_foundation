@@ -97,7 +97,11 @@ AS $BODY$INSERT INTO history(
 	DELETE FROM open_transaction
 	USING history
 	WHERE open_transaction.lcf_id = history.lcf_id;
+<<<<<<< HEAD
 	DELETE FROM entry
+=======
+	delete from entry
+>>>>>>> 66b46dd47ad703f930dfb61cb566ef042387ad5c
 	$BODY$;
 
 -- --------------------------------JUST EASY FUNCTION TO DO THE CHARGE TO STUDENT--------------------------------------
