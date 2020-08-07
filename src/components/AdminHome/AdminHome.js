@@ -23,6 +23,7 @@ class AdminHome extends Component {
   }
 
   render() {
+
     const columns = [
       {
         name: "Deactivate",
@@ -31,16 +32,60 @@ class AdminHome extends Component {
           sort: false,
           empty: true,
           customBodyRenderLite: (dataIndex) => {
+             const studentsArray = this.filterStudentArray(this.props.students);
+              const student = studentsArray[dataIndex];
             return (
-              <button
-                onClick={() => {
-                  const { data } = this.props;
-                  data.shift();
-                  this.setState({ data });
-                }}
-              >
-                Deactivate
-              </button>
+              <div>
+                {student.status === "active" ? (
+                  <button
+                    onClick={(event) => {
+                      event.preventDefault();
+                      const studentsArray = this.filterStudentArray(
+                        this.props.students
+                      );
+                      const student = studentsArray[dataIndex];
+                      {
+                        //send the updated student to the server through a redux saga
+                        this.props.dispatch({
+                          type: "DEACTIVATE_STUDENT",
+                          payload: {
+                            lcf_id: student.lcf_id,
+                          },
+                        });
+                        this.props.dispatch({
+                          type: "GET_STUDENTS",
+                        });
+                      }
+                    }}
+                  >
+                    Deactivate
+                  </button>
+                ) : (
+                  <button
+                    onClick={(event) => {
+                      event.preventDefault();
+                      const studentsArray = this.filterStudentArray(
+                        this.props.students
+                      );
+                      const student = studentsArray[dataIndex];
+                      {
+                        //send the updated student to the server through a redux saga
+                        this.props.dispatch({
+                          type: "ACTIVATE_STUDENT",
+                          payload: {
+                            lcf_id: student.lcf_id,
+                          },
+                        });
+                        this.props.dispatch({
+                          type: "GET_STUDENTS",
+                        });
+                      }
+                    }}
+                  >
+                    Activate
+                  </button>
+                )}
+              </div>
             );
           },
         },
@@ -57,7 +102,9 @@ class AdminHome extends Component {
                 onClick={() => {
                   // const studentsArray = this.getStudentArray(this.props.students);
                   // const student = studentsArray[dataIndex];
-                  const studentsArray = this.filterStudentArray(this.props.students);
+                  const studentsArray = this.filterStudentArray(
+                    this.props.students
+                  );
                   const student = studentsArray[dataIndex];
                   console.log(student);
                   /* a possible refactor:
@@ -71,8 +118,7 @@ class AdminHome extends Component {
                   //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
 
                   this.props.history.push(`/updatestudent/${student.lcf_id}`); //this pushes admin to edit page for select student
-                  }
-                }
+                }}
               >
                 Edit
               </button>
@@ -178,29 +224,30 @@ class AdminHome extends Component {
         entry.student_email &&
         entry.password &&
         entry.pif_amount
-    )
-  }
+    );
+  };
 
   // this IS A SELECTOR: it takes some state, and it
   // returns some derived state. In other words, if you
   // have students, you can always calculate the array
   // that MUI needs from there.
   getStudentArray = (students) => {
-    const studentsArray = this.filterStudentArray(students)
-      .map((entry, index) => [
-        entry.first_name,    // 0
-        entry.last_name,     // 1
+    const studentsArray = this.filterStudentArray(students).map(
+      (entry, index) => [
+        entry.first_name, // 0
+        entry.last_name, // 1
         Number(entry.grade), // 2
-        entry.grad_year,     // 3
+        entry.grad_year, // 3
         entry.school_attend, // 4
-        entry.lcf_id,        // 5
+        entry.lcf_id, // 5
         moment(entry.lcf_start_date).format("MMMM Do YYYY"), //This will change "last login" at some point
         entry.student_email,
         //entry.password,
         entry.pif_amount,
-      ]);
+      ]
+    );
     return studentsArray;
-  }
+  };
 }
 
 const mapStateToProps = (state) => ({

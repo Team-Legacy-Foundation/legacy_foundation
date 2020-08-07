@@ -101,14 +101,15 @@ router.post("/addstudent", (req, res, next) => {
   const pif_amount = Number(req.body.pif_amount).toFixed(2);
   const created_at = req.body.created_at;
   const role = "student";
+  const status = "active";
   admin_id = null;
 
   //initialize the id you will get from the student
   let student_id = "";
 
   const queryText = `INSERT INTO "student" 
-                (first_name, last_name, school_id, grade, grad_year, school_attend, lcf_id, lcf_start_date, student_email, password, pif_amount, role, created_at)
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id `;
+                (first_name, last_name, school_id, grade, grad_year, school_attend, lcf_id, lcf_start_date, student_email, password, pif_amount, role, created_at, status)
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id `;
   pool
     .query(queryText, [
       first_name,
@@ -124,6 +125,7 @@ router.post("/addstudent", (req, res, next) => {
       pif_amount,
       role,
       created_at,
+      status,
     ])
     .then((result) => {
       console.log("this is the response", result.rows[0].id);

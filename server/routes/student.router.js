@@ -121,7 +121,43 @@ router.put(`/updatestudent/:lcf_id`, (req, res) => {
 });
 // end PUT /api/student/lcf_id
 
+// PUT /api/student/lcf_id
+router.put("/deactivate", (req, res) => {
+ // grabs id and places it in path
+ const lcf_id = req.body.lcf_id;
+  let queryText = `UPDATE student SET status = 'inactive' WHERE  lcf_id = $1`;
+  pool
+    .query(queryText, [lcf_id])
 
+    .then(function (result) {
+      console.log("Update entry item for id of", lcf_id);
+      // it worked!
+      res.send(result.rows);
+    })
+    .catch(function (error) {
+      console.log("Sorry, there was an error with your query: ", error);
+      res.sendStatus(500); // HTTP SERVER ERROR
+    });
+});//end PUT
+
+router.put("/activate", (req, res) => {
+  // grabs id and places it in path
+  const lcf_id = req.body.lcf_id;
+  let queryText = `UPDATE student SET status = 'active' WHERE  lcf_id = $1`;
+  pool
+    .query(queryText, [lcf_id])
+
+    .then(function (result) {
+      console.log("Update entry item for id of", lcf_id);
+      // it worked!
+      res.send(result.rows);
+    })
+    .catch(function (error) {
+      console.log("Sorry, there was an error with your query: ", error);
+      res.sendStatus(500); // HTTP SERVER ERROR
+    });
+});//end PUT
+// // end PUT /api/student/lcf_id
 
 
 

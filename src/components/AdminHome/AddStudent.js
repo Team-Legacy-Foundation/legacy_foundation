@@ -61,7 +61,7 @@ class AddStudent extends Component {
             student_email: this.state.student_email,
             password: this.state.password,
             pif_amount: this.state.pif_amount,
-            created_at: this.state.created_at
+            created_at: this.state.created_at,
         },
       });
 

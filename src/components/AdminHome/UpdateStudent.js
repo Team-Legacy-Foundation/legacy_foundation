@@ -76,11 +76,12 @@ class UpdateStudent extends Component {
           //created_at: this.state.created_at,
         },
       });
-      this.props.history.push("/home")
+      this.props.history.push("/home");
     } else {
       this.props.dispatch({ type: "UPDATE_STUDENT_ERROR" });
     }
   }; // end updateStudent
+
 
   //This function handles storing input values into state on change
   handleInputChangeFor = (propertyName) => (event) => {
@@ -92,16 +93,8 @@ class UpdateStudent extends Component {
   render() {
     return (
       <div>
-        <div className="navbuttonscontainer">
-          <Link to="/home">
-            <Button variant="outline-primary">Home</Button>
-          </Link>{" "}
-        </div>
         <h1 style={{ width: "50%", margin: "2% 40%" }}>
           Update Student Information
-          {JSON.stringify(
-            this.props.students[0] && this.props.students[0].first_name
-          )}
         </h1>
 
         {/* <Card border = "info" style={{ width: '90%', margin: '3% auto' }} > */}
@@ -225,14 +218,14 @@ class UpdateStudent extends Component {
               />
             </Col>
           </Row>
-            <Button
-              onClick={(event) => this.updateStudent(event)}
-              variant="success"
-              type="submit"
-              style={{ width: "40%", margin: "7% 30% 2%" }}
-            >
-              Update Student Info
-            </Button>
+          <Button
+            onClick={(event) => this.updateStudent(event)}
+            variant="success"
+            type="submit"
+            style={{ width: "40%", margin: "7% 30% 2%" }}
+          >
+            Update Student Info
+          </Button>
         </Form>
         {/* </Card> */}
       </div>
