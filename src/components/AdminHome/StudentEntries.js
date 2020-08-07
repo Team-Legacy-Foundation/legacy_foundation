@@ -29,8 +29,7 @@ class AdminHome extends Component {
 
 runReport() {
   this.props.dispatch({type: 'FETCH_CALCULATIONS'})
-  this.forceUpdate();
-  // this.renderRedirect();
+
 }
 renderRedirect = () => {
 //this.props.history.push("/opentransactions");
@@ -198,6 +197,7 @@ renderRedirect = () => {
           columns={columns}
           title={"Entry History"}
         />
+        <Button style={{margin:'3%'}} onClick={(event)=>this.runReport(event)}>Run Report</Button> 
       </div>
     );
   }
@@ -254,6 +254,7 @@ renderRedirect = () => {
     );
     return studentsArray;
   };
+  
 }
 
 const mapStateToProps = (state) => ({
