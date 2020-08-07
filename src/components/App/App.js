@@ -30,12 +30,16 @@ import AdminUpdateEntry from '../AdminHome/AdminUpdateEntry';
 import AddAdmin from '../AdminHome/AddAdmin';
 import AdminResetPassword from '../AdminHome/AdminResetPassword';
 import StudentResetPassword from '../StudentHome/ResetStudentPassword';
+import OpenTransactions from '../OpenTransactions/OpenTransactions';
+import ChargeStudent from '../ChargeStudent/ChargeStudent';
 
 
 
 class App extends Component {
   componentDidMount() {
     this.props.dispatch({ type: "FETCH_USER" });
+    
+    
 
     // this.props.dispatch({
     //   type: "GET_STUDENTS",
@@ -108,6 +112,16 @@ class App extends Component {
               exact
               path="/resetadminpassword"
               component={AdminResetPassword}
+            />
+            <ProtectedRoute
+              exact
+              path="/opentransactions"
+              component={OpenTransactions}
+            />
+            <ProtectedRoute
+              exact
+              path="/chargestudent"
+              component={ChargeStudent}
             />
 
             {/* If none of the other routes matched, we will show a 404. */}

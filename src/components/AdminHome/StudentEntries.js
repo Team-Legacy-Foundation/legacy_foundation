@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import MUITable from "../MUITable/MUITable";
+
 import moment from "moment";
 import { withRouter } from "react-router";
 import Swal from "sweetalert2";
@@ -18,9 +20,24 @@ class AdminHome extends Component {
       type: "GET_ADMIN",
     });
 
+
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
+  }
+
+
+runReport() {
+  this.props.dispatch({type: 'FETCH_CALCULATIONS'})
+  this.forceUpdate();
+  // this.renderRedirect();
+}
+renderRedirect = () => {
+//this.props.history.push("/opentransactions");
+  // if (this.props.calculations.length > 0) {
+  //     return  <Redirect to = '/opentransactions'/>
+  //   }
+    
   }
 
   render() {
@@ -62,6 +79,7 @@ class AdminHome extends Component {
                   //     lcf_id: student.lcf_id,
                   //   },
                   // });
+
 
                   this.props.dispatch({
                     type: "GET_STUDENT_FOR_EDIT",
@@ -187,6 +205,7 @@ class AdminHome extends Component {
   filterStudentArray = (entries) => {
     return entries.filter(
     (entry) =>
+
                     entry.first_name&&
                     entry.last_name&&
                     entry.lcf_id &&
@@ -203,8 +222,10 @@ class AdminHome extends Component {
                     entry.current_service_hours&&
                     entry.hw_rm_attended&&
                     entry.comments
+
     );
   };
+
 
   // this IS A SELECTOR: it takes some state, and it
   // returns some derived state. In other words, if you
@@ -238,7 +259,9 @@ class AdminHome extends Component {
 const mapStateToProps = (state) => ({
   user: state.user,
   students: state.students.studentlist,
+
   entries: state.students.studententriesadmin
+
 });
 
 export default withRouter(connect(mapStateToProps)(AdminHome));
