@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 // import Card from 'react-bootstrap/Card';
 import { Link } from "react-router-dom";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 class UpdatePassword extends Component {
   state = {
@@ -47,6 +48,11 @@ let id = url_array[url_array.length-1];
           lcf_id: id,
         },
       });
+         Swal.fire({
+           icon: "Success",
+           title: "Activation",
+           text: `Student number ${id} password has been reset`,
+         });
       
       this.props.history.push("/home");
     } else {
@@ -65,7 +71,6 @@ let id = url_array[url_array.length-1];
     return (
       <div>
         <h1 style={{ width: "50%", margin: "2% 40%" }}>
-            {JSON.stringify(this.state)}
           Update Student Password
         </h1>
         <Form>

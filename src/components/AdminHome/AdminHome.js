@@ -56,7 +56,7 @@ class AdminHome extends Component {
                         });
                         Swal.fire({
                           icon: "Success",
-                          title: "Activation status change",
+                          title: "Deactivation",
                           text: `Student number ${student.lcf_id} activation status has been successfully deactivated` ,
                         });
                         this.props.dispatch({
@@ -85,7 +85,7 @@ class AdminHome extends Component {
                         });
                            Swal.fire({
                              icon: "Success",
-                             title: "Activation status change",
+                             title: "Activation",
                              text: `Student number ${student.lcf_id} activation status has been successfully activated`,
                            });
                         this.props.dispatch({

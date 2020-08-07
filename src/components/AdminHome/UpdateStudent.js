@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 // import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import moment from "moment";
+import Swal from "sweetalert2";
 
 
 
@@ -120,24 +121,44 @@ let id = url_array[url_array.length-1];
       // this.state.password &&
       this.state.pif_amount
     ) {
-      //send the updated student to the server through a redux saga
-      this.props.dispatch({
-        type: "UPDATE_STUDENT",
-        payload: {
-          first_name: this.state.first_name,
-          last_name: this.state.last_name,
-          grade: this.state.grade,
-          grad_year: this.state.grad_year,
-          school_attend: this.state.school_attend,
-          lcf_id: this.state.lcf_id,
-          lcf_start_date: this.state.lcf_start_date,
-          student_email: this.state.student_email,
-          password: this.state.password,
-          pif_amount: this.state.pif_amount,
-          //created_at: this.state.created_at,
-        },
-      });
-      this.props.history.push("/home");
+       Swal.fire({
+         title: "Please confirm details below",
+         html: `1. First Name: ${this.state.first_name} </br>
+      2. Last Name: ${this.state.last_name} </br>
+      3. Student Grade: ${this.state.grade} </br>
+      4. Student Year: ${this.state.grad_year} </br>
+      5. School ${this.state.school_attend} </br>
+      6. ID Number ${this.state.lcf_id} </br>
+      7. Email Address: ${this.state.student_email} </br>
+      8. PIF Amount: ${this.state.pif_amount} </br>`,
+         icon: "question",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Confirm my entry",
+       }).then((result) => {
+         if (result.value) {
+           //send the updated student to the server through a redux saga
+           this.props.dispatch({
+             type: "UPDATE_STUDENT",
+             payload: {
+               first_name: this.state.first_name,
+               last_name: this.state.last_name,
+               grade: this.state.grade,
+               grad_year: this.state.grad_year,
+               school_attend: this.state.school_attend,
+               lcf_id: this.state.lcf_id,
+               lcf_start_date: this.state.lcf_start_date,
+               student_email: this.state.student_email,
+               password: this.state.password,
+               pif_amount: this.state.pif_amount,
+               //created_at: this.state.created_at,
+             },
+           });
+           Swal.fire("Success!", "Your entry has been logged.", "success");
+           this.props.history.push("/home");
+         }
+       });
     } else {
       this.props.dispatch({ type: "UPDATE_STUDENT_ERROR" });
     }
@@ -274,7 +295,7 @@ let id = url_array[url_array.length-1];
                 onChange={this.handleInputChangeFor("student_email")}
               />
             </Col>
-            <Col>
+            {/* <Col>
               <Form.Label>Student Password</Form.Label>
               <Form.Control
                 placeholder="Student Password"
@@ -283,7 +304,7 @@ let id = url_array[url_array.length-1];
                 value={this.state.password}
                 onChange={this.handleInputChangeFor("password")}
               />
-            </Col>
+            </Col> */}
           </Row>
           <Button
             onClick={(event) => this.updateStudent(event)}
