@@ -71,13 +71,14 @@ router.post("/", (req, res) => {
     const date = new Date();
     const queryText = `
 
-        INSERT INTO "entry" (lcf_id, pass_class, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`; //grabs database
+        INSERT INTO "entry" (lcf_id, pass_class, pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`; //grabs database
 
     pool
       .query(queryText, [
         lcf_id,
         pass_class,
+        '01/01/01',
         date,
         gpa,
         clean_attend,
