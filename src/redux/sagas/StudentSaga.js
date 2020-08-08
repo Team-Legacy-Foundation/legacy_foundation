@@ -194,7 +194,7 @@ function* resetStudentPassword(action) {
 
              //passes the incoming new student password info from the payload to the server
              console.log('we are about to reset the student password', action.payload);
-             const response = yield axios.put(`/api/user/studentpasswordreset/${action.payload.student_id}`, action.payload);
+             const response = yield axios.put(`/api/user/studentpasswordreset/${action.payload.lcf_id}`, action.payload);
              
              yield put({ type: "SET_USER", payload: response.data });
             console.log("Success in updating new password or email.");

@@ -125,7 +125,7 @@ class AdminResetPassword extends Component {
                 style={{ width: "40%", margin: "7% 30% 2%" }}
               >
                 Submit Admin Info
-              </Button>
+              </Button> 
             </Link>
           </Form>
         </Card>
