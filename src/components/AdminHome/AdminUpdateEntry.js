@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import { green, yellow } from "@material-ui/core/colors";
 import {
@@ -42,18 +42,9 @@ const YellowRadio = withStyles({
 
 //The purpose of this page is to update the student's entry this past pay period
 
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//TODO: when updating a student entry, have the previous information populate the update page
-//That way the admin DOES NOT have to rewrite everything.
-//They will change only what is needed
-
-//OR are you saying that they can't choose the specific entry? they just have to have the first and last name match up? - Kyle
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class AdminUpdateEntry extends Component {
   state = {
-
-    lcf_id: '',
+    lcf_id: "",
     pass_class: "",
     gpa: 0,
     absent: 0,
@@ -68,6 +59,36 @@ class AdminUpdateEntry extends Component {
     hw_rm_attended: "",
     comments: "",
   };
+
+  componentDidMount() {
+    let url_array = document.location.href.split("/");
+
+    let id = url_array[url_array.length - 1];
+
+    this.props.entries.map((item, index) => {
+      if (item.lcf_id === Number(id)) {
+        console.log("HELLO", item);
+        this.setState({
+          lcf_id: item.lcf_id,
+          pass_class: item.pass_class,
+          gpa: item.gpa,
+          absent: item.absent,
+          tardy: item.tardy,
+          late: item.late,
+          clean_attend: item.clean_attend,
+          detent_hours:item.detent_hours,
+          act_or_job: item.act_or_job,
+          passed_ua: item.passed_ua,
+          current_service_hours: item.current_service_hours,
+          hw_rm_attended: item.hw_rm_attended,
+          comments:item.comments
+        });
+      } else {
+        console.log("FAIL", item.lcf_id);
+        console.log(id);
+      }
+    });
+  }
 
   handleChange = (event, fieldName) => {
     this.setState({ [fieldName]: event.target.value });
@@ -112,24 +133,23 @@ class AdminUpdateEntry extends Component {
   submitInfo = (event) => {
     event.preventDefault();
 
-
-    const { pass_class,
-       lcf_id,
-       gpa,
-       absent,
-       tardy,
-       late,
-       truant,
-       clean_attend,
-       detent_hours,
-       after_school,
-       act_or_job,
-       passed_ua,
-       current_service_hours,
-       hw_rm_attended,
-       comments, } = this.state;
-
-
+    const {
+      pass_class,
+      lcf_id,
+      gpa,
+      absent,
+      tardy,
+      late,
+      truant,
+      clean_attend,
+      detent_hours,
+      after_school,
+      act_or_job,
+      passed_ua,
+      current_service_hours,
+      hw_rm_attended,
+      comments,
+    } = this.state;
 
     Swal.fire({
       title: "Please confirm details below",
@@ -147,40 +167,39 @@ class AdminUpdateEntry extends Component {
       8. service hours: ${current_service_hours} </br>
       9. homeroom attendence: ${hw_rm_attended} </br>
       10. comments: ${comments}`,
-         icon: "question",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Confirm my entry",
-       }).then((result) => {
-         if (result.value) {
-            this.props.dispatch({
-              type: "ADMIN_ENTRY_UPDATE",
-              payload: {
-                pass_class: pass_class,
-                gpa: gpa,
-                lcf_id: lcf_id,
-                absent: absent,
-                tardy: tardy,
-                late: late,
-                truant: truant,
-                clean_attend: clean_attend,
-                detent_hours: detent_hours,
-                after_school: after_school,
-                act_or_job: act_or_job,
-                passed_ua: passed_ua,
-                current_service_hours: current_service_hours,
-                hw_rm_attended: hw_rm_attended,
-                comments: comments,
-              },
-            });
-           Swal.fire("Success!", "Your entry update has been logged.", "success");
-           this.props.history.push("/home");
-           console.log("state is", this.state);
-         }
-       });
-    }
-
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirm my entry",
+    }).then((result) => {
+      if (result.value) {
+        this.props.dispatch({
+          type: "ADMIN_ENTRY_UPDATE",
+          payload: {
+            lcf_id: lcf_id,
+            pass_class: pass_class,
+            gpa: gpa,
+            absent: absent,
+            tardy: tardy,
+            late: late,
+            truant: truant,
+            clean_attend: clean_attend,
+            detent_hours: detent_hours,
+            after_school: after_school,
+            act_or_job: act_or_job,
+            passed_ua: passed_ua,
+            current_service_hours: current_service_hours,
+            hw_rm_attended: hw_rm_attended,
+            comments: comments,
+          },
+        });
+        Swal.fire("Success!", "Your entry update has been logged.", "success");
+        this.props.history.push("/home");
+        console.log("state is", this.state);
+      }
+    });
+  };
 
   navToStudentEntries = () => {
     //goes to details page
@@ -197,90 +216,90 @@ class AdminUpdateEntry extends Component {
       max: 10,
       min: 0,
     };
-       const marks = [
-         {
-           value: 0,
-           label: "0",
-         },
-         {
-           value: 1,
-           label: "1",
-         },
-         {
-           value: 2,
-           label: "2",
-         },
-         {
-           value: 3,
-           label: "3",
-         },
-         {
-           value: 4,
-           label: "4",
-         },
-         {
-           value: 5,
-           label: "5",
-         },
-         {
-           value: 6,
-           label: "6",
-         },
-         {
-           value: 7,
-           label: "7",
-         },
-         {
-           value: 8,
-           label: "8",
-         },
-         {
-           value: 9,
-           label: "9",
-         },
-         {
-           value: 10,
-           label: "10",
-         },
-       ];
-       const marksGpa = [
-         {
-           value: 0,
-           label: "0",
-         },
-         {
-           value: 0.5,
-           label: "0.5",
-         },
-         {
-           value: 1,
-           label: "1",
-         },
-         {
-           value: 1.5,
-           label: "1.5",
-         },
-         {
-           value: 2,
-           label: "2",
-         },
-         {
-           value: 2.5,
-           label: "2.5",
-         },
-         {
-           value: 3,
-           label: "3",
-         },
-         {
-           value: 3.5,
-           label: "3.5",
-         },
-         {
-           value: 4,
-           label: "4",
-         },
-       ];
+    const marks = [
+      {
+        value: 0,
+        label: "0",
+      },
+      {
+        value: 1,
+        label: "1",
+      },
+      {
+        value: 2,
+        label: "2",
+      },
+      {
+        value: 3,
+        label: "3",
+      },
+      {
+        value: 4,
+        label: "4",
+      },
+      {
+        value: 5,
+        label: "5",
+      },
+      {
+        value: 6,
+        label: "6",
+      },
+      {
+        value: 7,
+        label: "7",
+      },
+      {
+        value: 8,
+        label: "8",
+      },
+      {
+        value: 9,
+        label: "9",
+      },
+      {
+        value: 10,
+        label: "10",
+      },
+    ];
+    const marksGpa = [
+      {
+        value: 0,
+        label: "0",
+      },
+      {
+        value: 0.5,
+        label: "0.5",
+      },
+      {
+        value: 1,
+        label: "1",
+      },
+      {
+        value: 1.5,
+        label: "1.5",
+      },
+      {
+        value: 2,
+        label: "2",
+      },
+      {
+        value: 2.5,
+        label: "2.5",
+      },
+      {
+        value: 3,
+        label: "3",
+      },
+      {
+        value: 3.5,
+        label: "3.5",
+      },
+      {
+        value: 4,
+        label: "4",
+      },
+    ];
 
     return (
       <div>
@@ -344,7 +363,11 @@ class AdminUpdateEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
+                <FormControlLabel
+                  value="No"
+                  control={<YellowRadio />}
+                  label="No"
+                />
               </RadioGroup>
             </FormControl>
             <p>3. What is your current GPA?</p>
@@ -493,7 +516,11 @@ class AdminUpdateEntry extends Component {
                 value={this.state.detent_hours}
                 onChange={(event) => this.handleChange(event, "detent_hours")}
               >
-                <FormControlLabel value="Yes" control={<YellowRadio />} label="Yes" />
+                <FormControlLabel
+                  value="Yes"
+                  control={<YellowRadio />}
+                  label="Yes"
+                />
                 <FormControlLabel
                   value="No"
                   control={<GreenRadio />}
@@ -519,7 +546,11 @@ class AdminUpdateEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
+                <FormControlLabel
+                  value="No"
+                  control={<YellowRadio />}
+                  label="No"
+                />
               </RadioGroup>
             </FormControl>
             <br />
@@ -557,7 +588,11 @@ class AdminUpdateEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
+                <FormControlLabel
+                  value="No"
+                  control={<YellowRadio />}
+                  label="No"
+                />
               </RadioGroup>
             </FormControl>
             <br />
@@ -618,7 +653,11 @@ class AdminUpdateEntry extends Component {
                   control={<GreenRadio />}
                   label="Yes"
                 />
-                <FormControlLabel value="No" control={<YellowRadio />} label="No" />
+                <FormControlLabel
+                  value="No"
+                  control={<YellowRadio />}
+                  label="No"
+                />
               </RadioGroup>
             </FormControl>{" "}
             <br /> <br />
@@ -667,6 +706,7 @@ class AdminUpdateEntry extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  entries: state.students.studententriesadmin,
 });
 
 export default withRouter(connect(mapStateToProps)(AdminUpdateEntry));

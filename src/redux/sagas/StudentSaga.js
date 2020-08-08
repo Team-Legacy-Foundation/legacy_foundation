@@ -175,7 +175,7 @@ function * getStudentEntriesForAdmin (action){
 function* adminentryupdate(action){
     console.log('We are updating a student entry', action.payload);
     try {
-        const response = yield axios.put(`/api/student/${action.payload.lcf_id}`, action.payload);
+        const response = yield axios.put(`/api/student/updateentry/${action.payload.lcf_id}`, action.payload);
        
         yield put({type: 'SET_STUDENT_ENTRIES_ADMIN_VIEW', payload: response.data});
 

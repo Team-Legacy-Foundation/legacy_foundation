@@ -110,7 +110,7 @@ class AdminHome extends Component {
           empty: true,
           customBodyRenderLite: (dataIndex, rowIndex) => {
             return (
-              <button
+              <button 
                 onClick={() => {
                   // const studentsArray = this.getStudentArray(this.props.students);
                   // const student = studentsArray[dataIndex];

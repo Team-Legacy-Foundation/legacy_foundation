@@ -140,7 +140,7 @@ let id = url_array[url_array.length-1];
          if (result.value) {
            //send the updated student to the server through a redux saga
            this.props.dispatch({
-             type: "UPDATE_STUDENT",
+             type: "UPDATE_STUDENT", 
              payload: {
                first_name: this.state.first_name,
                last_name: this.state.last_name,
