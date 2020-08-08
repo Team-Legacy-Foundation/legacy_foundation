@@ -78,6 +78,7 @@ class AddStudent extends Component {
             password: '',
             pif_amount: ''
         });
+        this.props.history.push("/home"); //push admin back to homepage after successful submission
     } else {
       this.props.dispatch({type: 'ADD_STUDENT_ERROR'});
     }
