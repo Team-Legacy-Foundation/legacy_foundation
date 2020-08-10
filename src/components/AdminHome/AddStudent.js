@@ -23,7 +23,7 @@ class AddStudent extends Component {
     student_email: '',
     password: '',
     pif_amount: '',
-    created_at: moment.utc().format()
+    
       }
 
 //This function dispatched our newly added student to the database from state
@@ -61,9 +61,11 @@ class AddStudent extends Component {
             student_email: this.state.student_email,
             password: this.state.password,
             pif_amount: this.state.pif_amount,
-            created_at: this.state.created_at,
+            
         },
+        
       });
+      
 
 
       this.setState({
@@ -76,7 +78,8 @@ class AddStudent extends Component {
             lcf_start_date: '',
             student_email: '',
             password: '',
-            pif_amount: ''
+            pif_amount: '',
+            
         });
         this.props.history.push("/home"); //push admin back to homepage after successful submission
     } else {

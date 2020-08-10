@@ -54,4 +54,15 @@ router.get('/confirm', (req, res) => {
     });
 });
 
+router.delete("/:id", (req, res) => {
+    pool
+      .query('DELETE FROM "open_transaction" WHERE id=$1', [req.params.id])
+      .then((result) => {
+        res.sendStatus(204); //No Content
+      })
+      .catch((error) => {
+        console.log("Error DELETE ", error);
+        res.sendStatus(500);
+      });
+  });
 module.exports = router;
