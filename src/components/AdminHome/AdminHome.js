@@ -262,7 +262,11 @@ class AdminHome extends Component {
           columns={columns}
           title={"LCF Student List"}
         />
+        <br/>
+      <br/>
+      <br/>
       </div>
+      
     );
   }
 
