@@ -20,6 +20,7 @@ import { Alert } from "@material-ui/lab";
 import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
 import "./MakeEntry.css";
+import moment from 'moment';
 
 const GreenRadio = withStyles({
   root: {
@@ -41,16 +42,14 @@ const YellowRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-//The purpose of this page is to capture the student's activvity the past pay period
+//The purpose of this page is to capture the student's activity the past pay period
 //REVIEW: Do we want job and activity to be sepate questions?
 //They technically both go into the same column
 //Either can work, but I think just asking one question is easier
 class MakeEntry extends Component {
   state = {
-
     lcf_id: this.props.user.lcf_id,
     pass_class: "",
-
     gpa: 0,
     absent: 0,
     tardy: 0,
@@ -65,7 +64,35 @@ class MakeEntry extends Component {
     hw_rm_attended: null,
     comments: null,
     error: false,
-    
+    dupeEntry: false,
+  };
+
+  componentDidMount() {
+    this.props.dispatch({
+      type: "FETCH_ENTRIES_FOR_ADMIN",
+    });
+    this.testEntry();
+  }
+  testEntry = () => {
+    // let { entries } = this.props;
+    // let date = moment();
+    // for (let entry of entries) {
+    //   console.log("entry.pay_day", entry.pay_day);
+    //   console.log("entry.previous_pay_day", entry.previous_pay_day);
+    //   entry.pay_day = new Date(entry.pay_day);
+    //   entry.previous_pay_day = new Date(entry.previous_pay_day);
+    //   console.log("type of entry.pay_day", typeof entry.pay_day);
+    //   console.log(
+    //     "type of entry.previous_pay_day",
+    //     typeof entry.previous_pay_day
+    //   );
+    //   if (entry.pay_day > date || entry.previous_pay_day <= date) {
+    //     this.setState({
+    //       dupeEntry: true,
+    //     });
+    //     return;
+    //   }
+    // }
   };
 
   handleChange = (event, fieldName) => {
@@ -126,17 +153,25 @@ class MakeEntry extends Component {
       current_service_hours,
       hw_rm_attended,
       comments,
-      
     } = this.state;
-    if (pass_class === null || detent_hours === null || act_or_job === null || passed_ua === null || current_service_hours === null || current_service_hours === undefined || current_service_hours === "" || hw_rm_attended === null) {
+    if (
+      pass_class === null ||
+      detent_hours === null ||
+      act_or_job === null ||
+      passed_ua === null ||
+      current_service_hours === null ||
+      current_service_hours === undefined ||
+      current_service_hours === "" ||
+      hw_rm_attended === null
+    ) {
       this.setState({
         error: true,
-      })
+      });
 
       setTimeout(() => {
-           this.setState({
-             error: false,
-           });
+        this.setState({
+          error: false,
+        });
       }, 5000);
       return;
     }
@@ -180,7 +215,6 @@ class MakeEntry extends Component {
             current_service_hours: current_service_hours,
             hw_rm_attended: hw_rm_attended,
             comments: comments,
-            
           },
         });
         Swal.fire("Success!", "Your entry has been logged.", "success");
@@ -285,9 +319,23 @@ class MakeEntry extends Component {
       },
     ];
 
+    let { entries } = this.props;
+    let date = moment();
+    for (let entry of entries) {
+      
+      entry.pay_day = new Date(entry.pay_day);
+      entry.previous_pay_day = new Date(entry.previous_pay_day);
+      
+      if (entry.pay_day > date || entry.previous_pay_day <= date) {
+        return <div>Entry already submitted for this pay period, please check back next pay period</div>
+      }
+
+    }
+
     return (
+  
       <div>
-        <br />
+          <br />
         {this.state.error === true && (
           <Alert className="error" style={{}} severity="error">
             Please fill out all of the required fields
@@ -620,19 +668,28 @@ class MakeEntry extends Component {
             <br />
             <br />
             <center>
+              <Button style={{ margin: "6%" }}
+                variant="contained"
+                color="secondary"
+                className="button"
+                onClick={()=>{this.props.history.push("/home")}}
+              >
+                Cancel Entry
+              </Button>
+
               <Button
                 variant="contained"
                 type="submit"
                 color="primary"
                 className="button"
               >
-                Submit entry
+                Submit Entry
               </Button>
             </center>
           </form>
         </Paper>
         <br />
-        {console.log(this.props.user)}
+
       </div>
     );
   }
@@ -640,6 +697,7 @@ class MakeEntry extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  entries: state.students.studententriesadmin,
 });
 
 export default withRouter(connect(mapStateToProps)(MakeEntry));
