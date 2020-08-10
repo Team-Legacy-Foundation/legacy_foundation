@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import MUITable from "../MUITable/MUITable";
-
-import moment from "moment";
 import { withRouter } from "react-router";
-import Swal from "sweetalert2";
+
 //import { response } from "express";
 
 class StudentEntries extends Component {
