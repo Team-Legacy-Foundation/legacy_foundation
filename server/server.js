@@ -14,6 +14,7 @@ const studentRouter = require('./routes/student.router');
 const adminRouter = require('./routes/admin.router');
 
 const entryRouter = require('./routes/entry.router');
+const chargeRouter = require('./routes/charge.router');
 
 
 // Body parser middleware
@@ -38,6 +39,8 @@ app.use('/api/student', studentRouter);
 app.use('/api/admin', adminRouter);
 
 app.use('/entry', entryRouter);
+
+app.use('/charge', chargeRouter);
 
 
 // Serve static files
