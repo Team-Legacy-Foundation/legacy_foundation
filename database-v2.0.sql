@@ -1,4 +1,4 @@
-CREATE TABLE "user" (
+CREATE OR REPLACE TABLE "user" (
 	"id" SERIAL PRIMARY KEY,
     "lcf_id" int,
     "admin_id" int,
@@ -11,7 +11,7 @@ CREATE TABLE "user" (
 
 
 
-CREATE TABLE "admin" (
+CREATE OR REPLACE TABLE "admin" (
 	"id" serial NOT NULL,
 	"first_name" varchar(255) NOT NULL,
 	"last_name" varchar(255) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE "admin" (
 
 
 
-CREATE TABLE "student" (
+CREATE OR REPLACE TABLE "student" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL UNIQUE,
 	"first_name" varchar(255) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE "student" (
 
 
 
-CREATE TABLE "entry" (
+CREATE OR REPLACE TABLE "entry" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL,
 	"pay_day" DATE,
@@ -64,7 +64,7 @@ CREATE TABLE "entry" (
 	"passed_ua" varchar(255) NOT NULL,
 	"current_service_hours" integer NOT NULL,
 	"hw_rm_attended" varchar(255) NOT NULL,
-	"comments" varchar(255) NOT NULL,
+	"comments" varchar(255) ,
 	"bonus_amount" NUMERIC(10,2) NOT NULL DEFAULT 0,
 	"bonus_comments" varchar(255),
 	CONSTRAINT "entry_pk" PRIMARY KEY ("id")
@@ -74,7 +74,7 @@ CREATE TABLE "entry" (
 
 
 
-CREATE TABLE "open_transaction" (
+CREATE OR REPLACE TABLE "open_transaction" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL,
 	"first_name" varchar(255) NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE "open_transaction" (
 
 
 
-CREATE TABLE "gpa_rates" (
+CREATE OR REPLACE TABLE "gpa_rates" (
 	"id" serial NOT NULL,
 	"gpa" NUMERIC(10,2) NOT NULL,
 	"amount" NUMERIC(10,2) NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE "gpa_rates" (
 
 
 
-CREATE TABLE "daily_rates" (
+CREATE OR REPLACE TABLE "daily_rates" (
 	"id" serial NOT NULL,
 	"school_year" integer NOT NULL,
 	"amount" NUMERIC(10,2) NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE "daily_rates" (
 
 
 
-CREATE TABLE "charge_student" (
+CREATE OR REPLACE TABLE "charge_student" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL,
 	"admin_id" integer NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE "charge_student" (
 
 
 
-CREATE TABLE "history" (
+CREATE OR REPLACE TABLE "history" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL,
 	"first_name" varchar(255) NOT NULL,
