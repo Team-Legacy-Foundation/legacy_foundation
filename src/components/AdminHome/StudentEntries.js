@@ -39,7 +39,8 @@ class StudentEntries extends Component {
           empty: true,
           customBodyRenderLite: (dataIndex, rowIndex) => {
             return (
-              <button
+              <Button
+              variant="warning"
                 onClick={() => {
                   const studentsArray = this.filterStudentArray(
                     this.props.entries
@@ -76,7 +77,7 @@ class StudentEntries extends Component {
                 }}
               >
                 Edit
-              </button>
+              </Button>
             );
           },
         },

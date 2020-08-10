@@ -686,14 +686,24 @@ class AdminUpdateEntry extends Component {
             />{" "}
             <br />
             <br />
-            <center>
+              <center>
+              <Button style={{ margin: "6%" }}
+                variant="contained"
+                color="secondary"
+                className="button"
+                onClick={()=>{this.props.history.push("/totalstudententries")}}
+              >
+                Cancel Update
+              </Button>
+          
+         
               <Button
                 variant="contained"
                 type="submit"
                 color="primary"
                 className="button"
               >
-                Submit entry
+                Submit Entry
               </Button>
             </center>
           </form>
