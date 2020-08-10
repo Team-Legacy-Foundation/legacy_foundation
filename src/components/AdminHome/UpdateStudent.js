@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from 'react-bootstrap/Row'
 import Button from "react-bootstrap/Button";
-// import Card from 'react-bootstrap/Card';
+import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import moment from "moment";
 import Swal from "sweetalert2";
@@ -178,13 +178,13 @@ let id = url_array[url_array.length-1];
 
     return (
       <div>
-        <h1 style={{ width: "50%", margin: "2% 40%" }}>
+        <h1 style={{ width: "50%", margin: "2% 35%" }}>
           Update Student Information
           
           
         </h1>
 
-        {/* <Card border = "info" style={{ width: '90%', margin: '3% auto' }} > */}
+        <Card border = "info" style={{ width: '90%', margin: '3% auto', padding: '2%' }} >
         <Form className="addstudent">
           {" "}
           {/* <== does this className need to change? */}
@@ -315,7 +315,7 @@ let id = url_array[url_array.length-1];
             Update Student Info
           </Button>
         </Form>
-        {/* </Card> */}
+        </Card>
       </div>
     );
   }

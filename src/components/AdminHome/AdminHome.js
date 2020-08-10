@@ -6,6 +6,7 @@ import MUITable from "../MUITable/MUITable";
 import moment from "moment";
 import { withRouter } from "react-router";
 import Swal from "sweetalert2";
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 //import { response } from "express";
 
 
@@ -39,7 +40,7 @@ class AdminHome extends Component {
             return (
               <div>
                 {student.inactive === "no" ? (
-                  <button
+                  <Button variant="danger"
                     onClick={(event) => {
                       event.preventDefault();
                       const studentsArray = this.filterStudentArray(
@@ -66,9 +67,9 @@ class AdminHome extends Component {
                     }}
                   >
                     Deactivate
-                  </button>
+                  </Button>
                 ) : (
-                  <button
+                  <Button variant="success"
                     onClick={(event) => {
                       event.preventDefault();
                       const studentsArray = this.filterStudentArray(
@@ -95,7 +96,7 @@ class AdminHome extends Component {
                     }}
                   >
                     Activate
-                  </button>
+                  </Button>
                 )}
               </div>
             );
@@ -110,7 +111,7 @@ class AdminHome extends Component {
           empty: true,
           customBodyRenderLite: (dataIndex, rowIndex) => {
             return (
-              <button 
+              <Button variant="warning"
                 onClick={() => {
                   // const studentsArray = this.getStudentArray(this.props.students);
                   // const student = studentsArray[dataIndex];
@@ -149,7 +150,7 @@ class AdminHome extends Component {
                 }}
               >
                 Edit
-              </button>
+              </Button>
             );
           },
         },
@@ -162,7 +163,7 @@ class AdminHome extends Component {
           empty: true,
           customBodyRenderLite: (dataIndex, rowIndex) => {
             return (
-              <button
+              <Button variant="warning"
                 onClick={() => {
                   // const studentsArray = this.getStudentArray(this.props.students);
                   // const student = studentsArray[dataIndex];
@@ -176,8 +177,8 @@ class AdminHome extends Component {
                   this.props.history.push(`/updatepassword/${student.lcf_id}`); //this pushes admin to edit page for select student
                 }}
               >
-                Reset Password
-              </button>
+               <RotateLeftIcon></RotateLeftIcon>
+              </Button>
             );
           },
         },

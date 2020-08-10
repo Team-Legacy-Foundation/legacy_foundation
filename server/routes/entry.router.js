@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   pool
-    .query("SELECT * from entry WHERE id=$1",[req.params.id])
+    .query("SELECT * from entry WHERE lcf_id=$1",[req.params.id])
     .then((result) => {
       res.send(result.rows);
     })
@@ -85,8 +85,13 @@ router.post("/", (req, res) => {
 
     const queryText = `
 
+<<<<<<< HEAD
         INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`; //grabs database
+=======
+        INSERT INTO "entry" (lcf_id, pass_class, pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) returning id, lcf_id;`; //grabs database
+>>>>>>> 9914f7d98fabaf9309e0713c18a131ddb3123339
 
     pool
       .query(queryText, [

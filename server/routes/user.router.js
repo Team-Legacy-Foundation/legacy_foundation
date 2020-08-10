@@ -7,6 +7,7 @@ const pool = require("../modules/pool");
 const userStrategy = require("../strategies/user.strategy");
 
 const router = express.Router();
+const moment = require('moment');
 
 // Handles Ajax request for user information if user is authenticated
 router.get("/", rejectUnauthenticated, (req, res) => {
@@ -86,6 +87,7 @@ router.post("/addadmin", (req, res, next) => {
 //The password is encrypted before being inserted into the database
 router.post("/addstudent", (req, res, next) => {
   console.log("this is the new student we are about to register", req.body);
+ 
 
   // pull out the incoming object data
   
@@ -100,7 +102,7 @@ router.post("/addstudent", (req, res, next) => {
   const student_email = req.body.student_email;
   const password = encryptLib.encryptPassword(req.body.password);
   const pif_amount = Number(req.body.pif_amount).toFixed(2);
-  const created_at = req.body.created_at;
+  const created_at = moment.utc().format();
   const role = "student";
   const inactive = "no";
   const strikes = 0;
@@ -112,7 +114,7 @@ router.post("/addstudent", (req, res, next) => {
 
   const queryText = `INSERT INTO "student" 
                 (lcf_id, first_name, last_name, school_attend, school_id, student_email, password, grade, grad_year, created_at,   lcf_start_date, role,   pif_amount, strikes, inactive, balance_due)
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING id `;
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING lcf_id `;
   pool
     .query(queryText, [
       lcf_id,
@@ -139,7 +141,7 @@ router.post("/addstudent", (req, res, next) => {
       //lcf_id = result.rows[0].id;
       //now lets add student information to the user table
       const query2Text =
-        'INSERT INTO "user" (lcf_id, admin_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
+        'INSERT INTO "user" (lcf_id, admin_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6)';
       pool
         .query(query2Text, [
           lcf_id,
@@ -265,6 +267,19 @@ router.put(`/studentpasswordreset/:lcf_id`, (req, res) => {
 });
 // end PUT /api/user/studentpasswordreset/student_id
 
+//Need to delete for testing purposes
+//DELETE student
+router.delete("/:id", (req, res) => {
+  pool
+    .query('DELETE FROM "student" "user" WHERE lcf_id=$1', [req.params.id])
+    .then((result) => {
+      res.sendStatus(204); //No Content
+    })
+    .catch((error) => {
+      console.log("Error DELETE /api/order", error);
+      res.sendStatus(500);
+    });
+});
 
 
 module.exports = router;
