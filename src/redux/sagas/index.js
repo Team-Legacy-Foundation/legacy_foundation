@@ -7,6 +7,8 @@ import addEntrySaga from './addEntrySaga';
 import AdminSaga from './AdminSaga';
 import calculationsSaga from './calculationsSaga';
 import chargeSaga from './chargeSaga';
+import adminHistorySaga from './adminHistorySaga'
+import studentHistorySaga from './studentHistorySaga';
 
 
 // rootSaga is the primary saga.
@@ -25,7 +27,9 @@ export default function* rootSaga() {
     addEntrySaga(),
     AdminSaga(),
     calculationsSaga(),
-    chargeSaga()
+    chargeSaga(),
+    adminHistorySaga(),
+    studentHistorySaga()
 
 
   ]);
