@@ -42,7 +42,7 @@ const YellowRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-//The purpose of this page is to capture the student's activvity the past pay period
+//The purpose of this page is to capture the student's activity the past pay period
 //REVIEW: Do we want job and activity to be sepate questions?
 //They technically both go into the same column
 //Either can work, but I think just asking one question is easier
@@ -74,25 +74,25 @@ class MakeEntry extends Component {
     this.testEntry();
   }
   testEntry = () => {
-    let { entries } = this.props;
-    let date = moment();
-    for (let entry of entries) {
-      console.log("entry.pay_day", entry.pay_day);
-      console.log("entry.previous_pay_day", entry.previous_pay_day);
-      entry.pay_day = new Date(entry.pay_day);
-      entry.previous_pay_day = new Date(entry.previous_pay_day);
-      console.log("type of entry.pay_day", typeof entry.pay_day);
-      console.log(
-        "type of entry.previous_pay_day",
-        typeof entry.previous_pay_day
-      );
-      if (entry.pay_day > date || entry.previous_pay_day <= date) {
-        this.setState({
-          dupeEntry: true,
-        });
-        return;
-      }
-    }
+    // let { entries } = this.props;
+    // let date = moment();
+    // for (let entry of entries) {
+    //   console.log("entry.pay_day", entry.pay_day);
+    //   console.log("entry.previous_pay_day", entry.previous_pay_day);
+    //   entry.pay_day = new Date(entry.pay_day);
+    //   entry.previous_pay_day = new Date(entry.previous_pay_day);
+    //   console.log("type of entry.pay_day", typeof entry.pay_day);
+    //   console.log(
+    //     "type of entry.previous_pay_day",
+    //     typeof entry.previous_pay_day
+    //   );
+    //   if (entry.pay_day > date || entry.previous_pay_day <= date) {
+    //     this.setState({
+    //       dupeEntry: true,
+    //     });
+    //     return;
+    //   }
+    // }
   };
 
   handleChange = (event, fieldName) => {
@@ -319,14 +319,23 @@ class MakeEntry extends Component {
       },
     ];
 
+    let { entries } = this.props;
+    let date = moment();
+    for (let entry of entries) {
+      
+      entry.pay_day = new Date(entry.pay_day);
+      entry.previous_pay_day = new Date(entry.previous_pay_day);
+      
+      if (entry.pay_day > date || entry.previous_pay_day <= date) {
+        return <div>Entry already submitted for this pay period, please check back next pay period</div>
+      }
+
+    }
+
     return (
   
       <div>
-         {this.state.dupeEntry === true ? (
-           <div>Entry already submitted for this pay period, please check back next pay period</div>
-         ) : (
-           <>
-                 <br />
+          <br />
         {this.state.error === true && (
           <Alert className="error" style={{}} severity="error">
             Please fill out all of the required fields
@@ -680,8 +689,6 @@ class MakeEntry extends Component {
           </form>
         </Paper>
         <br />
-        </>
-         )}
 
       </div>
     );
