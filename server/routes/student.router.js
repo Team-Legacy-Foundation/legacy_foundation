@@ -260,6 +260,20 @@ router.put("/activate", (req, res) => {
 });//end PUT
 // // end PUT /api/student/lcf_id
 
+///////////////////// Grabs value from the history table based on lcf_id ////////////////////////////////////
+
+router.get('/history/:id', (req, res) => {
+  const id = req.params.id
+  console.log('Grabbing all records from history');
+  const queryText = 'SELECT * FROM history WHERE lcf_id = $1'
+  pool.query(queryText, [id])
+  .then((result) => {
+      res.send(result.rows).status(200);
+  }).catch((error)=> {
+      console.log('Problem grabbing the history', error)
+      res.sendStatus(500);
+  });
+});
 
 
 
