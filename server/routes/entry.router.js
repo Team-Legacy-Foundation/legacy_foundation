@@ -67,18 +67,35 @@ router.post("/", (req, res) => {
         res.sendStatus(400); // 400 BAD REQUEST
         return;
     }
-    
-    const date = new Date();
+        let date = moment.utc();
+        let previous_pay_day = moment.utc("2020-08-10T00:00:00.000");
+        let pay_day = moment.utc(previous_pay_day)
+          .add(2, "week")
+
+    function getDate() {
+      if (date >= pay_day) {
+        previous_pay_day = pay_day
+         pay_day = moment(previous_pay_day)
+           .add(2, "week")
+           getDate();
+      }
+    }
+    getDate();
+
+
     const queryText = `
 
-        INSERT INTO "entry" (lcf_id, pass_class, pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) returning id, lcf_id;`; //grabs database
+
+        INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`; //grabs database
+
 
     pool
       .query(queryText, [
         lcf_id,
         pass_class,
-        '01/01/01',
+        pay_day,
+        previous_pay_day,
         date,
         gpa,
         clean_attend,
