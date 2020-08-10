@@ -8,7 +8,7 @@ import admin from './adminReducer';
 import editStudent from './editStudentReducer';
 import calculations from './calculationsReducer';
 import history from './historyReducer';
-import studentHistory from './studentTotalReducer';
+import studentHistory from './studentHistoryReducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.

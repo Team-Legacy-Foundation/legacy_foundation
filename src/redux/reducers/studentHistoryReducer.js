@@ -1,4 +1,5 @@
-const studentHistory = (state = [], action) => {
+import { combineReducers } from "redux";
+const studentHistoryReducer = (state = [], action) => {
     switch (action.type) {
       case "SET_STUDENT_HISTORY":
         return action.payload;
@@ -8,5 +9,5 @@ const studentHistory = (state = [], action) => {
   };
   
   export default combineReducers({
-    studentHistory,
+    studentHistoryReducer,
   });

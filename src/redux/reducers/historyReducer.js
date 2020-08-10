@@ -1,3 +1,4 @@
+import { combineReducers } from "redux";
 const history = (state = [], action) => {
     switch (action.type) {
       case "SET_HISTORY":

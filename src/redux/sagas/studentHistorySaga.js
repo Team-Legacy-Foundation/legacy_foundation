@@ -13,7 +13,7 @@ function* fetchStudentHistory(action) {
 }
 
 
-function* addEntrySaga() {
+function* studentHistorySaga() {
   
   yield takeLatest("FETCH_STUDENT_HISTORY", fetchStudentHistory)
 }

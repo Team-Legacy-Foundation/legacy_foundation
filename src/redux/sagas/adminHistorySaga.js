@@ -23,7 +23,7 @@ function* fetchHistory() {
 }
 
 
-function* addEntrySaga() {
+function* adminHistorySaga() {
   
   yield takeLatest("FETCH_CONFIRM", fetchConfirm);
   yield takeLatest("FETCH_HISTORY", fetchHistory)
