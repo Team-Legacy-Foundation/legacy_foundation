@@ -55,6 +55,7 @@ CREATE TABLE "entry" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL,
 	"pay_day" DATE,
+	"previous_pay_day" DATE,
 	"date_submitted" DATE NOT NULL,
 	"gpa" NUMERIC(10,2) NOT NULL,
 	"clean_attend" integer NOT NULL,
