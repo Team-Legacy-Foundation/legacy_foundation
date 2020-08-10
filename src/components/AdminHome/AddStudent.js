@@ -4,9 +4,10 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from 'react-bootstrap/Row'
 import Button from "react-bootstrap/Button";
-// import Card from 'react-bootstrap/Card';
+import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import moment from "moment";
+import { Alert } from "@material-ui/lab";
 
 
 
@@ -23,7 +24,15 @@ class AddStudent extends Component {
     student_email: '',
     password: '',
     pif_amount: '',
+    email_error: false,
+    lcfID_error: false,
     created_at: moment.utc().format()
+      }
+
+      componentDidMount() {
+         this.props.dispatch({
+           type: "GET_STUDENTS",
+         });
       }
 
 //This function dispatched our newly added student to the database from state
@@ -31,7 +40,6 @@ class AddStudent extends Component {
       registerStudent = (event) => {
     event.preventDefault();
 
-    console.log( 'we are about to send the state', this.state);
 
     if (this.state.first_name&&
         this.state.last_name&&
@@ -44,8 +52,43 @@ class AddStudent extends Component {
         this.state.password&&
         this.state.pif_amount
         ) {
-
+// console.log('we are about to send the state', this.state);
         
+  let allStudents = this.props.students;
+//   console.log("this.props.student", this.props.students)
+
+  for (let student of allStudents){
+    
+    if (student.student_email === this.state.student_email){
+       this.setState({
+         email_error: true,
+       })
+
+       setTimeout(() => {
+         this.setState({
+           email_error: false,
+         });
+       }, 5000);
+       return;
+    }
+console.log('This is props student', student);
+console.log('student id props', student.lcf_id);
+console.log('student id state', this.state.lcf_id);
+
+
+    if(Number(student.lcf_id) === Number(this.state.lcf_id)){
+      this.setState({
+        lcfID_error: true,
+      })
+
+      setTimeout(() => {
+        this.setState({
+          lcfID_error: false,
+        });
+      }, 5000);
+      return;
+    }
+  }
 
 //send the new student to the server through a redux saga
       this.props.dispatch({
@@ -78,7 +121,7 @@ class AddStudent extends Component {
             password: '',
             pif_amount: ''
         });
-        this.props.history.push("/home"); //push admin back to homepage after successful submission
+        // this.props.history.push("/home"); //push admin back to homepage after successful submission
     } else {
       this.props.dispatch({type: 'ADD_STUDENT_ERROR'});
     }
@@ -103,10 +146,23 @@ class AddStudent extends Component {
                     <Link to="/home"><Button variant="outline-primary">Home</Button></Link> {' '} 
                     </div>
 
+                     <br />
+        {this.state.email_error === true && (
+          <Alert className="error" style={{}} severity="error">
+            The email you entered already exists in the system, pick a new one!
+          </Alert>
+        )}
+         <br />
+         {this.state.lcfID_error === true && (
+          <Alert className="error" style={{}} severity="error">
+            The LCF ID you chose already exists in the system, pick a new one!
+          </Alert>
+        )}
+
        <h1 style={{   width: '50%', margin: '2% 40%' }}>Add A Student</h1>
        
         
-      {/* <Card border = "info" style={{ width: '90%', margin: '3% auto' }} > */}
+      <Card border = "info" style={{ width: '90%', margin: '3% auto', padding: '2%' }} >
       <Form className="addstudent" >  
           <Row>
             <Col>
@@ -171,7 +227,7 @@ class AddStudent extends Component {
             Submit Student Info
           </Button></Link> 
         </Form>
-      {/* </Card> */}
+      </Card>
       </div>
 
 
@@ -183,6 +239,7 @@ class AddStudent extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
+  students: state.students.studentlist,
 });
    
 export default connect(mapStateToProps) (AddStudent);
