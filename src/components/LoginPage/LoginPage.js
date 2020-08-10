@@ -30,6 +30,8 @@ class LoginPage extends Component {
     } else {
       this.props.dispatch({ type: 'LOGIN_INPUT_ERROR' });
     }
+
+    this.props.history.push("/home"); //this makes it so whenever a user logs in, they go straight to homepage
   } // end login
 
   handleInputChangeFor = propertyName => (event) => {

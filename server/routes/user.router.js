@@ -233,20 +233,20 @@ router.put(`/adminpasswordreset/:admin_id`, (req, res) => {
 
 
 // PUT /api/user/studentpasswordreset/student_id
-router.put(`/studentpasswordreset/:student_id`, (req, res) => {
+router.put(`/studentpasswordreset/:lcf_id`, (req, res) => {
   console.log('we are about to change the student password:', req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
-  const studentID = req.params.student_id;
+  const studentID = req.params.lcf_id;
   const email = req.body.email;
   // setting query text to update the username
-  const queryText = `UPDATE "student" SET password=$1, student_email=$2 WHERE id=$3 `;
+  const queryText = `UPDATE "student" SET password=$1, student_email=$2 WHERE lcf_id=$3 `;
 
   pool
     .query(queryText, [newPassword, email, studentID])
     .then((result) => {
       console.log("Success in updating password or email for student!");
 
-      const query2Text = `UPDATE "user" SET password=$1, email=$2 WHERE student_id=$3`;
+      const query2Text = `UPDATE "user" SET password=$1, email=$2 WHERE lcf_id=$3`;
       const queryValue = [newPassword, email, studentID];
       pool
         .query(query2Text, queryValue)
@@ -259,6 +259,7 @@ router.put(`/studentpasswordreset/:student_id`, (req, res) => {
     })
     .catch((error) => {
       console.log(`Error on PUT with query ${error}`);
+      console.log(studentID);
       res.sendStatus(500); // if there is an error, send server error 500
     });
 });

@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 
 class ResetStudentPassword extends Component {
   state = {
-    student_id: this.props.user.student_id,
+    lcf_id: this.props.user.lcf_id,
     email: this.props.user.email,
     password: "",
     retype_password: "",
@@ -23,7 +23,7 @@ class ResetStudentPassword extends Component {
   resetStudentPassword = (event) => {
     event.preventDefault();
 
-    console.log(
+    console.log( 
       "we are about to send the state to change the student password",
       this.state
     );
@@ -33,7 +33,7 @@ class ResetStudentPassword extends Component {
      );
 
     if (
-      this.state.student_id &&
+      this.state.lcf_id &&
       this.state.email &&
       this.state.password &&
       this.state.retype_password &&
@@ -43,14 +43,14 @@ class ResetStudentPassword extends Component {
       this.props.dispatch({
         type: "RESET_STUDENT_PASSWORD",
         payload: {
-          student_id: this.state.student_id,
+          lcf_id: this.state.lcf_id,
           email: this.state.email,
           password: this.state.password,
         },
       });
 
       this.setState({
-        admin_id: this.props.user.student_id,
+        lcf_id: this.props.user.lcf_id,
         email: this.props.user.email,
         password: "",
         retype_password: "",
@@ -58,7 +58,7 @@ class ResetStudentPassword extends Component {
 
       
     } else {
-      this.props.dispatch({ type: "RESET_ADMIN_PASSWORD_ERROR" });
+      this.props.dispatch({ type: "RESET_STUDENT_PASSWORD_ERROR" });
     }
   }; // end resetStudentPassword
 

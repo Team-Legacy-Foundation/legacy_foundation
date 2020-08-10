@@ -10,7 +10,7 @@ import { withRouter } from "react-router";
 import Swal from "sweetalert2";
 //import { response } from "express";
 
-class AdminHome extends Component {
+class StudentEntries extends Component {
   componentDidMount() {
     this.props.dispatch({
       type: "GET_STUDENTS",
@@ -20,23 +20,13 @@ class AdminHome extends Component {
       type: "GET_ADMIN",
     });
 
-
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
   }
 
-
-runReport() {
-  this.props.dispatch({type: 'FETCH_CALCULATIONS'})
-
-}
-renderRedirect = () => {
-//this.props.history.push("/opentransactions");
-  // if (this.props.calculations.length > 0) {
-  //     return  <Redirect to = '/opentransactions'/>
-  //   }
-    
+  runReport() {
+    this.props.dispatch({ type: "FETCH_CALCULATIONS" });
   }
 
   render() {
@@ -52,7 +42,7 @@ renderRedirect = () => {
               <button
                 onClick={() => {
                   const studentsArray = this.filterStudentArray(
-                    this.props.students
+                    this.props.entries
                   );
                   const student = studentsArray[dataIndex];
                   console.log(student);
@@ -63,11 +53,11 @@ renderRedirect = () => {
                     3. then in THIS function use the first array, not the second mapped array. Thus student.id would work
                       instead of student[5]
                   */
-                  console.log(`students lcf_id should be: ${student.lcf_id}`); //NOTE: lcf_id could change position
+                  console.log(`entry id should be: ${student.lcf_id}`); 
                   //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
 
                   this.props.history.push({
-                    pathname: `/updatestudent/${student.lcf_id}`,
+                    pathname: `/adminentryupdate/${student.lcf_id}`,
                     // state: {lcf_id: student.lcf_id}
                     // pathname:`/updatestudent/${dataIndex}`,
                     // state: {id: dataIndex}
@@ -79,7 +69,6 @@ renderRedirect = () => {
                   //   },
                   // });
 
-
                   this.props.dispatch({
                     type: "GET_STUDENT_FOR_EDIT",
                     payload: student.lcf_id,
@@ -90,6 +79,12 @@ renderRedirect = () => {
               </button>
             );
           },
+        },
+      },
+      {
+        name: "Entry ID",
+        options: {
+          filter: true,
         },
       },
       {
@@ -197,35 +192,37 @@ renderRedirect = () => {
           columns={columns}
           title={"Entry History"}
         />
-        <Button style={{margin:'3%'}} onClick={(event)=>this.runReport(event)}>Run Report</Button> 
+        <Button
+          style={{ margin: "3%" }}
+          onClick={(event) => this.runReport(event)}
+        >
+          Run Report
+        </Button>
       </div>
     );
   }
 
   filterStudentArray = (entries) => {
     return entries.filter(
-    (entry) =>
-
-                    entry.first_name&&
-                    entry.last_name&&
-                    entry.lcf_id &&
-                    // moment(entry.pay_day).format("MMMM Do YYYY") &&
-                    // moment(entry.date_submitted).format("MMMM Do YYYY") &&
-                    entry.grade&&
-                    entry.school_attend &&
-                    entry.pass_class&&
-                    entry.gpa&&
-                    entry.clean_attend&&
-                    entry.detent_hours&&
-                    entry.act_or_job&&
-                    entry.passed_ua&&
-                    entry.current_service_hours&&
-                    entry.hw_rm_attended&&
-                    entry.comments
-
+      (entry) =>
+        entry.first_name &&
+        entry.last_name &&
+        entry.lcf_id &&
+        // moment(entry.pay_day).format("MMMM Do YYYY") &&
+        // moment(entry.date_submitted).format("MMMM Do YYYY") &&
+        entry.grade &&
+        entry.school_attend &&
+        entry.pass_class &&
+        entry.gpa &&
+        entry.clean_attend &&
+        entry.detent_hours &&
+        entry.act_or_job &&
+        entry.passed_ua &&
+        entry.current_service_hours &&
+        entry.hw_rm_attended &&
+        entry.comments
     );
   };
-
 
   // this IS A SELECTOR: it takes some state, and it
   // returns some derived state. In other words, if you
@@ -234,36 +231,34 @@ renderRedirect = () => {
   getStudentArray = (entries) => {
     const studentsArray = this.filterStudentArray(entries).map(
       (entry, index) => [
+        entry.id,
         entry.first_name,
-                            entry.last_name,
-                            entry.lcf_id,
-                            // moment(entry.pay_day).format("MMMM Do YYYY"),
-                            // moment(entry.date_submitted).format("MMMM Do YYYY"),
-                            entry.grade,
-                            entry.school_attend,
-                            entry.pass_class,
-                            entry.gpa,
-                            entry.clean_attend,
-                            entry.detent_hours,
-                            entry.act_or_job,
-                            entry.passed_ua,
-                            entry.current_service_hours,
-                            entry.hw_rm_attended,
-                            entry.comments
+        entry.last_name,
+        entry.lcf_id,
+        // moment(entry.pay_day).format("MMMM Do YYYY"),
+        // moment(entry.date_submitted).format("MMMM Do YYYY"),
+        entry.grade,
+        entry.school_attend,
+        entry.pass_class,
+        entry.gpa,
+        entry.clean_attend,
+        entry.detent_hours,
+        entry.act_or_job,
+        entry.passed_ua,
+        entry.current_service_hours,
+        entry.hw_rm_attended,
+        entry.comments,
       ]
     );
     return studentsArray;
   };
-  
 }
 
 const mapStateToProps = (state) => ({
   user: state.user,
   students: state.students.studentlist,
 
-  entries: state.students.studententriesadmin
-
+  entries: state.students.studententriesadmin,
 });
 
-export default withRouter(connect(mapStateToProps)(AdminHome));
-
+export default withRouter(connect(mapStateToProps)(StudentEntries));

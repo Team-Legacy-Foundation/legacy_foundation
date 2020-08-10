@@ -78,6 +78,7 @@ class AddStudent extends Component {
             password: '',
             pif_amount: ''
         });
+        this.props.history.push("/home"); //push admin back to homepage after successful submission
     } else {
       this.props.dispatch({type: 'ADD_STUDENT_ERROR'});
     }
@@ -134,7 +135,7 @@ class AddStudent extends Component {
             </Col>
               <Col>
               <Form.Label>Graduation Year</Form.Label>
-             <Form.Control placeholder="Enter Graduation Year" type="number" name="grad_year}" value={this.state.grad_year} onChange={this.handleInputChangeFor('grad_year')}/>
+             <Form.Control placeholder="Enter Graduation Year" type="number" name="grad_year}" min={new Date().getFullYear()} value={this.state.grad_year} onChange={this.handleInputChangeFor('grad_year')}/>
             </Col>
             <Col>
                 <Form.Label>School Name</Form.Label>

@@ -104,7 +104,7 @@ class App extends Component {
             />
             <ProtectedRoute
               exact
-              path="/adminentryupdate"
+              path="/adminentryupdate/:lcf_id"
               component={AdminUpdateEntry}
             />
             <ProtectedRoute exact path="/adminusers" component={AddAdmin} />

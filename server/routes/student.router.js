@@ -120,7 +120,66 @@ router.put(`/updatestudent/:lcf_id`, (req, res) => {
 });
 // end PUT /api/student/lcf_id
 
-
+router.put(`/updateentry/:lcf_id`, (req, res) => {
+      // HTTP REQUEST BODY
+      const entry = req.body; // pull the object out out of the HTTP REQUEST
+      const {
+        pass_class,
+        gpa,
+        lcf_id,
+        absent,
+        tardy,
+        late,
+        truant,
+        clean_attend,
+        detent_hours,
+        after_school,
+        act_or_job,
+        passed_ua,
+        current_service_hours,
+        hw_rm_attended,
+        comments,
+        
+      } = entry;
+      if (entry === undefined) {
+          // stop, dont touch the database
+          res.sendStatus(400); // 400 BAD REQUEST
+          return;
+      }
+      
+      
+      const queryText = `
+  
+          UPDATE "entry" SET pass_class=$2, gpa=$3, clean_attend=$4, detent_hours=$5, act_or_job=$6, passed_ua=$7, current_service_hours=$8, hw_rm_attended=$9, comments=$10 
+          WHERE lcf_id = $1;`; 
+  
+      pool
+        .query(queryText, [
+          lcf_id,
+          pass_class,
+          gpa,
+          clean_attend,
+          detent_hours,
+          act_or_job,
+          passed_ua,
+          current_service_hours,
+          hw_rm_attended,
+          comments,
+        ])
+        .then(function (result) {
+          // result.rows: 'INSERT 0 1';
+          // it worked!
+          console.log('updating an entry worked!')
+          //res.sendStatus(201); //created
+          res.status(201).send(result.rows);
+        })
+        .catch(function (error) {
+          console.log("Sorry, there was an error with your query: ", error);
+          res.sendStatus(500); // HTTP SERVER ERROR
+        });
+  }); // end POST
+  
+  
 
 
 router.put(`/updatepassword/:lcf_id`, (req, res) => {
