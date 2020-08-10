@@ -5,7 +5,6 @@ import Col from "react-bootstrap/Col";
 import Row from 'react-bootstrap/Row'
 import Button from "react-bootstrap/Button";
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
 import moment from "moment";
 import Swal from "sweetalert2";
 

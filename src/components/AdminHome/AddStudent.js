@@ -8,6 +8,8 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import moment from "moment";
 import { Alert } from "@material-ui/lab";
+import Swal from "sweetalert2";
+import { withRouter } from "react-router";
 
 
 
@@ -39,9 +41,10 @@ class AddStudent extends Component {
 //This function dispatched our newly added student to the database from state
 //We first validate the inputs to make sure we are not sending empty inputs to the server
       registerStudent = (event) => {
+        console.log('Are we in here');
     event.preventDefault();
 
-
+ 
     if (this.state.first_name&&
         this.state.last_name&&
         this.state.grade&&
@@ -53,6 +56,9 @@ class AddStudent extends Component {
         this.state.password&&
         this.state.pif_amount
         ) {
+
+
+           
 // console.log('we are about to send the state', this.state);
         
   let allStudents = this.props.students;
@@ -72,10 +78,6 @@ class AddStudent extends Component {
        }, 5000);
        return;
     }
-console.log('This is props student', student);
-console.log('student id props', student.lcf_id);
-console.log('student id state', this.state.lcf_id);
-
 
     if(Number(student.lcf_id) === Number(this.state.lcf_id)){
       this.setState({
@@ -91,45 +93,65 @@ console.log('student id state', this.state.lcf_id);
     }
   }
 
-//send the new student to the server through a redux saga
-      this.props.dispatch({
-        type: 'REGISTER_STUDENT',
+  const {
+    first_name,
+    last_name,
+    grade,
+    grad_year,
+    school_attend,
+    lcf_id,
+    lcf_start_date,
+    student_email,
+    password,
+    pif_amount
+  } = this.state;
+
+  Swal.fire({
+      title: "Please confirm new student details below",
+      html: `1. First Name: ${first_name} </br>
+          2. Last Name: ${last_name} </br>
+          3. Grade: ${grade} </br>
+          4. Graduation Year: ${grad_year} </br>
+          5. School Name: ${school_attend} </br>
+          6. LCF ID: ${lcf_id} </br>
+          7. LCF Start Date: ${lcf_start_date} </br>
+          8. Student Email: ${student_email} </br>
+          9. Password: ${password}</br>
+          10. PIF Amount ${pif_amount}`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirm my entry",
+  }).then((result) => {
+    console.log("Here is result.value", result.value);
+  if (result.value) {
+    this.props.dispatch({
+      type: 'REGISTER_STUDENT',
         payload: {
-            first_name: this.state.first_name,
-            last_name: this.state.last_name,
-            grade: this.state.grade,
-            grad_year: this.state.grad_year,
-            school_attend: this.state.school_attend,
-            lcf_id: this.state.lcf_id,
-            lcf_start_date: this.state.lcf_start_date,
-            student_email: this.state.student_email,
-            password: this.state.password,
-            pif_amount: this.state.pif_amount,
-            
+          first_name: first_name,
+          last_name: last_name,
+          grade: grade,
+          grad_year: grad_year,
+          school_attend: school_attend,
+          lcf_id: lcf_id,
+          lcf_start_date: lcf_start_date,
+          student_email: student_email,
+          password: password,
+          pif_amount: pif_amount,
+
         },
-        
-      });
-      
+    });
 
-
-      this.setState({
-            first_name: '',
-            last_name: '',
-            grade: '',
-            grad_year: '',
-            school_attend: '',
-            lcf_id: '',
-            lcf_start_date: '',
-            student_email: '',
-            password: '',
-            pif_amount: '',
-            
-        });
-        // this.props.history.push("/home"); //push admin back to homepage after successful submission
-    } else {
+    Swal.fire("Success!", "Your new student has been added.", "success");
+    this.props.history.push("/home");
+  
+}
+});
+} else {
       this.props.dispatch({type: 'ADD_STUDENT_ERROR'});
     }
-  } // end registerStudent
+} // end registerStudent
 
 
 
@@ -213,7 +235,7 @@ console.log('student id state', this.state.lcf_id);
             </Col>
             <Col>
               <Form.Label>PIF Contribution</Form.Label>
-                <Form.Control placeholder="PIF Contribution" type="text" name="pif_amount" value={this.state.pif_amount} onChange={this.handleInputChangeFor('pif_amount')}/>
+                <Form.Control placeholder="PIF Contribution" type="number" name="pif_amount" value={this.state.pif_amount} onChange={this.handleInputChangeFor('pif_amount')}/>
               </Col>
             </Row>
             <Row>
@@ -227,9 +249,9 @@ console.log('student id state', this.state.lcf_id);
               </Col>
             </Row>
 
-            <Link to="/home"><Button onClick={(event)=>this.registerStudent(event)} variant="success" type="submit" style={{ width: '40%', margin: '7% 30% 2%' }}>
+            <Button onClick={(event)=>this.registerStudent(event)} variant="success" type="submit" style={{ width: '40%', margin: '7% 30% 2%' }}>
             Submit Student Info
-          </Button></Link> 
+          </Button>
         </Form>
       </Card>
       </div>
@@ -246,4 +268,4 @@ const mapStateToProps = state => ({
   students: state.students.studentlist,
 });
    
-export default connect(mapStateToProps) (AddStudent);
+export default withRouter(connect(mapStateToProps)(AddStudent));
