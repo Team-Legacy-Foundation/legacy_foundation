@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import MUITable from '../MUITable/MUITable';
 import moment from "moment";
-
+import { Alert } from "@material-ui/lab";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import Card from 'react-bootstrap/Card';
 
 
 
@@ -22,12 +23,16 @@ class ChargeStudent extends Component {
     lcf_id:null,
     type: null,
     description: null,
-    amount: null
+    amount: null,
+    lcf_id_error: false,
+    no_lcf_id_error: false,
 
   }
 
 componentDidMount () {
-  
+      this.props.dispatch({
+        type: "GET_STUDENTS",
+      });
 }
 
 chargeStudent= (event) => {
@@ -36,6 +41,15 @@ chargeStudent= (event) => {
 //TODO: check in student table to make sure student with lcf_id exists
   if (this.state.lcf_id) {
     //send the updated student to the server through a redux saga
+
+let allStudents = this.props.students;
+//   console.log("this.props.student", this.props.students)
+
+for (let student of allStudents) {
+
+  console.log('student ID', student.lcf_id);
+  if (Number(this.state.lcf_id) === Number(student.lcf_id)) {
+
     this.props.dispatch({
       type: "CHARGE_STUDENT",
       payload: {
@@ -47,15 +61,37 @@ chargeStudent= (event) => {
         amount: this.state.amount
       },
     });
-       Swal.fire({
-         icon: "Success",
-         title: "Activation",
-         text: `Student number ${this.state.lcf_id} has been charged`,
-       });
-    
+    Swal.fire({
+      icon: "Success",
+      title: "Activation",
+      text: `Student number ${this.state.lcf_id} has been charged`,
+    });
+
     this.props.history.push("/home");
+    return;
+  }
+}
+
+  this.setState({
+    lcf_id_error: true,
+  })
+
+  setTimeout(() => {
+    this.setState({
+      lcf_id_error: false,
+    });
+  }, 5000);
+    
   } else {
-    //this.props.dispatch({ type: "UPDATE_STUDENT_ERROR" }); CREATE NEW ERROR
+    this.setState({
+      no_lcf_id_error: true,
+    })
+
+    setTimeout(() => {
+      this.setState({
+        no_lcf_id_error: false,
+      });
+    }, 5000);
   }
 }; // end updateStudent
 
@@ -69,9 +105,22 @@ handleInputChangeFor = (propertyName) => (event) => {
 render() {
   return (
     <div>
-      <h1 style={{ width: "50%", margin: "2% 40%" }}>
+      <br />
+        {this.state.lcf_id_error === true && (
+          <Alert className="error" style={{}} severity="error">
+            The LCF ID you entered does not exist in the system, try again!
+          </Alert>
+        )}
+        <br/>
+          {this.state.no_lcf_id_error === true && (
+          <Alert className="error" style={{}} severity="error">
+            You have not entered an LCF ID for the student!
+          </Alert>
+        )}
+      <h1 style={{ width: "50%", margin: "2% 35%" }}>
         Charge Student Account
       </h1>
+  <Card border = "info" style={{ width: '90%', margin: '3% auto', padding: '2%' }} >
       <Form>
         <Row>
           <Col>
@@ -126,6 +175,7 @@ render() {
           Create New Charge
         </Button>
       </Form>
+      </Card>
     </div>
   );
 }
