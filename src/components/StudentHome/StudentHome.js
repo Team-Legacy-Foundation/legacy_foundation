@@ -79,7 +79,8 @@ class StudentHome extends Component {
             <hr></hr>
         {this.props.editStudent ? 
           <> 
-            Last Paycheck: $ {this.props.studentHistory[0].money_to_student}
+            Last Paycheck: $ {this.props.studentHistory[0] ? this.props.studentHistory[0].money_to_student : '0.00'} 
+            {/* need conditional here or wont load*/}
             <br />
             Balance to Pay: $ {this.props.editStudent.balance_due}
             <br />
