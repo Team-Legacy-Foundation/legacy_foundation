@@ -40,7 +40,8 @@ class AdminHome extends Component {
             return (
               <div>
                 {student.inactive === "no" ? (
-                  <Button variant="danger"
+                  <Button
+                    variant="danger"
                     onClick={(event) => {
                       event.preventDefault();
                       const studentsArray = this.filterStudentArray(
@@ -58,7 +59,7 @@ class AdminHome extends Component {
                         Swal.fire({
                           icon: "Success",
                           title: "Deactivation",
-                          text: `Student number ${student.lcf_id} activation status has been successfully deactivated` ,
+                          text: `Student number ${student.lcf_id} activation status has been successfully deactivated`,
                         });
                         this.props.dispatch({
                           type: "GET_STUDENTS",
@@ -69,7 +70,8 @@ class AdminHome extends Component {
                     Deactivate
                   </Button>
                 ) : (
-                  <Button variant="success"
+                  <Button
+                    variant="success"
                     onClick={(event) => {
                       event.preventDefault();
                       const studentsArray = this.filterStudentArray(
@@ -84,11 +86,11 @@ class AdminHome extends Component {
                             lcf_id: student.lcf_id,
                           },
                         });
-                           Swal.fire({
-                             icon: "Success",
-                             title: "Activation",
-                             text: `Student number ${student.lcf_id} activation status has been successfully activated`,
-                           });
+                        Swal.fire({
+                          icon: "Success",
+                          title: "Activation",
+                          text: `Student number ${student.lcf_id} activation status has been successfully activated`,
+                        });
                         this.props.dispatch({
                           type: "GET_STUDENTS",
                         });
@@ -111,7 +113,8 @@ class AdminHome extends Component {
           empty: true,
           customBodyRenderLite: (dataIndex, rowIndex) => {
             return (
-              <Button variant="warning"
+              <Button
+                variant="warning"
                 onClick={() => {
                   // const studentsArray = this.getStudentArray(this.props.students);
                   // const student = studentsArray[dataIndex];
@@ -129,9 +132,9 @@ class AdminHome extends Component {
                   */
                   console.log(`students lcf_id should be: ${student.lcf_id}`); //NOTE: lcf_id could change position
                   //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
-                    
+
                   this.props.history.push({
-                    pathname:`/updatestudent/${student.lcf_id}`,
+                    pathname: `/updatestudent/${student.lcf_id}`,
                     // state: {lcf_id: student.lcf_id}
                     // pathname:`/updatestudent/${dataIndex}`,
                     // state: {id: dataIndex}
@@ -144,9 +147,9 @@ class AdminHome extends Component {
                   // });
 
                   this.props.dispatch({
-                    type: "GET_STUDENT_FOR_EDIT", payload: student.lcf_id
+                    type: "GET_STUDENT_FOR_EDIT",
+                    payload: student.lcf_id,
                   });
-
                 }}
               >
                 Edit
@@ -163,7 +166,8 @@ class AdminHome extends Component {
           empty: true,
           customBodyRenderLite: (dataIndex, rowIndex) => {
             return (
-              <Button variant="warning"
+              <Button
+                variant="warning"
                 onClick={() => {
                   // const studentsArray = this.getStudentArray(this.props.students);
                   // const student = studentsArray[dataIndex];
@@ -177,7 +181,7 @@ class AdminHome extends Component {
                   this.props.history.push(`/updatepassword/${student.lcf_id}`); //this pushes admin to edit page for select student
                 }}
               >
-               <RotateLeftIcon></RotateLeftIcon>
+                <RotateLeftIcon></RotateLeftIcon>
               </Button>
             );
           },
@@ -192,6 +196,12 @@ class AdminHome extends Component {
       {
         label: "Last Name",
         name: "Last Name",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "Last_Login",
         options: {
           filter: true,
         },
@@ -296,6 +306,7 @@ class AdminHome extends Component {
       (entry, index) => [
         entry.first_name, // 0
         entry.last_name, // 1
+        moment(entry.last_login).fromNow(),
         Number(entry.grade), // 2
         entry.grad_year, // 3
         entry.school_attend, // 4

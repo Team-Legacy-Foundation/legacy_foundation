@@ -5,7 +5,7 @@ CREATE OR REPLACE TABLE "user" (
     "email" varchar,
     "password" varchar,
     "role" varchar,
-    "last_login" DATE
+    "last_login" TIMESTAMPTZ
     
 );
 
@@ -37,6 +37,7 @@ CREATE OR REPLACE TABLE "student" (
 	"password" varchar(255) NOT NULL,
 	"grade" integer NOT NULL,
 	"grad_year" integer NOT NULL,
+	"last_login" TIMESTAMPTZ,
 	"created_at" DATE NOT NULL,
 	"lcf_start_date" DATE NOT NULL,
 	"role" varchar(255) NOT NULL,
