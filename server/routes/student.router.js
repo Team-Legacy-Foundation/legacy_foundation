@@ -265,7 +265,7 @@ router.put("/activate", (req, res) => {
 router.get('/history/:id', (req, res) => {
   const id = req.params.id
   console.log('Grabbing all records from history');
-  const queryText = 'SELECT * FROM history WHERE lcf_id = $1'
+  const queryText = 'SELECT * FROM history WHERE lcf_id = $1 ORDER BY date_submitted DESC'
   pool.query(queryText, [id])
   .then((result) => {
       res.send(result.rows).status(200);
