@@ -1,6 +1,6 @@
 import React, {Component}  from 'react';
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import MUITable from '../MUITable/MUITable';
 import moment from "moment";
@@ -13,13 +13,19 @@ class OpenTransactions extends Component {
 
 componentDidMount () {
   console.log('this means page is running');
-  this.props.dispatch({type: 'FETCH_CALCULATIONS'})
+  // this.props.dispatch({type: 'FETCH_CALCULATIONS'})
   
   
 }
 
 runConfirm() {
   this.props.dispatch({ type: "FETCH_CONFIRM" })
+}
+
+pageRedirect() {
+  if(this.props.redirect.redirectHome === true){
+    return <Redirect to="/pastadminreports"/>
+  }
 }
 
   render() {
@@ -29,6 +35,7 @@ runConfirm() {
     return(
      
      <div>
+       {this.pageRedirect()}
      This is where calculations will be shown and when Penny will confirm if things look good
      <MUITable
      
@@ -92,7 +99,13 @@ runConfirm() {
             ]}
             title={"LCF Student Entry List"}
           />
-      
+          <Link to='/totalstudententries'>
+          <Button
+          style={{ margin: "3%" }}
+        >
+          Cancel
+        </Button>
+        </Link>
       <Button
           style={{ margin: "3%" }}
           onClick={(event) => this.runConfirm(event)}
@@ -113,7 +126,8 @@ const mapStateToProps = (state) => ({
   user: state.user,
   students: state.students.studentlist,
   entries: state.students.studententriesadmin,
-  calculations: state.calculations.calculations
+  calculations: state.calculations.calculations,
+  redirect: state.redirect
 });
 
 export default connect(mapStateToProps)(OpenTransactions);

@@ -7,6 +7,10 @@ function* fetchConfirm() {
     const response = yield axios.get("/api/admin/history")
     console.log('response in fetchConfirm is', response)
     yield put({ type: "SET_HISTORY", payload: response.data });
+    yield put({ type: "SET_ENTRY", payload: []});
+    yield put({ type: "SET_CALCULATIONS", payload: []});
+    yield put({ type: "SET_REDIRECT_HOME", payload: true});
+    yield put({ type: "SET_REDIRECT_HOME", payload: false});
   } catch (error) {
     console.log("error fetch ", error);
   }
