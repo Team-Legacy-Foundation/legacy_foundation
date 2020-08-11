@@ -7,6 +7,8 @@ function* fetchCalculations() {
     const response = yield axios.get("/api/admin/pending")
     console.log('response in fetchCalc is', response)
     yield put({ type: "SET_CALCULATIONS", payload: response.data });
+    yield put({ type: "SET_REDIRECT", payload: true});
+    yield put({ type: "SET_REDIRECT", payload: false});
   } catch (error) {
     console.log("error fetch ", error);
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import MUITable from "../MUITable/MUITable";
 import { withRouter } from "react-router";
@@ -24,6 +24,12 @@ class StudentEntries extends Component {
 
   runReport() {
     this.props.dispatch({ type: "FETCH_CALCULATIONS" });
+  }
+
+  redirectPage() {
+    if(this.props.redirect.redirect === true){
+      return <Redirect to='/opentransactions'/>
+    }
   }
 
   render() {
@@ -173,7 +179,8 @@ class StudentEntries extends Component {
     ];
     return (
       <div>
-        
+        {console.log(this.props.redirect)}
+        {this.redirectPage()}
         {/*PLEASE NOTE: instead of start date, we want to show latest activity on this table */}
         {/*This will be tied to whenever a student logs in, it will do a put on that column to show thier latest login */}
 
@@ -252,7 +259,7 @@ class StudentEntries extends Component {
 const mapStateToProps = (state) => ({
   user: state.user,
   students: state.students.studentlist,
-
+  redirect: state.redirect,
   entries: state.students.studententriesadmin,
 });
 
