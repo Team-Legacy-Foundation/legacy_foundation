@@ -8,6 +8,20 @@ import Iframe from 'react-iframe'
 import './StudentHome.css';
 
 class StudentHome extends Component {
+  componentWillMount(){
+    this.props.dispatch({ type: 'FETCH_STUDENT_HISTORY', payload: this.props.user.lcf_id})
+    this.props.dispatch({ type: 'GET_STUDENT_FOR_EDIT', payload: this.props.user.lcf_id})
+    
+  }
+  
+  total(amount) {
+    let total = 0
+    for (let i = 0; i < amount.length; i++) {
+      const element = amount[i];
+      total += Number(element.money_to_student)
+    }return total.toFixed(2)
+  }
+
   render() {
     return (
       <div>
@@ -15,10 +29,14 @@ class StudentHome extends Component {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={12} style={{margin:'2%'}}>
             <center>
+          {this.props.editStudent ?
+          <h1>
+          Hello there {this.props.editStudent.first_name}!
+          </h1> :
           <h1>
             Hello there {this.props.user.email}!
-          </h1>
-          <h3>LCF ID: INSERT VALUE</h3></center>
+          </h1>}
+          <h3>LCF ID: {this.props.user.lcf_id}</h3></center>
           </Grid>
 
  {/* <Grid item xs={12} sm={4} md={4} lg={4} style={{margin:'3%'}}>
@@ -59,15 +77,24 @@ class StudentHome extends Component {
             <Paper elevation={5} style={{padding:'5%', margin:'5%'}}>
             <h3>Payment Information</h3>
             <hr></hr>
-      
-            Last Paycheck: AMOUNT
+        {this.props.editStudent ? 
+          <> 
+            Last Paycheck: $ {this.props.studentHistory[0] ? this.props.studentHistory[0].money_to_student : '0.00'} 
+            {/* need conditional here or wont load*/}
             <br />
-            Balance to Pay: AMOUNT
+            Balance to Pay: $ {this.props.editStudent.balance_due}
             <br />
-            Total Savings to Date: AMOUNT
+            Total Savings to Date: $ {this.total(this.props.studentHistory)}
+            </> : <> 
+            Last Paycheck: $$
+            <br />
+            Balance to Pay: $$
+            <br />
+            Total Savings to Date: $$
+            </>
+        }
             </Paper>
             </Grid>
-          
         </Grid>
       </div>
     );
@@ -76,6 +103,8 @@ class StudentHome extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  editStudent: state.editStudent[0],
+  studentHistory: state.studentHistory.studentHistoryReducer,
 });
 
 export default withRouter(connect(mapStateToProps)(StudentHome));

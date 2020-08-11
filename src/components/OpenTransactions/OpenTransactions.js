@@ -18,6 +18,10 @@ componentDidMount () {
   
 }
 
+runConfirm() {
+  this.props.dispatch({ type: "FETCH_CONFIRM" })
+}
+
   render() {
 
     console.log(this.props.calculations)
@@ -89,7 +93,12 @@ componentDidMount () {
             title={"LCF Student Entry List"}
           />
       
-      
+      <Button
+          style={{ margin: "3%" }}
+          onClick={(event) => this.runConfirm(event)}
+        >
+          Confirm Report
+        </Button>
          
       </div>
       

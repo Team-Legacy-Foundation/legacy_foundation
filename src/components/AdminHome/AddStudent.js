@@ -227,7 +227,7 @@ class AddStudent extends Component {
             <Row>
                 <Col>
                <Form.Label>LCF ID:</Form.Label>
-                <Form.Control placeholder="Enter LCF ID" type="text" name="lcf_id" value={this.state.lcf_id} onChange={this.handleInputChangeFor('lcf_id')}/>
+                <Form.Control placeholder="Enter LCF ID" type="number" name="lcf_id" value={this.state.lcf_id} onChange={this.handleInputChangeFor('lcf_id')}/>
               </Col>
               <Col>
               <Form.Label>LCF Start Date</Form.Label>
