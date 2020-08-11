@@ -173,29 +173,26 @@ class StudentEntries extends Component {
     ];
     return (
       <div>
-        {this.props.user.role === "admin" && (
-          <div className="navbuttonscontainer">
-            <Link to="/addstudent">
-              <Button variant="outline-primary">Add Student</Button>
-            </Link>{" "}
-          </div>
-        )}
+        
         {/*PLEASE NOTE: instead of start date, we want to show latest activity on this table */}
         {/*This will be tied to whenever a student logs in, it will do a put on that column to show thier latest login */}
 
         {/*Blaine: one option, get rid of filter and map and handle in redux */}
         {/*Do map in redux and store the data for the table in redux */}
+        <div style={{paddingRight:'2%', paddingLeft:'2%'}}>
         <MUITable
           data={this.getStudentArray(this.props.entries)}
           columns={columns}
           title={"Entry History"}
+          
         />
+        </div>
         <Button
           style={{ margin: "3%" }}
           onClick={(event) => this.runReport(event)}
         >
           Run Report
-        </Button>
+        </Button> <br/><br/>
       </div>
     );
   }

@@ -12,22 +12,28 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const Nav = (props) => (
-  <div className="nav">
+  <div className="nav" style={{display:'inline-block'}}>
     <Link to="/home">
       <img
         className="logo"
         src={logo}
         alit="logo"
-        style={{ float: "left", width: 1100 }}
+        style={{ width: 1100, float:'left' }}
       />
-      {props.user.id && props.user.role === "admin"&& (
+      {/* {props.user.id && props.user.role === "admin"&& (
         <>
-          <h2 className="nav-title">Admin Dashboard</h2>
+          
         </>
       )}
+      {props.user.id && props.user.role === "student"&& (
+        <>
+          <h2 className="nav-title">Student Dashboard</h2>
+        </>
+      )} */}
       
     </Link>
-    <div className="nav-right">
+    
+    <div className="nav-right" style={{ diplay:'inline-block',float:'left', paddingTop:'1.5%' }}>
       <Link className="nav-link" to="/home">
         {/* Show this link if they are logged in or not,
         but call this link 'Home' if they are logged in,
@@ -94,6 +100,7 @@ const Nav = (props) => (
         About
       </Link>
     </div>
+   
   </div>
 );
 
