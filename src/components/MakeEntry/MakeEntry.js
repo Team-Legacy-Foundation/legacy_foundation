@@ -321,28 +321,46 @@ class MakeEntry extends Component {
 
     let { entries } = this.props;
     let date = moment();
+    let previous_pay_day = moment("2020-08-10T00:00:00.000")
+    let pay_day = moment(previous_pay_day)
+
+      function getDate() {
+        if (date >= pay_day) {
+          previous_pay_day = pay_day;
+          pay_day = moment(previous_pay_day).add(2, "week");
+          getDate();
+        }
+      }
+      getDate();
+
+      previous_pay_day = moment(previous_pay_day).format(
+        "MMMM Do YYYY"
+      );
+      pay_day = moment(pay_day).format("MMMM Do YYYY");
     for (let entry of entries) {
-      
       entry.pay_day = new Date(entry.pay_day);
       entry.previous_pay_day = new Date(entry.previous_pay_day);
-      
-      if (entry.pay_day > date || entry.previous_pay_day <= date) {
-        return <div>Entry already submitted for this pay period, please check back next pay period</div>
-      }
 
+      if (entry.pay_day > date || entry.previous_pay_day <= date) {
+        return (
+          <div>
+            Entry already submitted for this pay period, please check back next
+            pay period
+          </div>
+        );
+      }
     }
 
     return (
-  
       <div>
-          <br />
+        <br />
         {this.state.error === true && (
           <Alert className="error" style={{}} severity="error">
             Please fill out all of the required fields
           </Alert>
         )}
         <h3 style={{ textAlign: "center" }}>
-          This entry is for the week of: PAY PERIOD HERE
+          This entry is for the week of: {previous_pay_day} - {pay_day}
         </h3>
         <Paper elevation={5} style={{ padding: "5%", margin: "5%" }}>
           <form onSubmit={this.submitInfo}>
@@ -668,11 +686,14 @@ class MakeEntry extends Component {
             <br />
             <br />
             <center>
-              <Button style={{ margin: "6%" }}
+              <Button
+                style={{ margin: "6%" }}
                 variant="contained"
                 color="secondary"
                 className="button"
-                onClick={()=>{this.props.history.push("/home")}}
+                onClick={() => {
+                  this.props.history.push("/home");
+                }}
               >
                 Cancel Entry
               </Button>
@@ -689,7 +710,6 @@ class MakeEntry extends Component {
           </form>
         </Paper>
         <br />
-
       </div>
     );
   }
