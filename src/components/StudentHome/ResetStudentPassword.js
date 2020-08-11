@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row'
 import Button from "react-bootstrap/Button";
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
+import Paper from "@material-ui/core/Paper";
 
 
 
@@ -69,16 +70,13 @@ class ResetStudentPassword extends Component {
     });
   };
 
-  render() {
+  render() { 
     return (
       <div>
-        <div className="navbuttonscontainer">
-          <Link to="/home">
-            <Button variant="outline-primary">Home</Button>
-          </Link>{" "}
-        </div>
+        
 
-        <Card
+        <Paper
+        elevation = {5}
           border="info"
           style={{ width: "95%", margin: "3% auto", padding: "2%" }}
         >
@@ -128,7 +126,7 @@ class ResetStudentPassword extends Component {
               </Button>
             </Link>
           </Form>
-        </Card>
+        </Paper>
       </div>
     );
   }

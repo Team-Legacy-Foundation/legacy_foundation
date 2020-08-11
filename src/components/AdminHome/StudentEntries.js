@@ -179,6 +179,7 @@ class StudentEntries extends Component {
     ];
     return (
       <div>
+        
         {console.log(this.props.redirect)}
         {this.redirectPage()}
         {/*PLEASE NOTE: instead of start date, we want to show latest activity on this table */}
@@ -221,8 +222,8 @@ class StudentEntries extends Component {
         entry.act_or_job &&
         entry.passed_ua &&
         entry.current_service_hours &&
-        entry.hw_rm_attended &&
-        entry.comments
+        entry.hw_rm_attended 
+        
     );
   };
 
