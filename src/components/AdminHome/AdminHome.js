@@ -257,11 +257,12 @@ class AdminHome extends Component {
 
         {/*Blaine: one option, get rid of filter and map and handle in redux */}
         {/*Do map in redux and store the data for the table in redux */}
+        <div style={{paddingLeft: '2%', paddingRight:'2%', paddingBottom:'2%'}}>
         <MUITable
           data={this.getStudentArray(this.props.students)}
           columns={columns}
           title={"LCF Student List"}
-        />
+        /> </div>
         <br/>
       <br/>
       <br/>
