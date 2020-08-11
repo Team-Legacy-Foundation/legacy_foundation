@@ -341,7 +341,7 @@ class MakeEntry extends Component {
       entry.pay_day = new Date(entry.pay_day);
       entry.previous_pay_day = new Date(entry.previous_pay_day);
 
-      if (entry.pay_day > date || entry.previous_pay_day <= date) {
+      if (this.props.user.lcf_id === entry.lcf_id && ( entry.pay_day > date || entry.previous_pay_day <= date)) {
         return (
           <div>
             Entry already submitted for this pay period, please check back next
