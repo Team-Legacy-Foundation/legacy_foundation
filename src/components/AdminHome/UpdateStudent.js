@@ -44,7 +44,7 @@ class UpdateStudent extends Component {
         entry.grad_year &&
         entry.school_attend &&
         entry.lcf_id &&
-        moment(entry.lcf_start_date).format("MMMM Do YYYY") &&
+        moment(entry.lcf_start_date).format("L") &&
         entry.student_email &&
         entry.password &&
         entry.pif_amount
@@ -81,16 +81,15 @@ let id = url_array[url_array.length-1];
         this.setState({
           first_name: item.first_name,
           last_name: item.last_name,
-          grade:item.grade,
-    grad_year: item.grad_year,
-    school_attend:  item.school_attend, 
-    lcf_id: item.lcf_id,
-    lcf_start_date: item.lcf_start_date,
-    student_email:item.student_email,
-    password: "",
-    pif_amount: item.pif_amount,
-
-        })
+          grade: item.grade,
+          grad_year: item.grad_year,
+          school_attend: item.school_attend,
+          lcf_id: item.lcf_id,
+          lcf_start_date: moment(item.lcf_start_date).format("YYYY-MM-DD"),
+          student_email: item.student_email,
+          password: "",
+          pif_amount: item.pif_amount,
+        });
        } else {
           console.log('FAIL', item.lcf_id)
           console.log(id)
@@ -125,11 +124,12 @@ let id = url_array[url_array.length-1];
          html: `1. First Name: ${this.state.first_name} </br>
       2. Last Name: ${this.state.last_name} </br>
       3. Student Grade: ${this.state.grade} </br>
-      4. Student Year: ${this.state.grad_year} </br>
-      5. School ${this.state.school_attend} </br>
-      6. ID Number ${this.state.lcf_id} </br>
-      7. Email Address: ${this.state.student_email} </br>
-      8. PIF Amount: ${this.state.pif_amount} </br>`,
+      4. LCF Start Date: ${this.state.lcf_start_date} </br>
+      5. Student Year: ${this.state.grad_year} </br>
+      6. School ${this.state.school_attend} </br>
+      7. ID Number ${this.state.lcf_id} </br>
+      8. Email Address: ${this.state.student_email} </br>
+      9. PIF Amount: ${this.state.pif_amount} </br>`,
          icon: "question",
          showCancelButton: true,
          confirmButtonColor: "#3085d6",
@@ -139,7 +139,7 @@ let id = url_array[url_array.length-1];
          if (result.value) {
            //send the updated student to the server through a redux saga
            this.props.dispatch({
-             type: "UPDATE_STUDENT", 
+             type: "UPDATE_STUDENT",
              payload: {
                first_name: this.state.first_name,
                last_name: this.state.last_name,
