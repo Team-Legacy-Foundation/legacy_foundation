@@ -37,25 +37,18 @@ router.post("/forgot/:email", (req, res) => {
   );
 });
 
-router.post("/forgot/admin/email", (req, res) => {
+router.post("/forgot/admin/:email", (req, res) => {
   let email = req.body.username;
-  sendmail(
-    {
-      from: "no-reply@legacyfoundation.com",
-      to: email,
-      subject: "request to reset password",
-      html: `
-  <h3>Click below to reset your password</h3>
-  <a href="http://localhost:3000/#/forgotpassword/admin/${email}">Reset Password</a>
-  <p>If you did not request this email, please disregard it and delete it.</p>
-  `,
-    },
-    function (err, reply) {
-      console.log(err && err.stack);
-      console.dir(reply);
-      res.sendStatus(201);
-    }
-  );
+  const sgMail = require("@sendgrid/mail");
+  sgMail.setApiKey('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');
+  const msg = {
+    to: "test@example.com",
+    from: "test@example.com",
+    subject: "Sending with Twilio SendGrid is Fun",
+    text: "and easy to do anywhere, even with Node.js",
+    html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+  };
+  sgMail.send(msg);
 });
 
 
