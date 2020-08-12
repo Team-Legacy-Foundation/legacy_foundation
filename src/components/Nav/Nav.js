@@ -12,6 +12,7 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 const Nav = (props) => (
   <div className="nav" style={{display:'inline-block'}}>
@@ -73,7 +74,13 @@ const Nav = (props) => (
             <RotateLeftIcon></RotateLeftIcon>
           Reset Password
           </Link>
+
+          <Link className="nav-link" to="/instructions">
+            <DescriptionIcon></DescriptionIcon>
+          Instructions
+         </Link>
           <LogOutButton className="nav-link" />
+
         </>
       )}
 
@@ -94,6 +101,7 @@ const Nav = (props) => (
           <RotateLeftIcon></RotateLeftIcon>
            Reset Password
           </Link>
+         
           
           <LogOutButton className="nav-link" />
         </>
