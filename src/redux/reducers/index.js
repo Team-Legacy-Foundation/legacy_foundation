@@ -9,7 +9,8 @@ import editStudent from './editStudentReducer';
 import calculations from './calculationsReducer';
 import history from './historyReducer';
 import studentHistory from './studentHistoryReducer';
-import redirect from './redirectReducer'
+import redirect from './redirectReducer';
+import deductionList from './adminDeductionRouter';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   calculations,
   history,
   studentHistory,
-  redirect
+  redirect,
+  deductionList
 });
 
 export default rootReducer;

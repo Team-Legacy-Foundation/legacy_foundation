@@ -175,6 +175,12 @@ class AdminHome extends Component {
         },
       },
       {
+        name: "Student Debt ($)",
+        options: {
+          filter: true,
+        },
+      },
+      {
         name: "Change Status",
         options: {
           filter: false,
@@ -296,6 +302,7 @@ class AdminHome extends Component {
         moment(entry.lcf_start_date).format("MMMM Do YYYY") &&
         entry.student_email &&
         entry.password &&
+        entry.balance_due &&
         entry.pif_amount
     );
   };
@@ -309,6 +316,7 @@ class AdminHome extends Component {
       (entry, index) => [
         entry.first_name, // 0
         entry.last_name, // 1
+        entry.last_login == null ? <>hasn't logged in</> :
         moment(entry.last_login).fromNow(),
         Number(entry.grade), // 2
         entry.grad_year, // 3
@@ -318,6 +326,7 @@ class AdminHome extends Component {
         entry.student_email,
         //entry.password,
         entry.pif_amount,
+        entry.balance_due,
       ]
     );
     return studentsArray;

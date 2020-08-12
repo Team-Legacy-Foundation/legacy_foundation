@@ -11,10 +11,19 @@ function* chargeStudent(action) {
   }
 }
 
+function* fetchDeductions(action) {
+  try {
+    const response = yield axios.get('/api/admin/chargehistory');
+    yield put({type: "SET_DEDUCTIONS", payload: response.data})
+  } catch (error){
+    console.log("error with deduction saga", error)
+  }
+}
+
 
 function* chargeSaga() {
   yield takeLatest("CHARGE_STUDENT", chargeStudent);
-  
+  yield takeLatest("FETCH_DEDUCTIONS", fetchDeductions);
 }
 
 export default chargeSaga;

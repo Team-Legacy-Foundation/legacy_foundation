@@ -227,7 +227,7 @@ function* getStudentForEdit(action){
   try {
     console.log('Wait what is action here?', action)
       const response = yield axios.get(`/api/student/student/${action.payload}`);
-console.log('inside get of student');
+console.log('inside get of student', response.data);
       yield put({
           type: 'EDIT_STUDENT',
           payload: response.data
