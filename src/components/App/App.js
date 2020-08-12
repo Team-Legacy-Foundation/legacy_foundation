@@ -73,14 +73,14 @@ class App extends Component {
             they will see the info page instead. */}
             <ProtectedRoute exact path="/info" component={InfoPage} />
             <ProtectedRoute exact path="/makeentry" component={MakeEntry} />
-            <ProtectedRoute
+            <Route
               exact
-              path="/forgotpassword"
+              path="/forgotpassword/:email"
               component={ForgotPassword}
             />
-            <ProtectedRoute
+            <Route
               exact
-              path="/forgotpassword/admin"
+              path="/forgotpassword/admin/:email"
               component={ForgotPasswordAdmin}
             />
             <ProtectedRoute
