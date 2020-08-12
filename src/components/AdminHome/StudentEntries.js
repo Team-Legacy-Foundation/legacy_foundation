@@ -43,7 +43,7 @@ class StudentEntries extends Component {
           customBodyRenderLite: (dataIndex, rowIndex) => {
             return (
               <Button
-              variant="warning"
+                variant="warning"
                 onClick={() => {
                   const studentsArray = this.filterStudentArray(
                     this.props.entries
@@ -57,7 +57,7 @@ class StudentEntries extends Component {
                     3. then in THIS function use the first array, not the second mapped array. Thus student.id would work
                       instead of student[5]
                   */
-                  console.log(`entry id should be: ${student.lcf_id}`); 
+                  console.log(`entry id should be: ${student.lcf_id}`);
                   //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
 
                   this.props.history.push({

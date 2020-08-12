@@ -187,7 +187,17 @@ router.post("/register", (req, res, next) => {
 // this middleware will run our POST if successful
 // this middleware will send a 404 if not successful
 router.post("/login", userStrategy.authenticate("local"), (req, res) => {
-  res.sendStatus(200);
+  console.log("logging body", req.body.username)
+  const email = req.body.username;
+  // setting query text to update the username
+  const queryText = `update "user" set "last_login" = NOW() WHERE "email"=$1`;
+
+  pool.query(queryText, [email]).then((result) => {
+    const query2Text = `UPDATE "student" SET "last_login" = NOW() WHERE "student_email"=$1`;
+    pool
+      .query(query2Text, [email])
+      .then(() => res.sendStatus(201))
+  });
 });
 
 // clear all server session information about this user
