@@ -26,7 +26,7 @@ class PastAdminReports extends Component {
    
    
        <div style={{padding: '2%'}}>
-     This is where calculations will be shown and when Penny will confirm if things look good
+     
      
      <MUITable
      

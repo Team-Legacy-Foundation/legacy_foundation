@@ -18,6 +18,8 @@ import AboutPage from "../AboutPage/AboutPage";
 import UserPage from "../UserPage/UserPage";
 import InfoPage from "../InfoPage/InfoPage";
 import MakeEntry from "../MakeEntry/MakeEntry";
+import ForgotPassword from "../ForgotPassword/ForgotPassword";
+import ForgotPasswordAdmin from "../ForgotPassword/ForgotPasswordAdmin";
 import PastStudentEntries from "../PastStudentEntries/PastStudentEntries";
 
 import "./App.css";
@@ -71,6 +73,16 @@ class App extends Component {
             they will see the info page instead. */}
             <ProtectedRoute exact path="/info" component={InfoPage} />
             <ProtectedRoute exact path="/makeentry" component={MakeEntry} />
+            <ProtectedRoute
+              exact
+              path="/forgotpassword"
+              component={ForgotPassword}
+            />
+            <ProtectedRoute
+              exact
+              path="/forgotpassword/admin"
+              component={ForgotPasswordAdmin}
+            />
             <ProtectedRoute
               exact
               path="/resetstudentpassword"

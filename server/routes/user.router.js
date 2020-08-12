@@ -3,6 +3,7 @@ const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
 const encryptLib = require("../modules/encryption");
+const sendmail = require("sendmail")();
 const pool = require("../modules/pool");
 const userStrategy = require("../strategies/user.strategy");
 
@@ -15,7 +16,45 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
+router.post("/forgot", (req, res) => {
+  sendmail(
+    {
+      from: "no-reply@legacyfoundation.com",
+      to: req.body.username,
+      subject: "request to reset password",
+      html: `
+  <h3>Click below to reset your password</h3>
+  <a href="http://localhost:3000/#/forgotpassword">Reset Password</a>
+  <p>If you did not request this email, please disregard it and delete it.</p>
+  `,
+    },
+    function (err, reply) {
+      console.log(err && err.stack);
+      console.dir(reply);
+      res.sendStatus(201);
+    }
+  );
+});
 
+router.post("/forgot/admin", (req, res) => {
+  sendmail(
+    {
+      from: "no-reply@legacyfoundation.com",
+      to: req.body.username,
+      subject: "request to reset password",
+      html: `
+  <h3>Click below to reset your password</h3>
+  <a href="http://localhost:3000/#/forgotpassword/admin">Reset Password</a>
+  <p>If you did not request this email, please disregard it and delete it.</p>
+  `,
+    },
+    function (err, reply) {
+      console.log(err && err.stack);
+      console.dir(reply);
+      res.sendStatus(201);
+    }
+  );
+});
 
 
 
@@ -96,6 +135,7 @@ router.post("/addstudent", (req, res, next) => {
   const school_id = req.body.school_id || 0;
   const grade = Number(req.body.grade);
   const grad_year = req.body.grad_year;
+  const last_login = null;
   const school_attend = req.body.school_attend;
   const lcf_id = req.body.lcf_id;
   const lcf_start_date = req.body.lcf_start_date;
@@ -113,8 +153,8 @@ router.post("/addstudent", (req, res, next) => {
   //let lcf_id = "";
 
   const queryText = `INSERT INTO "student" 
-                (lcf_id, first_name, last_name, school_attend, school_id, student_email, password, grade, grad_year, created_at,   lcf_start_date, role,   pif_amount, strikes, inactive, balance_due)
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING lcf_id `;
+                (lcf_id, first_name, last_name, school_attend, school_id, student_email, password, grade, grad_year, last_login, created_at,   lcf_start_date, role,   pif_amount, strikes, inactive, balance_due)
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING lcf_id `;
   pool
     .query(queryText, [
       lcf_id,
@@ -126,6 +166,7 @@ router.post("/addstudent", (req, res, next) => {
       password,
       grade,
       grad_year,
+      last_login,
       created_at,
       lcf_start_date,
       role,
@@ -276,6 +317,63 @@ router.put(`/studentpasswordreset/:lcf_id`, (req, res) => {
     });
 });
 // end PUT /api/user/studentpasswordreset/student_id
+
+router.put(`/passwordforgot`, (req, res) => {
+  console.log("we are about to change the student password:", req.body);
+  const newPassword = encryptLib.encryptPassword(req.body.password);
+  const email = req.body.email;
+  // setting query text to update the username
+  const queryText = `UPDATE "student" SET password=$1 WHERE student_email=$2 `;
+
+  pool
+    .query(queryText, [newPassword, email])
+    .then((result) => {
+      console.log("Success in updating password or email for student!");
+
+      const query2Text = `UPDATE "user" SET password=$1 WHERE email=$2`;
+      const queryValue = [newPassword, email];
+      pool
+        .query(query2Text, queryValue)
+        .then(() => res.sendStatus(201).res.send(result.rows))
+        .catch(function (error) {
+          console.log("Sorry, there was an error with your query: ", error);
+          res.sendStatus(500); // HTTP SERVER ERROR
+        });
+    })
+    .catch((error) => {
+      console.log(`Error on PUT with query ${error}`);
+      console.log(studentID);
+      res.sendStatus(500); // if there is an error, send server error 500
+    });
+});
+
+router.put(`/passwordforgot/admin`, (req, res) => {
+  console.log("we are about to change the admin password:", req.body);
+  const newPassword = encryptLib.encryptPassword(req.body.password);
+  const email = req.body.email;
+  // setting query text to update the username
+  const queryText = `UPDATE "admin" SET password=$1 WHERE email=$2 `;
+
+  pool
+    .query(queryText, [newPassword, email])
+    .then((result) => {
+      console.log("Success in updating password or email for admin!");
+
+      const query2Text = `UPDATE "user" SET password=$1 WHERE email=$2`;
+      const queryValue = [newPassword, email];
+      pool
+        .query(query2Text, queryValue)
+        .then(() => res.sendStatus(201).res.send(result.rows))
+        .catch(function (error) {
+          console.log("Sorry, there was an error with your query: ", error);
+          res.sendStatus(500); // HTTP SERVER ERROR
+        });
+    })
+    .catch((error) => {
+      console.log(`Error on PUT with query ${error}`);
+      res.sendStatus(500); // if there is an error, send server error 500
+    });
+});
 
 //Need to delete for testing purposes
 //DELETE student
