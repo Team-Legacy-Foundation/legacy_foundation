@@ -25,7 +25,7 @@ class PastStudentEntries extends Component {
   render() {
     const gunnarStyle = { minHeight: "500px", minWidth: "150px", textAlign:'center' };
     
-    if (this.props.entry.length===0 && this.props.history.length===0) { //conditional rendering to handle case of no entries for student
+    if (this.props.studentHistory.length === 0) { //conditional rendering to handle case of no entries for student
       return (
         <Paper elevation={5} style={{margin:'5%', padding:'5%', textAlign:'center'}}>
           <h2>It looks like you don't have any past entries! Check back once you've made one</h2>
@@ -43,9 +43,11 @@ class PastStudentEntries extends Component {
         }
 
     return (
+
       <div style={{margin:'2%'}}>
         <center><h1>Past Entries</h1></center><br/>
       
+
 
       <Paper elevation={5} style={{height: "100%", overflow: "scroll", border: "",}}>
         <Table style={{margin:'1%',}}>
@@ -77,8 +79,8 @@ class PastStudentEntries extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-           {this.props.entry ? (<TableRow style={{backgroundColor: 'yellow'}} >
-            <TableCell style={gunnarStyle}>Latest Entry</TableCell>
+           {(this.props.entry !== [])&& <TableRow style={{backgroundColor: 'yellow'}} >
+            <TableCell style={gunnarStyle}>Current Entry</TableCell>
             <TableCell style={gunnarStyle}>{moment(entry.pay_day).format("MMMM Do YYYY")}</TableCell>
             <TableCell style={gunnarStyle}>{moment(entry.date_submitted).local().format("MMMM Do YYYY")}</TableCell>
             <TableCell style={gunnarStyle}>{entry.pass_class}</TableCell>
@@ -101,8 +103,7 @@ class PastStudentEntries extends Component {
            <TableCell style={gunnarStyle}>Pending Approval</TableCell>
            <TableCell style={gunnarStyle}>Pending Approval</TableCell>
             <TableCell style={gunnarStyle}>Pending Approval</TableCell>
-          </TableRow>
-          ) : ('')}
+          </TableRow>}
           
             {
             this.props.studentHistory.map((entryItem, index) => {
