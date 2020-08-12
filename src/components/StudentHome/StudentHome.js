@@ -7,7 +7,7 @@ import Iframe from 'react-iframe'
 
 import './StudentHome.css';
 
-class StudentHome extends Component {
+class StudentHome extends Component { //TODO: add green banner to show if student has made an entry this pay period
   componentWillMount(){
     this.props.dispatch({ type: 'FETCH_STUDENT_HISTORY', payload: this.props.user.lcf_id})
     this.props.dispatch({ type: 'GET_STUDENT_FOR_EDIT', payload: this.props.user.lcf_id})
@@ -24,7 +24,7 @@ class StudentHome extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{width:'99%'}}>
         
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={12} style={{margin:'2%'}}>
@@ -44,7 +44,7 @@ class StudentHome extends Component {
    </Grid> */}
 
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Paper elevation={5} style={{ border: "", padding:'5%', margin:'5%' }}>
+            <Paper elevation={5} style={{ border: "", padding:'4%', margin:'5%' }}>
              <h3>Notification Portal</h3>
              <hr></hr>
               This could be a tool for the LCF folks to type something up they want sent out for every student to see? But where/how do they send something out. Create a portal on admin end? STRETCH <br/><br/>
@@ -57,7 +57,7 @@ class StudentHome extends Component {
 
 
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Paper elevation={5} style={{ border: "", padding:'5%', margin:'5%' }}>
+            <Paper elevation={5} style={{ border: "", padding:'4%', margin:'5%' }}>
               <center>
               <Iframe
                 // style="width: 90%"
@@ -75,7 +75,7 @@ class StudentHome extends Component {
           
          
           <Grid item xs={12} sm={12} md={3} lg={4}>
-            <Paper elevation={5} style={{padding:'5%', margin:'5%'}}>
+            <Paper elevation={5} style={{padding:'4%', margin:'5%'}}>
             <h3>Payment Information</h3>
             <hr></hr>
         {this.props.editStudent ? 
@@ -96,7 +96,9 @@ class StudentHome extends Component {
         }
             </Paper>
             </Grid>
+            
         </Grid>
+        
       </div>
     );
   }

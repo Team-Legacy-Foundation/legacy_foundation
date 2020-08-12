@@ -40,7 +40,7 @@ class MUITable extends Component {
     
     return (
       <React.Fragment>
-        <FormControl>
+        {/* <FormControl>
           <InputLabel id="demo-simple-select-label">
             Responsive Option
           </InputLabel>
@@ -61,8 +61,8 @@ class MUITable extends Component {
             </MenuItem>
             <MenuItem value={"stacked"}>stacked (deprecated)</MenuItem>
           </Select>
-        </FormControl>
-        <FormControl>
+        </FormControl> */}
+        {/* <FormControl>
           <InputLabel id="demo-simple-select-label">
             Table Body Height
           </InputLabel>
@@ -80,7 +80,7 @@ class MUITable extends Component {
             <MenuItem value={"800px"}>800px</MenuItem>
             <MenuItem value={"100%"}>100%</MenuItem>
           </Select>
-        </FormControl>
+        </FormControl> */}
 
         <MUIDataTable
           title={this.props.title}

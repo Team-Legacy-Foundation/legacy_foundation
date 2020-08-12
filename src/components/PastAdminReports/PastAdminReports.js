@@ -26,7 +26,7 @@ class PastAdminReports extends Component {
    
    
        <div style={{padding: '2%'}}>
-     
+      <center><h1 >Past Reports</h1></center><br/>
      
      <MUITable
      
@@ -74,10 +74,10 @@ class PastAdminReports extends Component {
               "Service Hrs",
               "Homeroom attended?",
               "Comments",
-              "attend_payment",
-              "pif_donations",
-              "bonus_amount",
-              "bonus_comments",
+              "Attendance Payment",
+              "PIF Donation Amount",
+              "Bonus Amount",
+              "Bonus Comments",
               "GPA Bonus",
               "Amount to Savings",
               "Money to Student",

@@ -10,6 +10,8 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import CreditCardIcon from '@material-ui/icons/CreditCard';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
 const Nav = (props) => (
   <div className="nav" style={{display:'inline-block'}}>
@@ -59,11 +61,12 @@ const Nav = (props) => (
           </Link> */}
 
           <Link className="nav-link" to="/chargestudent">
-            
+            <CreditCardIcon></CreditCardIcon>
            Create New Deduction
           </Link>
 
            <Link className="nav-link" to="/adminusers">
+             <SupervisorAccountIcon></SupervisorAccountIcon>
             Admin Users
           </Link>
           <Link className="nav-link" to="/resetadminpassword">

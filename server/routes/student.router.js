@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/studentlist', (req, res) => {
     console.log('We are about to get the student list');
 
-    const queryText = `SELECT * FROM student;`;
+    const queryText = `SELECT * FROM student ORDER BY lcf_id;`;
     pool.query(queryText)
         .then((result) => {
             //console.log('Here is the student list', result.rows);
