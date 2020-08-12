@@ -3,6 +3,7 @@ const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
 const encryptLib = require("../modules/encryption");
+const sendmail = require("sendmail")();
 const pool = require("../modules/pool");
 const userStrategy = require("../strategies/user.strategy");
 
@@ -15,7 +16,25 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
-
+router.post("/forgot", (req, res) => {
+  sendmail(
+    {
+      from: "no-reply@legacyfoundation.com",
+      to: req.body.username,
+      subject: "request to reset password",
+      html: `
+  <h3>Click below to reset your password</h3>
+  <a href="http://localhost:3000/#/forgotpassword">Reset Password</a>
+  <p>If you did not request this email, please disregard it and delete it.</p>
+  `,
+    },
+    function (err, reply) {
+      console.log(err && err.stack);
+      console.dir(reply);
+      res.sendStatus(201);
+    }
+  );
+});
 
 
 
@@ -268,6 +287,36 @@ router.put(`/studentpasswordreset/:lcf_id`, (req, res) => {
           res.sendStatus(500); // HTTP SERVER ERROR
         });
 
+    })
+    .catch((error) => {
+      console.log(`Error on PUT with query ${error}`);
+      console.log(studentID);
+      res.sendStatus(500); // if there is an error, send server error 500
+    });
+});
+// end PUT /api/user/studentpasswordreset/student_id
+
+router.put(`/passwordforgot`, (req, res) => {
+  console.log("we are about to change the student password:", req.body);
+  const newPassword = encryptLib.encryptPassword(req.body.password);
+  const email = req.body.email;
+  // setting query text to update the username
+  const queryText = `UPDATE "student" SET password=$1 WHERE student_email=$2 `;
+
+  pool
+    .query(queryText, [newPassword, email])
+    .then((result) => {
+      console.log("Success in updating password or email for student!");
+
+      const query2Text = `UPDATE "user" SET password=$1 WHERE email=$2`;
+      const queryValue = [newPassword, email];
+      pool
+        .query(query2Text, queryValue)
+        .then(() => res.sendStatus(201).res.send(result.rows))
+        .catch(function (error) {
+          console.log("Sorry, there was an error with your query: ", error);
+          res.sendStatus(500); // HTTP SERVER ERROR
+        });
     })
     .catch((error) => {
       console.log(`Error on PUT with query ${error}`);

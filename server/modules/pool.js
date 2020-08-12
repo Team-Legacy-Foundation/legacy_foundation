@@ -30,10 +30,10 @@ if (process.env.DATABASE_URL) {
   config = {
 
 
-    user: "dalton", 
+    user: "", 
 
 
-    password: "dalton",
+    password: "",
     host: "localhost", // Server hosting the postgres database
     port: 5432, // env var: PGPORT
     database: process.env.DATABASE_NAME || "legacy_children_foundation", // CHANGED
