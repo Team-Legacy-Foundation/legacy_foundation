@@ -135,6 +135,7 @@ router.post("/addstudent", (req, res, next) => {
   const school_id = req.body.school_id || 0;
   const grade = Number(req.body.grade);
   const grad_year = req.body.grad_year;
+  const last_login = null;
   const school_attend = req.body.school_attend;
   const lcf_id = req.body.lcf_id;
   const lcf_start_date = req.body.lcf_start_date;
@@ -152,8 +153,8 @@ router.post("/addstudent", (req, res, next) => {
   //let lcf_id = "";
 
   const queryText = `INSERT INTO "student" 
-                (lcf_id, first_name, last_name, school_attend, school_id, student_email, password, grade, grad_year, created_at,   lcf_start_date, role,   pif_amount, strikes, inactive, balance_due)
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING lcf_id `;
+                (lcf_id, first_name, last_name, school_attend, school_id, student_email, password, grade, grad_year, last_login, created_at,   lcf_start_date, role,   pif_amount, strikes, inactive, balance_due)
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING lcf_id `;
   pool
     .query(queryText, [
       lcf_id,
@@ -165,6 +166,7 @@ router.post("/addstudent", (req, res, next) => {
       password,
       grade,
       grad_year,
+      last_login,
       created_at,
       lcf_start_date,
       role,
