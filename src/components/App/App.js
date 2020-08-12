@@ -35,6 +35,7 @@ import StudentResetPassword from '../StudentHome/ResetStudentPassword';
 import OpenTransactions from '../OpenTransactions/OpenTransactions';
 import ChargeStudent from '../ChargeStudent/ChargeStudent';
 import AddAdminForm from '../AdminHome/AddAdminForm';
+import PastAdminDeductions from '../PastAdminDeductions/PastAdminDeductions';
 
 
 
@@ -131,6 +132,11 @@ class App extends Component {
               exact
               path="/opentransactions"
               component={OpenTransactions}
+            />
+            <ProtectedRoute
+              exact
+              path="/deductionlist"
+              component={PastAdminDeductions }
             />
             <ProtectedRoute
               exact

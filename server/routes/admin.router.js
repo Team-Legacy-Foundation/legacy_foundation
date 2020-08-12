@@ -69,7 +69,20 @@ router.get('/history', (req, res) => {
         res.sendStatus(500);
     });
 });
+////////////////////// Grabs everything from the charge_student table ///////////////////////////////
 
+router.get ('/chargehistory', (req, res) => {
+    console.log('grabbing all deduction history');
+    const queryText = `SELECT charge_student.lcf_id, charge_student.date, type, description, amount, first_name, last_name FROM charge_student
+    Join student on student.lcf_id = charge_student.lcf_id`
+    pool.query(queryText)
+    .then((result) => {
+        res.send(result.rows).status(200);
+    }).catch((error) => {
+        console.log('Problem grabbing the deductions', error)
+        res.sendStatus(500);
+    })
+})
 
 router.delete("/:id", (req, res) => {
     pool
