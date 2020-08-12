@@ -7,6 +7,7 @@ import moment from "moment";
 import { withRouter } from "react-router";
 import Swal from "sweetalert2";
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import EditIcon from '@material-ui/icons/Edit';
 //import { response } from "express";
 
 
@@ -28,8 +29,153 @@ class AdminHome extends Component {
   render() {
 
     const columns = [
+      
       {
-        name: "Deactivate",
+        name: "Edit",
+        options: {
+          filter: false,
+          sort: false,
+          empty: true,
+          customBodyRenderLite: (dataIndex, rowIndex) => {
+            return (
+              <Button
+                variant="warning"
+                onClick={() => {
+                  // const studentsArray = this.getStudentArray(this.props.students);
+                  // const student = studentsArray[dataIndex];
+                  const studentsArray = this.filterStudentArray(
+                    this.props.students
+                  );
+                  const student = studentsArray[dataIndex];
+                  console.log(student);
+                  /* a possible refactor:
+                    1. Create a function that returns only the filtered students, but its still an array of objects
+                    2. Then you pass into the MUITable the result of a function that takes the filtered list and makes
+                      an array in the expected format
+                    3. then in THIS function use the first array, not the second mapped array. Thus student.id would work
+                      instead of student[5]
+                  */
+                  console.log(`students lcf_id should be: ${student.lcf_id}`); //NOTE: lcf_id could change position
+                  //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
+
+                  this.props.history.push({
+                    pathname: `/updatestudent/${student.lcf_id}`,
+                    // state: {lcf_id: student.lcf_id}
+                    // pathname:`/updatestudent/${dataIndex}`,
+                    // state: {id: dataIndex}
+                  }); //this pushes admin to edit page for select student
+                  // this.props.dispatch({
+                  //   type: "EDIT_STUDENT",
+                  //   payload: {
+                  //     lcf_id: student.lcf_id,
+                  //   },
+                  // });
+
+                  this.props.dispatch({
+                    type: "GET_STUDENT_FOR_EDIT",
+                    payload: student.lcf_id,
+                  });
+                }}
+              >
+                <EditIcon></EditIcon>
+              </Button>
+            );
+          },
+        },
+      },
+      {
+        name: "Reset Password",
+        options: {
+          filter: false,
+          sort: false,
+          empty: true,
+          customBodyRenderLite: (dataIndex, rowIndex) => {
+            return (
+              <Button
+                variant="warning"
+                onClick={() => {
+                  // const studentsArray = this.getStudentArray(this.props.students);
+                  // const student = studentsArray[dataIndex];
+                  const studentsArray = this.filterStudentArray(
+                    this.props.students
+                  );
+                  const student = studentsArray[dataIndex];
+                  console.log(`students lcf_id should be: ${student.lcf_id}`); //NOTE: lcf_id could change position
+                  //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
+
+                  this.props.history.push(`/updatepassword/${student.lcf_id}`); //this pushes admin to edit page for select student
+                }}
+              >
+                <RotateLeftIcon></RotateLeftIcon>
+              </Button>
+            );
+          },
+        },
+      },
+      {
+        name: "First Name",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        label: "Last Name",
+        name: "Last Name",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "Last Login",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "Grade",
+        options: {
+          filter: false,
+        },
+      },
+      {
+        name: "Graduation Year",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "School Name",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "LCF ID",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "LCF Start Date",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "Student Email",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "Student PIF Amount ($)",
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: "Change Status",
         options: {
           filter: false,
           sort: false,
@@ -103,150 +249,6 @@ class AdminHome extends Component {
               </div>
             );
           },
-        },
-      },
-      {
-        name: "Edit",
-        options: {
-          filter: false,
-          sort: false,
-          empty: true,
-          customBodyRenderLite: (dataIndex, rowIndex) => {
-            return (
-              <Button
-                variant="warning"
-                onClick={() => {
-                  // const studentsArray = this.getStudentArray(this.props.students);
-                  // const student = studentsArray[dataIndex];
-                  const studentsArray = this.filterStudentArray(
-                    this.props.students
-                  );
-                  const student = studentsArray[dataIndex];
-                  console.log(student);
-                  /* a possible refactor:
-                    1. Create a function that returns only the filtered students, but its still an array of objects
-                    2. Then you pass into the MUITable the result of a function that takes the filtered list and makes
-                      an array in the expected format
-                    3. then in THIS function use the first array, not the second mapped array. Thus student.id would work
-                      instead of student[5]
-                  */
-                  console.log(`students lcf_id should be: ${student.lcf_id}`); //NOTE: lcf_id could change position
-                  //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
-
-                  this.props.history.push({
-                    pathname: `/updatestudent/${student.lcf_id}`,
-                    // state: {lcf_id: student.lcf_id}
-                    // pathname:`/updatestudent/${dataIndex}`,
-                    // state: {id: dataIndex}
-                  }); //this pushes admin to edit page for select student
-                  // this.props.dispatch({
-                  //   type: "EDIT_STUDENT",
-                  //   payload: {
-                  //     lcf_id: student.lcf_id,
-                  //   },
-                  // });
-
-                  this.props.dispatch({
-                    type: "GET_STUDENT_FOR_EDIT",
-                    payload: student.lcf_id,
-                  });
-                }}
-              >
-                Edit
-              </Button>
-            );
-          },
-        },
-      },
-      {
-        name: "Reset Password",
-        options: {
-          filter: false,
-          sort: false,
-          empty: true,
-          customBodyRenderLite: (dataIndex, rowIndex) => {
-            return (
-              <Button
-                variant="warning"
-                onClick={() => {
-                  // const studentsArray = this.getStudentArray(this.props.students);
-                  // const student = studentsArray[dataIndex];
-                  const studentsArray = this.filterStudentArray(
-                    this.props.students
-                  );
-                  const student = studentsArray[dataIndex];
-                  console.log(`students lcf_id should be: ${student.lcf_id}`); //NOTE: lcf_id could change position
-                  //alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)
-
-                  this.props.history.push(`/updatepassword/${student.lcf_id}`); //this pushes admin to edit page for select student
-                }}
-              >
-                <RotateLeftIcon></RotateLeftIcon>
-              </Button>
-            );
-          },
-        },
-      },
-      {
-        name: "First Name",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        label: "Last Name",
-        name: "Last Name",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "Last_Login",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "Grade",
-        options: {
-          filter: false,
-        },
-      },
-      {
-        name: "Graduation Year",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "School Name",
-        options: {
-          filter: true,
-          sort: false,
-        },
-      },
-      {
-        name: "LCF ID",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "LCF Start Date",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "Student Email",
-        options: {
-          filter: true,
-        },
-      },
-      {
-        name: "Student PIF Amount ($)",
-        options: {
-          filter: true,
         },
       },
     ];
