@@ -99,6 +99,7 @@ class AdminResetPassword extends Component {
             Your new password entry does not match. Please re-enter
           </Alert>
         )}
+        
 
         <Paper
           elevation={5}
