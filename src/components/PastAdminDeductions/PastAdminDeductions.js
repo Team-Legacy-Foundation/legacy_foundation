@@ -27,7 +27,7 @@ class PastAdminDeductions extends Component {
    
        <div style={{padding: '2%'}}>
       <center><h1 >Past Reports</h1></center><br/>
-     
+     {this.props.deductionList ? 
      <MUITable
      
             data={this.props.deductionList
@@ -37,6 +37,7 @@ class PastAdminDeductions extends Component {
                 item.last_name,
                 moment.utc(item.date).local().calendar(),
                 item.type,
+                item.description,
                 item.amount,
                 
 
@@ -47,13 +48,14 @@ class PastAdminDeductions extends Component {
               "Last Name",
               "Date",
               "Type",
+              "Description",
               "Amount",
               
             ]}
             title={"Past Deductions"}
           />
       
-      
+          :<> </>}
          
       </div>
     
@@ -67,7 +69,7 @@ const mapStateToProps = (state) => ({
   entries: state.students.studententriesadmin,
   calculations: state.calculations.calculations,
   history: state.history.history,
-  deductionList: state.deductionList
+  deductionList: state.deductionList.deductionList
 });
 
 export default withRouter(connect(mapStateToProps)(PastAdminDeductions));
