@@ -15,6 +15,7 @@ class LoginPage extends Component {
     username: "",
     password: "",
     toggle: false,
+    toggle2: false,
   };
 
   login = (event) => {
@@ -38,15 +39,23 @@ class LoginPage extends Component {
   handleReset = (event) => {
     event.preventDefault();
 
-     
-      this.props.dispatch({
-        type: "FORGOT_PASSWORD",
-        payload: {
-          username: this.state.username,
-        },
-      });
-    
+    this.props.dispatch({
+      type: "FORGOT_PASSWORD",
+      payload: {
+        username: this.state.username,
+      },
+    });
+  };
 
+  handleResetAdmin = (event) => {
+    event.preventDefault();
+
+    this.props.dispatch({
+      type: "FORGOT_PASSWORD_ADMIN",
+      payload: {
+        username: this.state.username,
+      },
+    });
   };
 
   handleInputChangeFor = (propertyName) => (event) => {
@@ -58,6 +67,11 @@ class LoginPage extends Component {
   toggle = () => {
     this.setState({
       toggle: !this.state.toggle,
+    });
+  };
+  toggle2 = () => {
+    this.setState({
+      toggle2: !this.state.toggle2,
     });
   };
 
@@ -118,36 +132,73 @@ class LoginPage extends Component {
                 </form>
               </>
             ) : (
-              <form onSubmit={this.handleReset} className="reglogin">
-                <h1>Reset Password</h1>
-                <br />
-                <div>
-                  <label htmlFor="username">
-                    Email: &nbsp; &nbsp; &nbsp;{" "}
-                    {/*Creates a blank space, used for lining things up */}
-                    <input
-                      type="text"
-                      name="username"
-                      value={this.state.username}
-                      onChange={this.handleInputChangeFor("username")}
-                    />
-                  </label>
-                </div>
-                <div>
-                  <input
-                    className="log-in"
-                    type="submit"
-                    name="submit"
-                    value="Reset"
-                  />
-                </div>
-                {this.props.errors.loginMessage && (
-                  <Alert className="loginError" style={{}} severity="error">
-                    {this.props.errors.loginMessage}
-                  </Alert>
+              <div>
+                {this.state.toggle2 === false ? (
+                  <form onSubmit={this.handleReset} className="reglogin">
+                    <h1>Student Reset Password</h1>
+                    <button onClick={this.toggle2}>Switch to Admin</button>
+                    <br />
+                    <div>
+                      <label htmlFor="username">
+                        Email: &nbsp; &nbsp; &nbsp;{" "}
+                        {/*Creates a blank space, used for lining things up */}
+                        <input
+                          type="text"
+                          name="username"
+                          value={this.state.username}
+                          onChange={this.handleInputChangeFor("username")}
+                        />
+                      </label>
+                    </div>
+                    <div>
+                      <input
+                        className="log-in"
+                        type="submit"
+                        name="submit"
+                        value="Reset"
+                      />
+                    </div>
+                    {this.props.errors.loginMessage && (
+                      <Alert className="loginError" style={{}} severity="error">
+                        {this.props.errors.loginMessage}
+                      </Alert>
+                    )}
+                    <button onClick={this.toggle}>Back To Login</button>
+                  </form>
+                ) : (
+                  <form onSubmit={this.handleResetAdmin} className="reglogin">
+                    <h1>Admin Reset Password</h1>
+                    <button onClick={this.toggle2}>Switch to Student</button>
+                    <br />
+                    <div>
+                      <label htmlFor="username">
+                        Email: &nbsp; &nbsp; &nbsp;{" "}
+                        {/*Creates a blank space, used for lining things up */}
+                        <input
+                          type="text"
+                          name="username"
+                          value={this.state.username}
+                          onChange={this.handleInputChangeFor("username")}
+                        />
+                      </label>
+                    </div>
+                    <div>
+                      <input
+                        className="log-in"
+                        type="submit"
+                        name="submit"
+                        value="Reset"
+                      />
+                    </div>
+                    {this.props.errors.loginMessage && (
+                      <Alert className="loginError" style={{}} severity="error">
+                        {this.props.errors.loginMessage}
+                      </Alert>
+                    )}
+                    <button onClick={this.toggle}>Back To Login</button>
+                  </form>
                 )}
-                <button onClick={this.toggle}>Back To Login</button>
-              </form>
+              </div>
             )}
           </center>
           {/* <center>
