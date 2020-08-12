@@ -53,5 +53,5 @@ passport.use('local', new LocalStrategy((username, password, done) => {
         done(error, null);
       });
   }));
-
+  
 module.exports = passport;

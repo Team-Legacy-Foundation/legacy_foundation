@@ -212,7 +212,7 @@ function* forgotStudentPassword(action) {
     //passes the incoming new student password info from the payload to the server
     console.log("we are about to reset the student password", action.payload);
     const response = yield axios.put(
-      `/api/user/passwordforgot`,
+      `/api/user/passwordforgot/`,
       action.payload
     );
 

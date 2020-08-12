@@ -16,15 +16,16 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
-router.post("/forgot", (req, res) => {
+router.post("/forgot/:email", (req, res) => {
+  let email = req.body.username
   sendmail(
     {
       from: "no-reply@legacyfoundation.com",
-      to: req.body.username,
+      to: email,
       subject: "request to reset password",
       html: `
   <h3>Click below to reset your password</h3>
-  <a href="http://localhost:3000/#/forgotpassword">Reset Password</a>
+  <a href="http://localhost:3000/#/forgotpassword/${email}">Reset Password</a>
   <p>If you did not request this email, please disregard it and delete it.</p>
   `,
     },
@@ -36,15 +37,16 @@ router.post("/forgot", (req, res) => {
   );
 });
 
-router.post("/forgot/admin", (req, res) => {
+router.post("/forgot/admin/email", (req, res) => {
+  let email = req.body.username;
   sendmail(
     {
       from: "no-reply@legacyfoundation.com",
-      to: req.body.username,
+      to: email,
       subject: "request to reset password",
       html: `
   <h3>Click below to reset your password</h3>
-  <a href="http://localhost:3000/#/forgotpassword/admin">Reset Password</a>
+  <a href="http://localhost:3000/#/forgotpassword/admin/${email}">Reset Password</a>
   <p>If you did not request this email, please disregard it and delete it.</p>
   `,
     },
@@ -334,7 +336,7 @@ router.put(`/passwordforgot`, (req, res) => {
       const queryValue = [newPassword, email];
       pool
         .query(query2Text, queryValue)
-        .then(() => res.sendStatus(201).res.send(result.rows))
+        .then(() => res.status(201).send(result.rows))
         .catch(function (error) {
           console.log("Sorry, there was an error with your query: ", error);
           res.sendStatus(500); // HTTP SERVER ERROR

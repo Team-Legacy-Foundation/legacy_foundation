@@ -9,12 +9,20 @@ import { Link } from "react-router-dom";
 
 class ForgotPassword extends Component {
   state = {
-    lcf_id: "",
     email: "",
     password: "",
     retype_password: "",
   };
 
+  componentDidMount() {
+    let email = window.location.hash;
+    email = email.slice(17);
+    this.setState({
+      email: email,
+    })
+
+  
+  }
   //This function dispatched our newly added admin to the database from state
   //We first validate the inputs to make sure we are not sending empty inputs to the server
   resetStudentPassword = (event) => {
@@ -27,8 +35,6 @@ class ForgotPassword extends Component {
     console.log("this is the user", this.props.user);
 
     if (
-      this.state.email &&
-      this.state.password &&
       this.state.retype_password &&
       this.state.password === this.state.retype_password
     ) {
@@ -55,7 +61,7 @@ class ForgotPassword extends Component {
   };
 
   render() {
-    return (
+    return(
       <div>
         <div className="navbuttonscontainer">
           <Link to="/home">
@@ -72,16 +78,6 @@ class ForgotPassword extends Component {
           </h1>
           <Form className="addstudent">
             <Row>
-              <Col>
-                <Form.Label>Student Email</Form.Label>
-                <Form.Control
-                  placeholder="Student Email"
-                  type="email"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.handleInputChangeFor("email")}
-                />
-              </Col>
               <Col>
                 <Form.Label>New Student Password</Form.Label>
                 <Form.Control
