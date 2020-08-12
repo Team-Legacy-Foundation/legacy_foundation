@@ -21,24 +21,24 @@ function* registerAdmin(action){
     }
 }
 
-function* forgotAdminPassword(action) {
-  try {
-    //clear any errors on the page before
-    yield put({ type: "CLEAR_RESET_STUDENT_PASSWORD_ERROR" });
+// function* forgotAdminPassword(action) {
+//   try {
+//     //clear any errors on the page before
+//     yield put({ type: "CLEAR_RESET_STUDENT_PASSWORD_ERROR" });
 
-    //passes the incoming new student password info from the payload to the server
-    console.log("we are about to reset the admin password", action.payload);
-    const response = yield axios.put(
-      `/api/user/passwordforgot/admin`,
-      action.payload
-    );
+//     //passes the incoming new student password info from the payload to the server
+//     console.log("we are about to reset the admin password", action.payload);
+//     const response = yield axios.put(
+//       `/api/user/passwordforgot/admin`,
+//       action.payload
+//     );
 
-    yield put({ type: "SET_USER", payload: response.data });
-    console.log("Success in updating new password or email.");
-  } catch (error) {
-    console.log("error editing password or email", error);
-  }
-}
+//     yield put({ type: "SET_USER", payload: response.data });
+//     console.log("Success in updating new password or email.");
+//   } catch (error) {
+//     console.log("error editing password or email", error);
+//   }
+// }
 
 
 function* getAdmin (action){
@@ -84,7 +84,7 @@ function* AdminSaga() {
     yield takeLatest('REGISTER_ADMIN', registerAdmin);
     yield takeLatest('GET_ADMIN', getAdmin);
     yield takeLatest('RESET_ADMIN_PASSWORD', resetAdminPassword);
-    yield takeLatest('FORGOT_ADMIN_PASSWORD', forgotAdminPassword);
+    // yield takeLatest('FORGOT_ADMIN_PASSWORD', forgotAdminPassword);
 }
 
 export default AdminSaga;

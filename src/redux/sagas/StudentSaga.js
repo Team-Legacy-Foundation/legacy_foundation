@@ -204,24 +204,24 @@ function* resetStudentPassword(action) {
     }
 }
 
-function* forgotStudentPassword(action) {
-  try {
-    //clear any errors on the page before
-    yield put({ type: "CLEAR_RESET_STUDENT_PASSWORD_ERROR" });
+// function* forgotStudentPassword(action) {
+//   try {
+//     //clear any errors on the page before
+//     yield put({ type: "CLEAR_RESET_STUDENT_PASSWORD_ERROR" });
 
-    //passes the incoming new student password info from the payload to the server
-    console.log("we are about to reset the student password", action.payload);
-    const response = yield axios.put(
-      `/api/user/passwordforgot/`,
-      action.payload
-    );
+//     //passes the incoming new student password info from the payload to the server
+//     console.log("we are about to reset the student password", action.payload);
+//     const response = yield axios.put(
+//       `/api/user/passwordforgot/`,
+//       action.payload
+//     );
 
-    yield put({ type: "SET_USER", payload: response.data });
-    console.log("Success in updating new password or email.");
-  } catch (error) {
-    console.log("error editing password or email", error);
-  }
-}
+//     yield put({ type: "SET_USER", payload: response.data });
+//     console.log("Success in updating new password or email.");
+//   } catch (error) {
+//     console.log("error editing password or email", error);
+//   }
+// }
 
 function* getStudentForEdit(action){
   try {
@@ -243,7 +243,7 @@ function* StudentSaga() {
     yield takeLatest('REGISTER_STUDENT', registerStudent);
      yield takeLatest('UPDATE_STUDENT', updateStudent);
      yield takeLatest('UPDATE_PASSWORD', updatePassword);
-     yield takeLatest('FORGOT_STUDENT_PASSWORD', forgotStudentPassword);
+    //  yield takeLatest('FORGOT_STUDENT_PASSWORD', forgotStudentPassword);
      yield takeLatest('DELETE_STUDENT', deleteStudent);
      yield takeLatest('GET_STUDENTS', getStudents);
      yield takeLatest('FETCH_ENTRIES_FOR_ADMIN', getStudentEntriesForAdmin);
