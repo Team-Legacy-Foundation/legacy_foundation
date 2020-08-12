@@ -17,6 +17,7 @@ class LoginPage extends Component {
     password: "",
     toggle: false,
     toggle2: false,
+    error: false,
   };
 
   login = (event) => {
@@ -41,11 +42,15 @@ class LoginPage extends Component {
     event.preventDefault();
 
     if (this.state.username === "") {
-        Swal.fire({
-          icon: "Warning",
-          title: "Please fill in info",
-          text: `Please enter your email address`,
+      this.setState({
+        error: true,
+      });
+
+      setTimeout(() => {
+        this.setState({
+          error: false,
         });
+      }, 5000);
       return;
     }
 
@@ -55,34 +60,38 @@ class LoginPage extends Component {
         username: this.state.username,
       },
     });
-       Swal.fire({
-         icon: "Icon",
-         title: "Password Reset",
-         text: `Password Reset email sent, please check your email.`,
-       });
+    Swal.fire({
+      icon: "Icon",
+      title: "Password Reset",
+      text: `Password Reset email sent, please check your email.`,
+    });
   };
 
   handleResetAdmin = (event) => {
     event.preventDefault();
-      if (this.state.username === "") {
-        Swal.fire({
-          icon: "Warning",
-          title: "Please fill in info",
-          text: `Please enter your email address`,
+    if (this.state.username === "") {
+      this.setState({
+        error: true,
+      });
+
+      setTimeout(() => {
+        this.setState({
+          error: false,
         });
-        return;
-      }
+      }, 5000);
+      return;
+    }
     this.props.dispatch({
       type: "FORGOT_PASSWORD_ADMIN",
       payload: {
         username: this.state.username,
       },
     });
-      Swal.fire({
-        icon: "Icon",
-        title: "Password Reset",
-        text: `Password Reset email sent, please check your email.`,
-      });
+    Swal.fire({
+      icon: "Icon",
+      title: "Password Reset",
+      text: `Password Reset email sent, please check your email.`,
+    });
   };
 
   handleInputChangeFor = (propertyName) => (event) => {
@@ -112,6 +121,11 @@ class LoginPage extends Component {
         {/* <div style={{border:'1px solid black', display:'inline', float:'right', width:'50%', padding:0, margin:0, minHeight:'100% !important'}}> */}
         <Grid item xs={12} sm={12} md={5} style={{ display: "block" }}>
           <center>
+            {this.state.error === true && (
+              <Alert className="error" style={{}} severity="error">
+                Please provide your email address
+              </Alert>
+            )}
             <br />
             <br />
             {this.state.toggle === false ? (
