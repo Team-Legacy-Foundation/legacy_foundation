@@ -121,15 +121,21 @@ class ChargeStudent extends Component {
           <Form>
             <Row>
               <Col>
-                <Form.Label>LCF ID</Form.Label>
-                <Form.Control
-                  placeholder="LCF ID"
-                  type="number"
-                  name="lcf_id"
-                  value={this.state.lcf_id}
-                  onChange={this.handleInputChangeFor("lcf_id")}
-                />
-              </Col>
+            <Form.Label>Student Name</Form.Label>
+            <Form.Control
+              as="select"
+              onChange={(event) => this.setState({ lcf_id: event.target.value })}>
+              <option value="">Pick From Below </option>
+              {this.props.students ? this.props.students.map((student) => (
+                    <option key={student.lcf_id} value={student.lcf_id}>
+                      {" "}
+                      {student.first_name}&nbsp; {student.last_name}&nbsp;
+                    {" "}
+                    </option>
+                  ))
+                : ""}
+            </Form.Control>
+          </Col>
               <Col>
                 <Form.Label>Charge Type</Form.Label>
                 <Form.Control
