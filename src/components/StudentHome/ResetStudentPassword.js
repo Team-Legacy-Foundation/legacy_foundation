@@ -97,7 +97,7 @@ class ResetStudentPassword extends Component {
                 <Form.Label>New Student Password</Form.Label>
                 <Form.Control
                   placeholder="New Student Password"
-                  type="text"
+                  type="password"
                   name="password"
                   value={this.state.password}
                   onChange={this.handleInputChangeFor("password")}
@@ -107,7 +107,7 @@ class ResetStudentPassword extends Component {
                 <Form.Label>Re-type New Student Password</Form.Label>
                 <Form.Control
                   placeholder="Re-type New Student Password"
-                  type="text"
+                  type="password"
                   name="password"
                   value={this.state.retype_password}
                   onChange={this.handleInputChangeFor("retype_password")}
@@ -120,9 +120,9 @@ class ResetStudentPassword extends Component {
                 onClick={(event) => this.resetStudentPassword(event)}
                 variant="success"
                 type="submit"
-                style={{ width: "40%", margin: "7% 30% 2%" }}
+                style={{ width: "20%", margin: "7% 30% 2%" }}
               >
-                Submit Student Info
+                Update Password
               </Button>
             </Link>
           </Form>

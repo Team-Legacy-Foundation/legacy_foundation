@@ -33,7 +33,7 @@ class StudentEntries extends Component {
     }
   }
 
-  render() {
+  render() { //TODO: Add delete option for admin so that if an entry was submitted too early, they get rid of it
     const columns = [
       {
         name: "Edit",

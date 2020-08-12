@@ -195,7 +195,7 @@ class AdminUpdateEntry extends Component {
           },
         });
         Swal.fire("Success!", "Your entry update has been logged.", "success");
-        this.props.history.push("/home");
+        this.props.history.push("/totalstudententries");
         console.log("state is", this.state);
       }
     });
