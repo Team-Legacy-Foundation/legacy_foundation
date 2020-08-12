@@ -309,6 +309,7 @@ class AdminHome extends Component {
       (entry, index) => [
         entry.first_name, // 0
         entry.last_name, // 1
+        entry.last_login == null ? <>hasn't logged in</> :
         moment(entry.last_login).fromNow(),
         Number(entry.grade), // 2
         entry.grad_year, // 3

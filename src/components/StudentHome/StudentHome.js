@@ -29,7 +29,7 @@ class StudentHome extends Component { //TODO: add green banner to show if studen
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={12} style={{margin:'2%'}}>
             <center>
-            {JSON.stringify(this.props.editStudent)}
+            
           {this.props.editStudent ?
           <h1>
           Hello there {this.props.editStudent.first_name}!
@@ -106,7 +106,7 @@ class StudentHome extends Component { //TODO: add green banner to show if studen
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  editStudent: state.editStudent,
+  editStudent: state.editStudent[0],
   studentHistory: state.studentHistory.studentHistoryReducer,
 });
 
