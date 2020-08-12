@@ -33,7 +33,7 @@ class StudentEntries extends Component {
     }
   }
 
-  render() {
+  render() { //TODO: Add delete option for admin so that if an entry was submitted too early, they get rid of it
     const columns = [
       {
         name: "Edit",
@@ -179,8 +179,15 @@ class StudentEntries extends Component {
       },
     ];
     return (
-      <div>
-        
+      <div><br/>
+         <center><h1 >Current Entries</h1></center>
+         <Button
+          style={{margin:'1%'}}
+          variant='success'
+          onClick={(event) => this.runReport(event)}
+        >
+          Run Report
+        </Button> 
         {console.log(this.props.redirect)}
         {this.redirectPage()}
         {/*PLEASE NOTE: instead of start date, we want to show latest activity on this table */}
@@ -188,20 +195,15 @@ class StudentEntries extends Component {
 
         {/*Blaine: one option, get rid of filter and map and handle in redux */}
         {/*Do map in redux and store the data for the table in redux */}
-        <div style={{paddingRight:'2%', paddingLeft:'2%'}}>
+        <div style={{paddingRight:'2%', paddingLeft:'2%', paddingBottom:'6%'}}>
         <MUITable
           data={this.getStudentArray(this.props.entries)}
           columns={columns}
-          title={"Entry History"}
+          title={"Entries for Current Pay Period"}
           
         />
         </div>
-        <Button
-          style={{ margin: "3%" }}
-          onClick={(event) => this.runReport(event)}
-        >
-          Run Report
-        </Button> <br/><br/>
+        
       </div>
     );
   }

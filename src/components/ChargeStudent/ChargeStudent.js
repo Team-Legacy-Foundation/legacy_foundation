@@ -109,9 +109,10 @@ class ChargeStudent extends Component {
           </Alert>
         )}
         
-        <h1 style={{ width: "50%", margin: "2% 35%" }}>
-          Charge Student Account
-        </h1>
+        <center>
+        <h1>
+          Create New Deduction to Student Account
+        </h1></center>
 
         <Paper
           elevation={5}
@@ -132,7 +133,7 @@ class ChargeStudent extends Component {
               <Col>
                 <Form.Label>Charge Type</Form.Label>
                 <Form.Control
-                  placeholder="type"
+                  placeholder="Type"
                   type="text"
                   name="type"
                   value={this.state.type}
@@ -140,6 +141,7 @@ class ChargeStudent extends Component {
                 />
               </Col>
             </Row>
+            
             <Row>
               <Col>
                 <Form.Label>Description</Form.Label>
@@ -162,14 +164,16 @@ class ChargeStudent extends Component {
                 />
               </Col>
             </Row>
+            <center>
             <Button
               onClick={(event) => this.chargeStudent(event)}
               variant="success"
               type="submit"
-              style={{ width: "40%", margin: "7% 30% 2%" }}
+              style={{ width: "20%", margin:'1%'}}
             >
               Create New Charge
             </Button>
+            </center>
           </Form>
         </Paper>
       </div>

@@ -248,15 +248,15 @@ router.put(`/adminpasswordreset/:admin_id`, (req, res) => {
   const adminID = req.params.admin_id;
   const email = req.body.email;
   // setting query text to update the username
-  const queryText = `UPDATE "admin" SET password=$1, email=$2 WHERE id=$3 `;
+  const queryText = `UPDATE "admin" SET password=$1 WHERE id=$2 `;
 
   pool
-    .query(queryText, [newPassword, email, adminID])
+    .query(queryText, [newPassword, adminID])
     .then((result) => {
       console.log("Success in updating password or email!");
 
-      const query2Text = `UPDATE "user" SET password=$1, email=$2 WHERE admin_id=$3`;
-      const queryValue = [newPassword, email, adminID];
+      const query2Text = `UPDATE "user" SET password=$1 WHERE admin_id=$2`;
+      const queryValue = [newPassword, adminID];
       pool
         .query(query2Text, queryValue)
              .then(() => res.sendStatus(201).res.send(result.rows))
@@ -283,15 +283,15 @@ router.put(`/studentpasswordreset/:lcf_id`, (req, res) => {
   const studentID = req.params.lcf_id;
   const email = req.body.email;
   // setting query text to update the username
-  const queryText = `UPDATE "student" SET password=$1, student_email=$2 WHERE lcf_id=$3 `;
+  const queryText = `UPDATE "student" SET password=$1 WHERE lcf_id=$2 `;
 
   pool
-    .query(queryText, [newPassword, email, studentID])
+    .query(queryText, [newPassword, studentID])
     .then((result) => {
       console.log("Success in updating password or email for student!");
 
-      const query2Text = `UPDATE "user" SET password=$1, email=$2 WHERE lcf_id=$3`;
-      const queryValue = [newPassword, email, studentID];
+      const query2Text = `UPDATE "user" SET password=$1 WHERE lcf_id=$2`;
+      const queryValue = [newPassword, studentID];
       pool
         .query(query2Text, queryValue)
         .then(() => res.sendStatus(201).res.send(result.rows))
