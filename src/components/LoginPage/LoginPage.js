@@ -61,7 +61,7 @@ class LoginPage extends Component {
       },
     });
     Swal.fire({
-      icon: "Icon",
+      icon: "info",
       title: "Password Reset",
       text: `Password Reset email sent, please check your email.`,
     });
@@ -88,7 +88,7 @@ class LoginPage extends Component {
       },
     });
     Swal.fire({
-      icon: "Icon",
+      icon: "info",
       title: "Password Reset",
       text: `Password Reset email sent, please check your email.`,
     });

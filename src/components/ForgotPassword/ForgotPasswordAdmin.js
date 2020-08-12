@@ -15,6 +15,13 @@ class ForgotPasswordAdmin extends Component {
     retype_password: "",
   };
 
+    componentDidMount() {
+    let email = window.location.hash;
+    email = email.slice(23);
+    this.setState({
+      email: email,
+    })
+  }
   //This function dispatched our newly added admin to the database from state
   //We first validate the inputs to make sure we are not sending empty inputs to the server
   resetAdminPassword = (event) => {
@@ -27,7 +34,6 @@ class ForgotPasswordAdmin extends Component {
     console.log("this is the user", this.props.user);
 
     if (
-      this.state.email &&
       this.state.password &&
       this.state.retype_password &&
       this.state.password === this.state.retype_password
@@ -71,16 +77,6 @@ class ForgotPasswordAdmin extends Component {
           </h1>
           <Form className="addstudent">
             <Row>
-              <Col>
-                <Form.Label>Admin Email</Form.Label>
-                <Form.Control
-                  placeholder="Admin Email"
-                  type="email"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.handleInputChangeFor("email")}
-                />
-              </Col>
               <Col>
                 <Form.Label>New Admin Password</Form.Label>
                 <Form.Control

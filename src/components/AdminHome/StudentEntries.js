@@ -4,6 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import MUITable from "../MUITable/MUITable";
 import { withRouter } from "react-router";
+import EditIcon from '@material-ui/icons/Edit';
 
 //import { response } from "express";
 
@@ -79,7 +80,7 @@ class StudentEntries extends Component {
                   });
                 }}
               >
-                Edit
+                <EditIcon></EditIcon>
               </Button>
             );
           },
