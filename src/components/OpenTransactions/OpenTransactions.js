@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link, Redirect } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import MUITable from '../MUITable/MUITable';
+import Swal from "sweetalert2";
 import moment from "moment";
 
 
@@ -19,8 +20,27 @@ componentDidMount () {
 }
 
 runConfirm() {
-  this.props.dispatch({ type: "FETCH_CONFIRM" })
-}
+ Swal.fire({
+   title: "Please confirm details below",
+   html: `Clicking "Confirm Report" will run the report. This action can't be undone. 
+      Please review the information for any discrepancies. 
+      Click cancel to correct any mistakes and rerun the report when corections are made.
+      If you are sur the information is correct click "Confirm Report" to run the report`,
+   icon: "question",
+   showCancelButton: true,
+   confirmButtonColor: "#5cb85c",
+   cancelButtonColor: "#d33",
+   confirmButtonText: "Confirm Report",
+ }).then((result) => {
+   if (result.value) {
+     this.props.dispatch({ type: "FETCH_CONFIRM" });
+     Swal.fire("Success!", "Your entry has been logged.", "success");
+     this.props.history.push("/home");
+     console.log("state is", this.state);
+   }
+ });
+  };
+ 
 
 pageRedirect() {
   if(this.props.redirect.redirectHome === true){
