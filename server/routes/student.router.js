@@ -27,7 +27,7 @@ router.get('/student/:id', (req, res) => {
     const queryText = `SELECT * FROM student WHERE lcf_id=$1;`;
     pool.query(queryText, [req.params.id])
         .then((result) => {
-            res.send(result.rows);
+            res.send(result.rows).status(200);
         }).catch((error) => {
             console.log(`Error on student query ${error}`);
             res.sendStatus(500);
