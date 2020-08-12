@@ -175,6 +175,12 @@ class AdminHome extends Component {
         },
       },
       {
+        name: "Student Debt ($)",
+        options: {
+          filter: true,
+        },
+      },
+      {
         name: "Change Status",
         options: {
           filter: false,
@@ -296,6 +302,7 @@ class AdminHome extends Component {
         moment(entry.lcf_start_date).format("MMMM Do YYYY") &&
         entry.student_email &&
         entry.password &&
+        entry.balance_due &&
         entry.pif_amount
     );
   };
@@ -319,6 +326,7 @@ class AdminHome extends Component {
         entry.student_email,
         //entry.password,
         entry.pif_amount,
+        entry.balance_due,
       ]
     );
     return studentsArray;
