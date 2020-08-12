@@ -103,9 +103,7 @@ componentDidUpdate() {
       return (
         
       <div>
-          <div className="navbuttonscontainer">
-                    <Link to="/home"><Button variant="outline-primary">Home</Button></Link> {' '} 
-                    </div>
+          
 
 {/* {this.props.videos.map(videoObj => {
       return (
@@ -113,7 +111,7 @@ componentDidUpdate() {
       );
     });} */}
 
-        {console.log('this.props.admin', this.props.admin)}
+        <div style={{padding:'1.5%'}}>
     <MUITable
             data={data}
             columns={[
@@ -126,6 +124,7 @@ componentDidUpdate() {
             // options={}
             title={"LCF Admin List"}
           />
+          </div>
 
        
        
