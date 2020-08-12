@@ -55,10 +55,10 @@ const Nav = (props) => (
             Past Reports
           </Link>
 
-          {/* <Link className="nav-link" to="/opentransactions">
-            
-           Pending Payroll
-          </Link> */}
+          <Link className="nav-link" to="/deductionlist">
+            <PlaylistAddCheckIcon></PlaylistAddCheckIcon>
+           Past Deductions
+          </Link>
 
           <Link className="nav-link" to="/chargestudent">
             <CreditCardIcon></CreditCardIcon>

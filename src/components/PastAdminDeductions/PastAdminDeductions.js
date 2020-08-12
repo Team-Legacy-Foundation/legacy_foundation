@@ -26,8 +26,8 @@ class PastAdminDeductions extends Component {
    
    
        <div style={{padding: '2%'}}>
-      <center><h1 >Past Reports</h1></center><br/>
-     {this.props.deductionList ? 
+      <center><h1 >Past Deductions</h1></center><br/>
+     
      <MUITable
      
             data={this.props.deductionList
@@ -55,7 +55,7 @@ class PastAdminDeductions extends Component {
             title={"Past Deductions"}
           />
       
-          :<> </>}
+          
          
       </div>
     
