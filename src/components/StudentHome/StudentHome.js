@@ -43,7 +43,7 @@ class StudentHome extends Component {
    </Grid> */}
 
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Paper elevation={5} style={{ border: "", padding:'5%', margin:'5%' }}>
+            <Paper elevation={5} style={{ border: "", padding:'4%', margin:'5%' }}>
              <h3>Notification Portal</h3>
              <hr></hr>
               This could be a tool for the LCF folks to type something up they want sent out for every student to see? But where/how do they send something out. Create a portal on admin end? STRETCH <br/><br/>
@@ -56,7 +56,7 @@ class StudentHome extends Component {
 
 
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Paper elevation={5} style={{ border: "", padding:'5%', margin:'5%' }}>
+            <Paper elevation={5} style={{ border: "", padding:'4%', margin:'5%' }}>
               <center>
               <Iframe
                 // style="width: 90%"
@@ -74,7 +74,7 @@ class StudentHome extends Component {
           
          
           <Grid item xs={12} sm={12} md={3} lg={4}>
-            <Paper elevation={5} style={{padding:'5%', margin:'5%'}}>
+            <Paper elevation={5} style={{padding:'4%', margin:'5%'}}>
             <h3>Payment Information</h3>
             <hr></hr>
         {this.props.editStudent ? 
@@ -96,6 +96,7 @@ class StudentHome extends Component {
             </Paper>
             </Grid>
         </Grid>
+        
       </div>
     );
   }
