@@ -28,6 +28,7 @@ class AddStudent extends Component {
     pif_amount: '',
     email_error: false,
     lcfID_error: false,
+    error: false,
     created_at: moment.utc().format()
 
       }
@@ -149,7 +150,17 @@ class AddStudent extends Component {
 }
 });
 } else {
-      this.props.dispatch({type: 'ADD_STUDENT_ERROR'});
+     
+            this.setState({
+              error: true,
+            });
+
+            setTimeout(() => {
+              this.setState({
+                error: false,
+              });
+            }, 5000);
+             this.props.dispatch({ type: "ADD_STUDENT_ERROR" });
     }
 } // end registerStudent
 
@@ -166,46 +177,72 @@ class AddStudent extends Component {
 
     render () {
       return (
-        
-      <div>
+        <div>
           <div className="navbuttonscontainer">
-                    <Link to="/home"><Button variant="outline-primary">Home</Button></Link> {' '} 
-                    </div>
+            <Link to="/home">
+              <Button variant="outline-primary">Home</Button>
+            </Link>{" "}
+          </div>
 
-                     <br />
-        {this.state.email_error === true && (
-          <Alert className="error" style={{}} severity="error">
-            The email you entered already exists in the system, pick a new one!
-          </Alert>
-        )}
-         <br />
-         {this.state.lcfID_error === true && (
-          <Alert className="error" style={{}} severity="error">
-            The LCF ID you chose already exists in the system, pick a new one!
-          </Alert>
-        )}
+          <br />
+          {this.state.email_error === true && (
+            <Alert className="error" style={{}} severity="error">
+              The email you entered already exists in the system, pick a new
+              one!
+            </Alert>
+          )}
+          <br />
+          {this.state.lcfID_error === true && (
+            <Alert className="error" style={{}} severity="error">
+              The LCF ID you chose already exists in the system, pick a new one!
+            </Alert>
+          )}
+          {this.state.error === true && (
+            <Alert className="error" style={{}} severity="error">
+              Please fill out all of the required fields
+            </Alert>
+          )}
 
-       <h1 style={{   width: '50%', margin: '2% 40%' }}>Add A Student</h1>
-       
-        
-      <Card border = "info" style={{ width: '90%', margin: '3% auto', padding: '2%' }} >
-      <Form className="addstudent" >  
-          <Row>
-            <Col>
-            <Form.Label>First Name</Form.Label>
-              <Form.Control placeholder="First Name" type="text" name="first_name" value={this.state.first_name} onChange={this.handleInputChangeFor('first_name')}/>
-            </Col>
+          <h1 style={{ width: "50%", margin: "2% 40%" }}>Add A Student</h1>
 
-            <Col>
-             <Form.Label>Last Name</Form.Label>
-              <Form.Control placeholder="Last Name" type="text" name="last_name" value={this.state.last_name} onChange={this.handleInputChangeFor('last_name')}/>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-                <Form.Label>Grade</Form.Label>
-                <Form.Control as="select" onChange={(event)=>this.setState({grade: event.target.value})}>
-                     <option value="">Pick From Below</option>
+          <Card
+            border="info"
+            style={{ width: "90%", margin: "3% auto", padding: "2%" }}
+          >
+            <Form className="addstudent">
+              <Row>
+                <Col>
+                  <Form.Label>First Name</Form.Label>
+                  <Form.Control
+                    placeholder="First Name"
+                    type="text"
+                    name="first_name"
+                    value={this.state.first_name}
+                    onChange={this.handleInputChangeFor("first_name")}
+                  />
+                </Col>
+
+                <Col>
+                  <Form.Label>Last Name</Form.Label>
+                  <Form.Control
+                    placeholder="Last Name"
+                    type="text"
+                    name="last_name"
+                    value={this.state.last_name}
+                    onChange={this.handleInputChangeFor("last_name")}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Label>Grade</Form.Label>
+                  <Form.Control
+                    as="select"
+                    onChange={(event) =>
+                      this.setState({ grade: event.target.value })
+                    }
+                  >
+                    <option value="">Pick From Below</option>
                     <option value="6">6</option>
                     <option value="7">7</option>
                     <option value="8">8</option>
@@ -213,50 +250,96 @@ class AddStudent extends Component {
                     <option value="10">10</option>
                     <option value="11">11</option>
                     <option value="12">12</option>
-                 </Form.Control>
-            </Col>
-              <Col>
-              <Form.Label>Graduation Year</Form.Label>
-             <Form.Control placeholder="Enter Graduation Year" type="number" name="grad_year}" min={new Date().getFullYear()} value={this.state.grad_year} onChange={this.handleInputChangeFor('grad_year')}/>
-            </Col>
-            <Col>
-                <Form.Label>School Name</Form.Label>
-                <Form.Control placeholder="School Name" type="text" name="school_attend" value={this.state.school_attend} onChange={this.handleInputChangeFor('school_attend')}/>
-            </Col>
-          </Row>
-            <Row>
+                  </Form.Control>
+                </Col>
                 <Col>
-               <Form.Label>LCF ID:</Form.Label>
-                <Form.Control placeholder="Enter LCF ID" type="number" name="lcf_id" value={this.state.lcf_id} onChange={this.handleInputChangeFor('lcf_id')}/>
-              </Col>
-              <Col>
-              <Form.Label>LCF Start Date</Form.Label>
-              <Form.Control placeholder="LCF Start Date" type="date" name="lcf_start_date" value={this.state.lcf_start_date} onChange={this.handleInputChangeFor('lcf_start_date')}/>
-            </Col>
-            <Col>
-              <Form.Label>PIF Contribution</Form.Label>
-                <Form.Control placeholder="PIF Contribution" type="number" name="pif_amount" value={this.state.pif_amount} onChange={this.handleInputChangeFor('pif_amount')}/>
-              </Col>
-            </Row>
-            <Row>
-             <Col>
-               <Form.Label>Student Email</Form.Label>
-                <Form.Control placeholder="Student Email" type="email" name="student_email" value={this.state.student_email} onChange={this.handleInputChangeFor('student_email')}/>
-              </Col>
-              <Col>
-               <Form.Label>Student Password</Form.Label>
-                <Form.Control placeholder="Student Password" type="text" name="password" value={this.state.password} onChange={this.handleInputChangeFor('password')}/>
-              </Col>
-            </Row>
+                  <Form.Label>Graduation Year</Form.Label>
+                  <Form.Control
+                    placeholder="Enter Graduation Year"
+                    type="number"
+                    name="grad_year}"
+                    min={new Date().getFullYear()}
+                    value={this.state.grad_year}
+                    onChange={this.handleInputChangeFor("grad_year")}
+                  />
+                </Col>
+                <Col>
+                  <Form.Label>School Name</Form.Label>
+                  <Form.Control
+                    placeholder="School Name"
+                    type="text"
+                    name="school_attend"
+                    value={this.state.school_attend}
+                    onChange={this.handleInputChangeFor("school_attend")}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Label>LCF ID:</Form.Label>
+                  <Form.Control
+                    placeholder="Enter LCF ID"
+                    type="number"
+                    name="lcf_id"
+                    value={this.state.lcf_id}
+                    onChange={this.handleInputChangeFor("lcf_id")}
+                  />
+                </Col>
+                <Col>
+                  <Form.Label>LCF Start Date</Form.Label>
+                  <Form.Control
+                    placeholder="LCF Start Date"
+                    type="date"
+                    name="lcf_start_date"
+                    value={this.state.lcf_start_date}
+                    onChange={this.handleInputChangeFor("lcf_start_date")}
+                  />
+                </Col>
+                <Col>
+                  <Form.Label>PIF Contribution</Form.Label>
+                  <Form.Control
+                    placeholder="PIF Contribution"
+                    type="number"
+                    name="pif_amount"
+                    value={this.state.pif_amount}
+                    onChange={this.handleInputChangeFor("pif_amount")}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Label>Student Email</Form.Label>
+                  <Form.Control
+                    placeholder="Student Email"
+                    type="email"
+                    name="student_email"
+                    value={this.state.student_email}
+                    onChange={this.handleInputChangeFor("student_email")}
+                  />
+                </Col>
+                <Col>
+                  <Form.Label>Student Password</Form.Label>
+                  <Form.Control
+                    placeholder="Student Password"
+                    type="text"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.handleInputChangeFor("password")}
+                  />
+                </Col>
+              </Row>
 
-            <Button onClick={(event)=>this.registerStudent(event)} variant="success" type="submit" style={{ width: '40%', margin: '7% 30% 2%' }}>
-            Submit Student Info
-          </Button>
-        </Form>
-      </Card>
-      </div>
-
-
+              <Button
+                onClick={(event) => this.registerStudent(event)}
+                variant="success"
+                type="submit"
+                style={{ width: "40%", margin: "7% 30% 2%" }}
+              >
+                Submit Student Info
+              </Button>
+            </Form>
+          </Card>
+        </div>
       );
     }
 }
