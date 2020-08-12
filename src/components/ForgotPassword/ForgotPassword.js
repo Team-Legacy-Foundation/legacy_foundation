@@ -1,63 +1,53 @@
-import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
-import Row from 'react-bootstrap/Row'
+import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
-import Paper from "@material-ui/core/Paper";
+import Card from "react-bootstrap/Card";
+import { Link } from "react-router-dom";
 
-
-
-
-class ResetStudentPassword extends Component {
+class ForgotPassword extends Component {
   state = {
-    lcf_id: this.props.user.lcf_id,
-    email: this.props.user.email,
+    email: "",
     password: "",
     retype_password: "",
   };
 
+  componentDidMount() {
+    let email = window.location.hash;
+    email = email.slice(17);
+    this.setState({
+      email: email,
+    })
+
+  
+  }
   //This function dispatched our newly added admin to the database from state
   //We first validate the inputs to make sure we are not sending empty inputs to the server
   resetStudentPassword = (event) => {
     event.preventDefault();
 
-    console.log( 
+    console.log(
       "we are about to send the state to change the student password",
       this.state
     );
-     console.log(
-       "this is the user",
-       this.props.user
-     );
+    console.log("this is the user", this.props.user);
 
     if (
-      this.state.lcf_id &&
-      this.state.email &&
-      this.state.password &&
       this.state.retype_password &&
       this.state.password === this.state.retype_password
     ) {
       //send the new student to the server through a redux saga
       this.props.dispatch({
-        type: "RESET_STUDENT_PASSWORD",
+        type: "FORGOT_STUDENT_PASSWORD",
         payload: {
-          lcf_id: this.state.lcf_id,
           email: this.state.email,
           password: this.state.password,
         },
       });
 
-      this.setState({
-        lcf_id: this.props.user.lcf_id,
-        email: this.props.user.email,
-        password: "",
-        retype_password: "",
-      });
-
-      
+   this.props.history.push("/home")
     } else {
       this.props.dispatch({ type: "RESET_STUDENT_PASSWORD_ERROR" });
     }
@@ -70,29 +60,24 @@ class ResetStudentPassword extends Component {
     });
   };
 
-  render() { 
-    return (
+  render() {
+    return(
       <div>
-        
+        <div className="navbuttonscontainer">
+          <Link to="/home">
+            <Button variant="outline-primary">Home</Button>
+          </Link>{" "}
+        </div>
 
-        <Paper
-        elevation = {5}
+        <Card
           border="info"
           style={{ width: "95%", margin: "3% auto", padding: "2%" }}
         >
-          <h1 style={{ width: "50%", margin: "5% 35%" }}>Reset Student Password</h1>
+          <h1 style={{ width: "50%", margin: "5% 35%" }}>
+            Reset Student Password
+          </h1>
           <Form className="addstudent">
             <Row>
-              <Col>
-                <Form.Label>Student Email</Form.Label>
-                <Form.Control
-                  placeholder="Student Email"
-                  type="email"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.handleInputChangeFor("email")}
-                />
-              </Col>
               <Col>
                 <Form.Label>New Student Password</Form.Label>
                 <Form.Control
@@ -126,17 +111,14 @@ class ResetStudentPassword extends Component {
               </Button>
             </Link>
           </Form>
-        </Paper>
+        </Card>
       </div>
     );
   }
 }
 
-
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.user,
-  
 });
-   
-export default connect(mapStateToProps)(ResetStudentPassword);
+
+export default connect(mapStateToProps)(ForgotPassword);

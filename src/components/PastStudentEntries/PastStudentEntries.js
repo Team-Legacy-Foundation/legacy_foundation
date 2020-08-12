@@ -25,7 +25,7 @@ class PastStudentEntries extends Component {
   render() {
     const gunnarStyle = { minHeight: "500px", minWidth: "150px", textAlign:'center' };
     
-    if (this.props.studentHistory.length === 0) { //conditional rendering to handle case of no entries for student
+    if (this.props.entry.length===0 && this.props.history.length===0) { //conditional rendering to handle case of no entries for student
       return (
         <Paper elevation={5} style={{margin:'5%', padding:'5%', textAlign:'center'}}>
           <h2>It looks like you don't have any past entries! Check back once you've made one</h2>
@@ -79,7 +79,7 @@ class PastStudentEntries extends Component {
           </TableHead>
           <TableBody>
            {this.props.entry ? (<TableRow style={{backgroundColor: 'yellow'}} >
-            <TableCell style={gunnarStyle}>Current Entry</TableCell>
+            <TableCell style={gunnarStyle}>Latest Entry</TableCell>
             <TableCell style={gunnarStyle}>{moment(entry.pay_day).format("MMMM Do YYYY")}</TableCell>
             <TableCell style={gunnarStyle}>{moment(entry.date_submitted).format("MMMM Do YYYY")}</TableCell>
             <TableCell style={gunnarStyle}>{entry.pass_class}</TableCell>
