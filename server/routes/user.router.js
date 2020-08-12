@@ -37,7 +37,7 @@ router.post("/forgot/:email", (req, res) => {
   );
 });
 
-router.post("/forgot/admin/email", (req, res) => {
+router.post("/forgot/admin/:email", (req, res) => {
   let email = req.body.username;
   sendmail(
     {

@@ -34,6 +34,7 @@ import AdminResetPassword from '../AdminHome/AdminResetPassword';
 import StudentResetPassword from '../StudentHome/ResetStudentPassword';
 import OpenTransactions from '../OpenTransactions/OpenTransactions';
 import ChargeStudent from '../ChargeStudent/ChargeStudent';
+import AddAdminForm from '../AdminHome/AddAdminForm';
 
 
 
@@ -120,6 +121,7 @@ class App extends Component {
               component={AdminUpdateEntry}
             />
             <ProtectedRoute exact path="/adminusers" component={AddAdmin} />
+            <ProtectedRoute exact path="/addadminform" component={AddAdminForm} />
             <ProtectedRoute
               exact
               path="/resetadminpassword"
