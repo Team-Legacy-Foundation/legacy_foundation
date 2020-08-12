@@ -15,7 +15,7 @@ class PastAdminReports extends Component {
   componentDidMount() {
     
     this.props.dispatch({
-      type: "FETCH_CONFIRM",
+      type: "FETCH_CONFIRM", 
     });
   }
 
