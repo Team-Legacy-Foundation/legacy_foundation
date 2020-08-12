@@ -1,19 +1,17 @@
-import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
-import Row from 'react-bootstrap/Row'
+import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
-
-
-
+import Card from "react-bootstrap/Card";
+import { Link } from "react-router-dom";
+import Paper from "@material-ui/core/Paper";
 
 class AdminResetPassword extends Component {
   state = {
     admin_id: this.props.user.admin_id,
-    email: this.props.user.email,
+    //email: this.props.user.email,
     password: "",
     retype_password: "",
   };
@@ -27,14 +25,11 @@ class AdminResetPassword extends Component {
       "we are about to send the state to change admin password",
       this.state
     );
-     console.log(
-       "this is the user",
-       this.props.user
-     );
+    console.log("this is the user", this.props.user);
 
     if (
       this.state.admin_id &&
-      this.state.email &&
+      
       this.state.password &&
       this.state.retype_password &&
       this.state.password === this.state.retype_password
@@ -44,19 +39,17 @@ class AdminResetPassword extends Component {
         type: "RESET_ADMIN_PASSWORD",
         payload: {
           admin_id: this.state.admin_id,
-          email: this.state.email,
+          //email: this.state.email,
           password: this.state.password,
         },
       });
 
       this.setState({
         admin_id: this.props.user.admin_id,
-        email: this.props.user.email,
+        //email: this.props.user.email,
         password: "",
         retype_password: "",
       });
-
-      
     } else {
       this.props.dispatch({ type: "RESET_ADMIN_PASSWORD_ERROR" });
     }
@@ -72,20 +65,18 @@ class AdminResetPassword extends Component {
   render() {
     return (
       <div>
-        <div className="navbuttonscontainer">
-          <Link to="/home">
-            <Button variant="outline-primary">Home</Button>
-          </Link>{" "}
-        </div>
+        <br />
+        <center>
+          <h1>Reset Admin Password</h1>
+        </center>
 
-        <Card
-          border="info"
-          style={{ width: "95%", margin: "3% auto", padding: "2%" }}
+        <Paper
+          elevation={5}
+          style={{ width: "70%", margin: "3% auto", padding: "2%" }}
         >
-          <h1 style={{ width: "50%", margin: "5% 35%" }}>Reset Admin Password</h1>
           <Form className="addstudent">
-            <Row>
-              <Col>
+            <Row> 
+              {/* <Col>
                 <Form.Label>Admin Email</Form.Label>
                 <Form.Control
                   placeholder="Admin Email"
@@ -94,51 +85,55 @@ class AdminResetPassword extends Component {
                   value={this.state.email}
                   onChange={this.handleInputChangeFor("email")}
                 />
-              </Col>
+              </Col> */}
               <Col>
+              <center>
                 <Form.Label>New Admin Password</Form.Label>
                 <Form.Control
                   placeholder="New Admin Password"
-                  type="text"
+                  type="password"
                   name="password"
                   value={this.state.password}
                   onChange={this.handleInputChangeFor("password")}
-                />
+                  style={{width:'60%'}}
+                /></center>
               </Col>
+              
               <Col>
-                <Form.Label>Re-type New Admin Password</Form.Label>
+              <center>
+                <Form.Label>Re-type New Password</Form.Label>
                 <Form.Control
                   placeholder="Re-type New Admin Password"
-                  type="text"
+                  type="password"
                   name="password"
                   value={this.state.retype_password}
                   onChange={this.handleInputChangeFor("retype_password")}
-                />
+                  style={{width:'60%'}}
+                /></center>
               </Col>
+              
             </Row>
-
-            <Link to="/home">
-              <Button
-                onClick={(event) => this.resetAdminPassword(event)}
-                variant="success"
-                type="submit"
-                style={{ width: "40%", margin: "7% 30% 2%" }}
-              >
-                Submit Admin Info
-              </Button> 
-            </Link>
+            <center>
+              <Link to="/home">
+                <Button
+                  onClick={(event) => this.resetAdminPassword(event)}
+                  variant="success"
+                  type="submit"
+                  style={{ width: "20%", margin: "1%" }}
+                >
+                  Reset Admin Password
+                </Button>
+              </Link>
+            </center>
           </Form>
-        </Card>
+        </Paper>
       </div>
     );
   }
 }
 
-
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.user,
-  
 });
-   
+
 export default connect(mapStateToProps)(AdminResetPassword);

@@ -26,7 +26,7 @@ class PastAdminReports extends Component {
    
    
        <div style={{padding: '2%'}}>
-     
+      <center><h1 >Past Reports</h1></center><br/>
      
      <MUITable
      

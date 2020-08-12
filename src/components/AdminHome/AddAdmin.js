@@ -53,11 +53,12 @@ componentDidUpdate() {
               ])
       return (
         
-      <div>
+      <div><br/>
+        <center><h1>Admin Users</h1></center>
         {this.props.user.role === "admin" && (
           <div className="navbuttonscontainer">
             <Link to="/addadminform">
-              <Button variant="outline-primary">Add Admin</Button>
+              <Button style={{marginLeft:'1%'}} variant="success">Add Admin</Button>
             </Link>{" "}
             
           </div>

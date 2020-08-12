@@ -43,11 +43,11 @@ class PastStudentEntries extends Component {
         }
 
     return (
-      <div style={{margin:'5%'}}>
-      <center>
-        <h4>Scroll along the table to review past entries</h4>
-      </center>
-      {JSON.stringify(this.props.entry)}
+
+      <div style={{margin:'2%'}}>
+        <center><h1>Past Entries</h1></center><br/>
+      
+
 
       <Paper elevation={5} style={{height: "100%", overflow: "scroll", border: "",}}>
         <Table style={{margin:'1%',}}>

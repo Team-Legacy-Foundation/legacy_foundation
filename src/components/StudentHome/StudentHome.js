@@ -24,7 +24,7 @@ class StudentHome extends Component { //TODO: add green banner to show if studen
 
   render() {
     return (
-      <div>
+      <div style={{width:'99%'}}>
         
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={12} style={{margin:'2%'}}>
@@ -95,6 +95,7 @@ class StudentHome extends Component { //TODO: add green banner to show if studen
         }
             </Paper>
             </Grid>
+            
         </Grid>
         
       </div>
