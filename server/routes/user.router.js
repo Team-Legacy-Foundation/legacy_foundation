@@ -3,10 +3,9 @@ const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
 const encryptLib = require("../modules/encryption");
-const sendmail = require("sendmail")();
 const pool = require("../modules/pool");
 const userStrategy = require("../strategies/user.strategy");
-
+const sgMail = require("@sendgrid/mail");
 const router = express.Router();
 const moment = require('moment');
 
@@ -16,47 +15,37 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
-router.post("/forgot/:email", (req, res) => {
-  let email = req.body.username
-  sendmail(
-    {
-      from: "no-reply@legacyfoundation.com",
-      to: email,
-      subject: "request to reset password",
-      html: `
-  <h3>Click below to reset your password</h3>
-  <a href="http://localhost:3000/#/forgotpassword/${email}">Reset Password</a>
-  <p>If you did not request this email, please disregard it and delete it.</p>
-  `,
-    },
-    function (err, reply) {
-      console.log(err && err.stack);
-      console.dir(reply);
-      res.sendStatus(201);
-    }
-  );
-});
+// router.post("/forgot/:email", (req, res) => {
+//   let email = req.body.username
+//   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+//    const msg = {
+//      to: email,
+//      from: "no-reply@legacyfoundation.com",
+//      subject: "request to reset password",
+//      html: `
+//   <h3>Click below to reset your password</h3>
+//   <a href="http://localhost:3000/#/forgotpassword/${email}">Reset Password</a>
+//   <p>If you did not request this email, please disregard it and delete it.</p>
+//   `,
+//    };
+//    sgMail.send(msg);
+// });
 
-router.post("/forgot/admin/:email", (req, res) => {
-  let email = req.body.username;
-  sendmail(
-    {
-      from: "no-reply@legacyfoundation.com",
-      to: email,
-      subject: "request to reset password",
-      html: `
-  <h3>Click below to reset your password</h3>
-  <a href="http://localhost:3000/#/forgotpassword/admin/${email}">Reset Password</a>
-  <p>If you did not request this email, please disregard it and delete it.</p>
-  `,
-    },
-    function (err, reply) {
-      console.log(err && err.stack);
-      console.dir(reply);
-      res.sendStatus(201);
-    }
-  );
-});
+// router.post("/forgot/admin/:email", (req, res) => {
+//   let email = req.body.username;
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+//   const msg = {
+//     to: email,
+//     from: "no-reply@legacyfoundation.com",
+//     subject: "request to reset password",
+//     html: `
+//   <h3>Click below to reset your password</h3>
+//   <a href="http://localhost:3000/#/forgotpassword/${email}">Reset Password</a>
+//   <p>If you did not request this email, please disregard it and delete it.</p>
+//   `,
+//   };
+//   sgMail.send(msg);
+// });
 
 
 

@@ -35,7 +35,11 @@ import StudentResetPassword from '../StudentHome/ResetStudentPassword';
 import OpenTransactions from '../OpenTransactions/OpenTransactions';
 import ChargeStudent from '../ChargeStudent/ChargeStudent';
 import AddAdminForm from '../AdminHome/AddAdminForm';
+
 import PastAdminDeductions from '../PastAdminDeductions/PastAdminDeductions';
+
+import Instructions from '../Instructions/Instructions';
+
 
 
 
@@ -75,7 +79,7 @@ class App extends Component {
             they will see the info page instead. */}
             <ProtectedRoute exact path="/info" component={InfoPage} />
             <ProtectedRoute exact path="/makeentry" component={MakeEntry} />
-            <Route
+            {/* <Route
               exact
               path="/forgotpassword/:email"
               component={ForgotPassword}
@@ -84,7 +88,7 @@ class App extends Component {
               exact
               path="/forgotpassword/admin/:email"
               component={ForgotPasswordAdmin}
-            />
+            /> */}
             <ProtectedRoute
               exact
               path="/resetstudentpassword"
@@ -142,6 +146,11 @@ class App extends Component {
               exact
               path="/chargestudent"
               component={ChargeStudent}
+            />
+            <ProtectedRoute
+              exact
+              path="/instructions"
+              component={Instructions}
             />
 
             {/* If none of the other routes matched, we will show a 404. */}
