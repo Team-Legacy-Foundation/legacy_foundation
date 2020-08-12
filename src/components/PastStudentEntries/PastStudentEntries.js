@@ -47,6 +47,7 @@ class PastStudentEntries extends Component {
       <center>
         <h4>Scroll along the table to review past entries</h4>
       </center>
+      {JSON.stringify(this.props.entry)}
 
       <Paper elevation={5} style={{height: "100%", overflow: "scroll", border: "",}}>
         <Table style={{margin:'1%',}}>
@@ -78,7 +79,7 @@ class PastStudentEntries extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-           {this.props.entry ? (<TableRow style={{backgroundColor: 'yellow'}} >
+           {(this.props.entry !== [])&& <TableRow style={{backgroundColor: 'yellow'}} >
             <TableCell style={gunnarStyle}>Current Entry</TableCell>
             <TableCell style={gunnarStyle}>{moment(entry.pay_day).format("MMMM Do YYYY")}</TableCell>
             <TableCell style={gunnarStyle}>{moment(entry.date_submitted).format("MMMM Do YYYY")}</TableCell>
@@ -102,8 +103,7 @@ class PastStudentEntries extends Component {
            <TableCell style={gunnarStyle}>Pending Approval</TableCell>
            <TableCell style={gunnarStyle}>Pending Approval</TableCell>
             <TableCell style={gunnarStyle}>Pending Approval</TableCell>
-          </TableRow>
-          ) : ('')}
+          </TableRow>}
           
             {
             this.props.studentHistory.map((entryItem, index) => {
