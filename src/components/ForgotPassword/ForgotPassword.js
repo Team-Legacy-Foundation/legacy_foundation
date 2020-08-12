@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
+import { Alert } from "@material-ui/lab";
 
 class ForgotPassword extends Component {
   state = {
@@ -68,7 +69,7 @@ class ForgotPassword extends Component {
             <Button variant="outline-primary">Home</Button>
           </Link>{" "}
         </div>
-
+ 
         <Card
           border="info"
           style={{ width: "95%", margin: "3% auto", padding: "2%" }}
@@ -76,6 +77,7 @@ class ForgotPassword extends Component {
           <h1 style={{ width: "50%", margin: "5% 35%" }}>
             Reset Student Password
           </h1>
+
           <Form className="addstudent">
             <Row>
               <Col>

@@ -53,7 +53,6 @@ class PastStudentEntries extends Component {
         <Table style={{margin:'1%',}}>
           <TableHead>
             <TableRow style={gunnarStyle}>
-              <TableCell style={gunnarStyle}>Entry ID</TableCell>
               <TableCell style={gunnarStyle}>Pay Day</TableCell>
                  <TableCell style={gunnarStyle}>Date Submitted</TableCell>
               <TableCell style={gunnarStyle}>Passing All Classes?</TableCell>
@@ -79,8 +78,7 @@ class PastStudentEntries extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-           {(this.props.entry !== [])&& <TableRow style={{backgroundColor: 'yellow'}} >
-            <TableCell style={gunnarStyle}>Current Entry</TableCell>
+           {(entry.length !== 0)&& <TableRow style={{backgroundColor: 'yellow'}} >
             <TableCell style={gunnarStyle}>{moment(entry.pay_day).format("MMMM Do YYYY")}</TableCell>
             <TableCell style={gunnarStyle}>{moment(entry.date_submitted).local().format("MMMM Do YYYY")}</TableCell>
             <TableCell style={gunnarStyle}>{entry.pass_class}</TableCell>
