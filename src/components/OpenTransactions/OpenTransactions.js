@@ -46,7 +46,7 @@ pageRedirect() {
                 entry.last_name, 
                 // moment(entry.pay_day).format("MMMM Do YYYY") &&
                 // moment(entry.date_submitted).format("MMMM Do YYYY") &&
-                entry.payday,
+                entry.pay_day,
                 entry.date_submitted,
                 entry.pass_class,
                 entry.gpa,
