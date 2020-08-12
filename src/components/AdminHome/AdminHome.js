@@ -254,11 +254,12 @@ class AdminHome extends Component {
     ];
 
     return (
-      <div>
+      <div><br/>
+        <center><h1 >Admin Homepage</h1></center>
         {this.props.user.role === "admin" && (
           <div className="navbuttonscontainer">
             <Link to="/addstudent">
-              <Button variant="outline-primary">Add Student</Button>
+              <Button variant="success" style={{margin:'1%'}}>Add New Student</Button>
             </Link>{" "}
             
           </div>

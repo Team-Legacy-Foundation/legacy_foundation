@@ -7,7 +7,7 @@ import Iframe from 'react-iframe'
 
 import './StudentHome.css';
 
-class StudentHome extends Component {
+class StudentHome extends Component { //TODO: add green banner to show if student has made an entry this pay period
   componentWillMount(){
     this.props.dispatch({ type: 'FETCH_STUDENT_HISTORY', payload: this.props.user.lcf_id})
     this.props.dispatch({ type: 'GET_STUDENT_FOR_EDIT', payload: this.props.user.lcf_id})
@@ -24,7 +24,7 @@ class StudentHome extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{width:'99%'}}>
         
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={12} style={{margin:'2%'}}>
@@ -95,6 +95,7 @@ class StudentHome extends Component {
         }
             </Paper>
             </Grid>
+            
         </Grid>
         
       </div>

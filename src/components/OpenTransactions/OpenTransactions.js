@@ -34,9 +34,9 @@ pageRedirect() {
     
     return(
      
-     <div>
+     <div style={{paddingBottom:'2%', paddingLeft:'2%', paddingRight:'2%'}}>
        {this.pageRedirect()}
-     This is where calculations will be shown and when Penny will confirm if things look good
+       <center><h1 >Review Payroll for Students</h1></center> <br/>
      <MUITable
      
             data={this.props.calculations
@@ -46,7 +46,7 @@ pageRedirect() {
                 entry.last_name, 
                 // moment(entry.pay_day).format("MMMM Do YYYY") &&
                 // moment(entry.date_submitted).format("MMMM Do YYYY") &&
-                entry.payday,
+                entry.pay_day,
                 entry.date_submitted,
                 entry.pass_class,
                 entry.gpa,
@@ -97,16 +97,18 @@ pageRedirect() {
               "Total",
               
             ]}
-            title={"LCF Student Entry List"}
+            title={"Review Student Entries"}
           />
           <Link to='/totalstudententries'>
           <Button
           style={{ margin: "3%" }}
+          variant='danger'
         >
           Cancel
         </Button>
         </Link>
       <Button
+      variant='success'
           style={{ margin: "3%" }}
           onClick={(event) => this.runConfirm(event)}
         >
