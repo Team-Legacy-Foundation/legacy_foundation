@@ -8,6 +8,7 @@ import {
   Snackbar,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import Swal from "sweetalert2";
 import './LoginPage.css';
 
 class LoginPage extends Component {
@@ -39,23 +40,49 @@ class LoginPage extends Component {
   handleReset = (event) => {
     event.preventDefault();
 
+    if (this.state.username === "") {
+        Swal.fire({
+          icon: "Warning",
+          title: "Please fill in info",
+          text: `Please enter your email address`,
+        });
+      return;
+    }
+
     this.props.dispatch({
       type: "FORGOT_PASSWORD",
       payload: {
         username: this.state.username,
       },
     });
+       Swal.fire({
+         icon: "Icon",
+         title: "Password Reset",
+         text: `Password Reset email sent, please check your email.`,
+       });
   };
 
   handleResetAdmin = (event) => {
     event.preventDefault();
-
+      if (this.state.username === "") {
+        Swal.fire({
+          icon: "Warning",
+          title: "Please fill in info",
+          text: `Please enter your email address`,
+        });
+        return;
+      }
     this.props.dispatch({
       type: "FORGOT_PASSWORD_ADMIN",
       payload: {
         username: this.state.username,
       },
     });
+      Swal.fire({
+        icon: "Icon",
+        title: "Password Reset",
+        text: `Password Reset email sent, please check your email.`,
+      });
   };
 
   handleInputChangeFor = (propertyName) => (event) => {
@@ -122,81 +149,103 @@ class LoginPage extends Component {
                       name="submit"
                       value="Log In"
                     />
+                    <button onClick={this.toggle} className="log-in">
+                      Forgot Password
+                    </button>
                   </div>
                   {this.props.errors.loginMessage && (
                     <Alert className="loginError" style={{}} severity="error">
                       {this.props.errors.loginMessage}
                     </Alert>
                   )}
-                  <button onClick={this.toggle}>Forgot Password</button>
                 </form>
               </>
             ) : (
               <div>
                 {this.state.toggle2 === false ? (
-                  <form onSubmit={this.handleReset} className="reglogin">
-                    <h1>Student Reset Password</h1>
-                    <button onClick={this.toggle2}>Switch to Admin</button>
-                    <br />
-                    <div>
-                      <label htmlFor="username">
-                        Email: &nbsp; &nbsp; &nbsp;{" "}
-                        {/*Creates a blank space, used for lining things up */}
+                  <div className="reglogin">
+                    <form onSubmit={this.handleReset}>
+                      <h1>Student Reset Password</h1>
+                      <br />
+                      <div>
+                        <label htmlFor="username">
+                          Email: &nbsp; &nbsp; &nbsp;{" "}
+                          {/*Creates a blank space, used for lining things up */}
+                          <input
+                            type="text"
+                            name="username"
+                            value={this.state.username}
+                            onChange={this.handleInputChangeFor("username")}
+                          />
+                        </label>
+                      </div>
+                      <div>
                         <input
-                          type="text"
-                          name="username"
-                          value={this.state.username}
-                          onChange={this.handleInputChangeFor("username")}
+                          className="log-in"
+                          type="submit"
+                          name="submit"
+                          value="Reset"
                         />
-                      </label>
-                    </div>
-                    <div>
-                      <input
-                        className="log-in"
-                        type="submit"
-                        name="submit"
-                        value="Reset"
-                      />
-                    </div>
-                    {this.props.errors.loginMessage && (
-                      <Alert className="loginError" style={{}} severity="error">
-                        {this.props.errors.loginMessage}
-                      </Alert>
-                    )}
-                    <button onClick={this.toggle}>Back To Login</button>
-                  </form>
+                      </div>
+                      {this.props.errors.loginMessage && (
+                        <Alert
+                          className="loginError"
+                          style={{}}
+                          severity="error"
+                        >
+                          {this.props.errors.loginMessage}
+                        </Alert>
+                      )}
+                    </form>
+                    <button onClick={this.toggle} className="log-in">
+                      Back To Login
+                    </button>
+                    <button onClick={this.toggle2} className="log-in">
+                      Switch to Admin
+                    </button>
+                  </div>
                 ) : (
-                  <form onSubmit={this.handleResetAdmin} className="reglogin">
-                    <h1>Admin Reset Password</h1>
-                    <button onClick={this.toggle2}>Switch to Student</button>
-                    <br />
-                    <div>
-                      <label htmlFor="username">
-                        Email: &nbsp; &nbsp; &nbsp;{" "}
-                        {/*Creates a blank space, used for lining things up */}
+                  <div className="reglogin">
+                    <form onSubmit={this.handleResetAdmin}>
+                      <h1>Admin Reset Password</h1>
+                      <br />
+                      <div>
+                        <label htmlFor="username">
+                          Email: &nbsp; &nbsp; &nbsp;{" "}
+                          {/*Creates a blank space, used for lining things up */}
+                          <input
+                            type="text"
+                            name="username"
+                            value={this.state.username}
+                            onChange={this.handleInputChangeFor("username")}
+                          />
+                        </label>
+                      </div>
+                      <div>
                         <input
-                          type="text"
-                          name="username"
-                          value={this.state.username}
-                          onChange={this.handleInputChangeFor("username")}
+                          className="log-in"
+                          type="submit"
+                          name="submit"
+                          value="Reset"
                         />
-                      </label>
-                    </div>
-                    <div>
-                      <input
-                        className="log-in"
-                        type="submit"
-                        name="submit"
-                        value="Reset"
-                      />
-                    </div>
-                    {this.props.errors.loginMessage && (
-                      <Alert className="loginError" style={{}} severity="error">
-                        {this.props.errors.loginMessage}
-                      </Alert>
-                    )}
-                    <button onClick={this.toggle}>Back To Login</button>
-                  </form>
+                      </div>
+                      {this.props.errors.loginMessage && (
+                        <Alert
+                          className="loginError"
+                          style={{}}
+                          severity="error"
+                        >
+                          {this.props.errors.loginMessage}
+                        </Alert>
+                      )}
+                    </form>
+                    <button onClick={this.toggle} className="log-in">
+                      Back To Login
+                    </button>
+                    <button onClick={this.toggle2} className="log-in">
+                      Switch to Student
+                    </button>
+                  </div>
                 )}
               </div>
             )}
