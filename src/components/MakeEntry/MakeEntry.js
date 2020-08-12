@@ -344,9 +344,13 @@ class MakeEntry extends Component {
       if (this.props.user.lcf_id === entry.lcf_id && ( entry.pay_day > date || entry.previous_pay_day <= date)) { //TODO: ADD History conditional so
         //no duplicate entries can be submitted (i.e.checked against history and entry tables)
         return (
-          <div>
-            Entry already submitted for this pay period, please check back next
-            pay period
+          <div >
+            <Paper elevation={5}
+            style={{margin:'5%', padding:'5%'}}>
+            <center><h2>Entry already submitted for this pay period, please check back next pay period</h2></center>
+            <center><h2>Thank you!</h2></center>
+            
+            </Paper>
           </div>
         );
       }
@@ -360,10 +364,10 @@ class MakeEntry extends Component {
             Please fill out all of the required fields
           </Alert>
         )}
-        <h3 style={{ textAlign: "center" }}>
+        <h3 style={{ textAlign: "center", margin:'2%' }}>
           This entry is for the week of: {previous_pay_day} - {pay_day}
         </h3>
-        <Paper elevation={5} style={{ padding: "5%", margin: "5%" }}>
+        <Paper elevation={5} style={{ padding: "5%", marginLeft: "5%", marginRight:'5%', marginBottom:'5%' }}>
           <form onSubmit={this.submitInfo}>
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
@@ -684,13 +688,12 @@ class MakeEntry extends Component {
               maxLength={1000}
               onChange={(event) => this.handleChange(event, "comments")} //onChange of input values set local state
             />{" "}
-            <br />
-            <br />
+            
             <center>
               <Button
-                style={{ margin: "6%" }}
+                style={{ marginTop: "3%", marginLeft: '5%', marginRight:'5%', backgroundColor:'#b89c09', color:'white' }}
                 variant="contained"
-                color="secondary"
+                
                 className="button"
                 onClick={() => {
                   this.props.history.push("/home");
@@ -700,6 +703,7 @@ class MakeEntry extends Component {
               </Button>
 
               <Button
+              style={{ marginTop: "3%", marginLeft: '5%', marginRight:'5%', backgroundColor:'green', color:'white' }}
                 variant="contained"
                 type="submit"
                 color="primary"
@@ -710,7 +714,7 @@ class MakeEntry extends Component {
             </center>
           </form>
         </Paper>
-        <br />
+        
       </div>
     );
   }

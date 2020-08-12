@@ -1,20 +1,17 @@
-import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
-import Row from 'react-bootstrap/Row'
+import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
+import Card from "react-bootstrap/Card";
+import { Link } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
-
-
-
 
 class ResetStudentPassword extends Component {
   state = {
     lcf_id: this.props.user.lcf_id,
-    email: this.props.user.email,
+    //email: this.props.user.email,
     password: "",
     retype_password: "",
   };
@@ -24,18 +21,14 @@ class ResetStudentPassword extends Component {
   resetStudentPassword = (event) => {
     event.preventDefault();
 
-    console.log( 
+    console.log(
       "we are about to send the state to change the student password",
       this.state
     );
-     console.log(
-       "this is the user",
-       this.props.user
-     );
+    console.log("this is the user", this.props.user);
 
     if (
       this.state.lcf_id &&
-      this.state.email &&
       this.state.password &&
       this.state.retype_password &&
       this.state.password === this.state.retype_password
@@ -45,19 +38,17 @@ class ResetStudentPassword extends Component {
         type: "RESET_STUDENT_PASSWORD",
         payload: {
           lcf_id: this.state.lcf_id,
-          email: this.state.email,
+          //email: this.state.email,
           password: this.state.password,
         },
       });
 
       this.setState({
         lcf_id: this.props.user.lcf_id,
-        email: this.props.user.email,
+        //email: this.props.user.email,
         password: "",
         retype_password: "",
       });
-
-      
     } else {
       this.props.dispatch({ type: "RESET_STUDENT_PASSWORD_ERROR" });
     }
@@ -70,20 +61,22 @@ class ResetStudentPassword extends Component {
     });
   };
 
-  render() { 
+  render() {
     return (
       <div>
-        
-
+        {" "}
+        <br />
+        <center>
+          <h1>Reset Student Password</h1>
+        </center>
         <Paper
-        elevation = {5}
+          elevation={5}
           border="info"
-          style={{ width: "95%", margin: "3% auto", padding: "2%" }}
+          style={{ width: "70%", margin: "3% auto", padding: "2%" }}
         >
-          <h1 style={{ width: "50%", margin: "5% 35%" }}>Reset Student Password</h1>
           <Form className="addstudent">
             <Row>
-              <Col>
+              {/* <Col>
                 <Form.Label>Student Email</Form.Label>
                 <Form.Control
                   placeholder="Student Email"
@@ -92,39 +85,46 @@ class ResetStudentPassword extends Component {
                   value={this.state.email}
                   onChange={this.handleInputChangeFor("email")}
                 />
+              </Col> */}
+              <Col>
+                <center>
+                  <Form.Label>New Student Password</Form.Label>
+                  <Form.Control
+                    placeholder="New Password"
+                    type="password"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.handleInputChangeFor("password")}
+                    style={{ width: "60%" }}
+                  />
+                </center>
               </Col>
               <Col>
-                <Form.Label>New Student Password</Form.Label>
-                <Form.Control
-                  placeholder="New Student Password"
-                  type="password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.handleInputChangeFor("password")}
-                />
-              </Col>
-              <Col>
-                <Form.Label>Re-type New Student Password</Form.Label>
-                <Form.Control
-                  placeholder="Re-type New Student Password"
-                  type="password"
-                  name="password"
-                  value={this.state.retype_password}
-                  onChange={this.handleInputChangeFor("retype_password")}
-                />
+                <center>
+                  <Form.Label>Re-type New Password</Form.Label>
+                  <Form.Control
+                    placeholder="Re-type Password"
+                    type="password"
+                    name="password"
+                    value={this.state.retype_password}
+                    onChange={this.handleInputChangeFor("retype_password")}
+                    style={{ width: "60%" }}
+                  />
+                </center>
               </Col>
             </Row>
-
-            <Link to="/home">
-              <Button
-                onClick={(event) => this.resetStudentPassword(event)}
-                variant="success"
-                type="submit"
-                style={{ width: "20%", margin: "7% 30% 2%" }}
-              >
-                Update Password
-              </Button>
-            </Link>
+            <center>
+              <Link to="/home">
+                <Button
+                  onClick={(event) => this.resetStudentPassword(event)}
+                  variant="success"
+                  type="submit"
+                  style={{ width: "20%", margin: "1%" }}
+                >
+                  Update Password
+                </Button>
+              </Link>
+            </center>
           </Form>
         </Paper>
       </div>
@@ -132,11 +132,8 @@ class ResetStudentPassword extends Component {
   }
 }
 
-
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.user,
-  
 });
-   
+
 export default connect(mapStateToProps)(ResetStudentPassword);
