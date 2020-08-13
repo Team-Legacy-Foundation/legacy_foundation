@@ -8,10 +8,15 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import Swal from "sweetalert2";
+import Paper from "@material-ui/core/Paper";
+import { Alert } from "@material-ui/lab";
 
 class UpdatePassword extends Component {
   state = {
     password: "",
+    retypePassword:"",
+    retypeError:false,
+    emptyError:false,
    
   };
 
@@ -38,6 +43,19 @@ class UpdatePassword extends Component {
     
 let id = url_array[url_array.length-1];
     console.log("we are about to send the state",id, this.state);
+
+    if (this.state.password === null || this.state.password === "" || this.state.retypePassword === null || this.state.retypePassword === ""){
+      this.setState({
+        emptyError: true
+      })
+      return;
+    }
+    else if (this.state.password !== this.state.retypePassword){
+      this.setState({
+        retypeError: true
+      })
+      return;
+    }
 
     if (this.state.password) {
       //send the updated student to the server through a redux saga
@@ -69,32 +87,65 @@ let id = url_array[url_array.length-1];
 
   render() {
     return (
-      <div>
-        <h1 style={{ width: "50%", margin: "2% 40%" }}>
+      <div><br/>
+      {this.state.emptyError === true && (
+          <Alert className="error" style={{}} severity="error">
+            Please fill out both fields before submitting
+          </Alert>
+        )}
+{this.state.retypeError === true && (
+          <Alert className="error" style={{}} severity="error">
+            The two passswords do not match. Please try again
+          </Alert>
+        )}
+
+        <center><h1>
           Update Student Password
-        </h1>
+        </h1></center>
+        
+        <Paper elevation={5}
+        style={{margin:'2%', padding:'2%'}}>
         <Form>
+        <center>
           <Row>
+            
             <Col>
               <Form.Label>Student Password</Form.Label>
               <Form.Control
                 placeholder="Student Password"
-                type="text"
+                type="password"
                 name="password"
                 value={this.state.password}
                 onChange={this.handleInputChangeFor("password")}
+                style={{width:'45%'}}
+              />
+            </Col>
+            
+            <Col>
+              <Form.Label>Retype Password</Form.Label>
+              <Form.Control
+                placeholder="Retype Password"
+                type="password"
+                name="password"
+                value={this.state.retypePassword}
+                onChange={this.handleInputChangeFor("retypePassword")}
+                style={{width:'45%'}}
               />
             </Col>
           </Row>
+          </center>
+          <center>
           <Button
             onClick={(event) => this.updatePassword(event)}
             variant="success"
             type="submit"
-            style={{ width: "40%", margin: "7% 30% 2%" }}
+            style={{ width: "20%", margin:'2%'}}
           >
             Update Student Password
-          </Button>
+          </Button></center>
         </Form>
+        </Paper>
+        
       </div>
     );
   }

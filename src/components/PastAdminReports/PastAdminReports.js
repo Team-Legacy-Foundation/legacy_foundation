@@ -5,6 +5,8 @@ import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/c
 import Button from '@material-ui/core/Button';
 import MUITable from '../MUITable/MUITable';
 import moment from "moment";
+import InfoIcon from '@material-ui/icons/Info';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 //QUESTION: Do we need another table to store past admin reports in?
 //How will we make sure that the past reports hold all the information needed?
@@ -26,7 +28,15 @@ class PastAdminReports extends Component {
    
    
        <div style={{padding: '2%'}}>
-      <center><h1 >Past Reports</h1></center><br/>
+      <center><h1 >Past Reports</h1></center>
+      
+      <div id='tooltip'>
+      <InfoIcon></InfoIcon>
+      <span id='tooltiptext'>
+      Wanting to look at entries from a specific Pay Period? Click the <FilterListIcon></FilterListIcon>
+      Filter List Icon and filter entries by Pay Day. Just select the date you want to look at!
+      </span></div>
+      
      
      <MUITable
      
@@ -87,7 +97,7 @@ class PastAdminReports extends Component {
               "Total",
               
             ]}
-            title={"Past Reports"}
+            //title={"Past Reports"}
           />
       
       
