@@ -18,7 +18,7 @@ class StudentHome extends Component { //TODO: add green banner to show if studen
     let total = 0
     for (let i = 0; i < amount.length; i++) {
       const element = amount[i];
-      total += Number(element.money_to_student)
+      total += Number(element.amt_to_savings)
     }return total.toFixed(2)
   }
 
