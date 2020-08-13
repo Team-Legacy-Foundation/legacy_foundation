@@ -29,11 +29,11 @@ if (process.env.DATABASE_URL) {
 } else {
   config = {
 
-    // user: "dalton", 
-    // password: "dalton",
+    user: process.env.PG_USER,
+    password: process.env.PG_PASSWORD,
     host: "localhost", // Server hosting the postgres database
     port: 5432, // env var: PGPORT
-    database: process.env.DATABASE_NAME || "legacy_children_foundation", // CHANGED
+    database: process.env.DATABASE_NAME, // CHANGED
     max: 10, // max number of clients in the pool
     idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
   };

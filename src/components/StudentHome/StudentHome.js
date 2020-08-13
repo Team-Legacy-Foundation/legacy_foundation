@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Iframe from 'react-iframe'
+import Iframe from 'react-iframe';
+import moment from 'moment';
 
 import './StudentHome.css';
 
@@ -11,6 +12,7 @@ class StudentHome extends Component { //TODO: add green banner to show if studen
   componentWillMount(){
     this.props.dispatch({ type: 'FETCH_STUDENT_HISTORY', payload: this.props.user.lcf_id})
     this.props.dispatch({ type: 'GET_STUDENT_FOR_EDIT', payload: this.props.user.lcf_id})
+     this.props.dispatch({ type: "FETCH_ENTRIES_FOR_ADMIN",});
     
   }
   
@@ -108,6 +110,7 @@ const mapStateToProps = (state) => ({
   user: state.user,
   editStudent: state.editStudent[0],
   studentHistory: state.studentHistory.studentHistoryReducer,
+  entries: state.students.studententriesadmin,
 });
 
 export default withRouter(connect(mapStateToProps)(StudentHome));

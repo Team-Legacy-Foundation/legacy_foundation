@@ -32,13 +32,14 @@ router.post("/forgot/:token/:email", (req, res) => {
           ])
           .then(() => {
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+              let domain = process.env.DOMAIN_NAME;
               const msg = {
                 to: email,
-                from: "christopherjay71186@gmail.com",
+                from: "no.reply.legacyfoundation@gmail.com",
                 subject: "request to reset password",
                 html: `
   <h2>Click below to reset your password</h2>
-  <a href="http://localhost:3000/#/forgotpassword/${token}/${email}">Reset Password</a>
+  <a href="${domain}/#/forgotpassword/${token}/${email}">Reset Password</a>
   <p>If you did not request this email, please disregard it and delete it.</p>
   `,
               };
@@ -58,7 +59,7 @@ router.post("/forgot/:token/:email", (req, res) => {
 
 });
 
-router.post("/forgot/admin/:email", (req, res) => {
+router.post("/forgot/admin/:token/:email", (req, res) => {
   let email = req.body.username;
     let token = crypto.randomBytes(16).toString("hex");
     const queryText = `UPDATE "admin" SET token=$1 WHERE email=$2 `;
@@ -70,13 +71,14 @@ router.post("/forgot/admin/:email", (req, res) => {
           .query(query2Text, [token, email])
           .then(() => {
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+               let domain = process.env.DOMAIN_NAME;
               const msg = {
                 to: email,
-                from: "christopherjay71186@gmail.com",
+                from: "no.reply.legacyfoundation@gmail.com",
                 subject: "request to reset password",
                 html: `
   <h2>Click below to reset your password</h2>
-  <a href="http://localhost:3000/#/forgotpassword/${token}/${email}">Reset Password</a>
+  <a href = "${domain}/#/forgotpassword/admin/${token}/${email}"> Reset Password </a>
   <p>If you did not request this email, please disregard it and delete it.</p>
   `,
               };
@@ -91,19 +93,7 @@ router.post("/forgot/admin/:email", (req, res) => {
         console.log("Sorry, there is an error", error);
         res.sendStatus(500);
       });
-sgMail.setApiKey('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');
-  const msg = {
-    to: email,
-    from: "christopherjay71186@gmail.com",
-    subject: "request to reset password",
-    html: `
-  <h2>Click below to reset your password</h2>
-  <h3>Your access token is: ${token}</h3>
-  <a href="http://localhost:3000/#/forgotpassword/${email}">Reset Password</a>
-  <p>If you did not request this email, please disregard it and delete it.</p>
-  `,
-  };
-  sgMail.send(msg);
+
 });
 
 

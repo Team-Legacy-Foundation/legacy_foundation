@@ -64,7 +64,9 @@ class MakeEntry extends Component {
     hw_rm_attended: null,
     comments: null,
     error: false,
+    pay_day_error: false,
     dupeEntry: false,
+  
   };
 
   componentDidMount() {
@@ -75,30 +77,9 @@ class MakeEntry extends Component {
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
-    this.testEntry();
+   
   }
-  testEntry = () => {
-    // let { entries } = this.props;
-    // let date = moment();
-    // for (let entry of entries) {
-    //   console.log("entry.pay_day", entry.pay_day);
-    //   console.log("entry.previous_pay_day", entry.previous_pay_day);
-    //   entry.pay_day = new Date(entry.pay_day);
-    //   entry.previous_pay_day = new Date(entry.previous_pay_day);
-    //   console.log("type of entry.pay_day", typeof entry.pay_day);
-    //   console.log(
-    //     "type of entry.previous_pay_day",
-    //     typeof entry.previous_pay_day
-    //   );
-    //   if (entry.pay_day > date || entry.previous_pay_day <= date) {
-    //     this.setState({
-    //       dupeEntry: true,
-    //     });
-    //     return;
-    //   }
-    // }
-  };
-
+  
   handleChange = (event, fieldName) => {
     this.setState({ [fieldName]: event.target.value });
   };
@@ -179,6 +160,48 @@ class MakeEntry extends Component {
       }, 5000);
       return;
     }
+
+
+    let historyEntries = this.props.studentHistory;
+    let date = moment();
+    let previous_pay_day = moment("2020-08-10T00:00:00.000")
+    let pay_day = moment(previous_pay_day)
+
+      function getDate() {
+        if (date >= pay_day) {
+          previous_pay_day = pay_day;
+          pay_day = moment(previous_pay_day).add(2, "week");
+          getDate();
+        }
+      }
+      getDate();
+
+      previous_pay_day = moment(previous_pay_day).format(
+        "MMMM Do YYYY"
+      );
+      pay_day = moment(pay_day).format("MMMM Do YYYY");
+
+    for (let history of historyEntries){
+ 
+      let history_pay_day = moment(history.pay_day).format("MMMM Do YYYY");
+
+      if (history_pay_day === pay_day){
+
+        this.setState({
+          pay_day_error: true,
+        });
+
+        setTimeout(() => {
+          this.setState({
+            pay_day_error: false,
+          });
+        }, 5000);
+        return;
+        
+      }
+    }
+
+
     Swal.fire({
       title: "Please confirm details below",
       html: `1. Passing classes: ${pass_class} </br>
@@ -341,7 +364,7 @@ class MakeEntry extends Component {
         "MMMM Do YYYY"
       );
       pay_day = moment(pay_day).format("MMMM Do YYYY");
-
+       
 
           const studentList = this.props.students;
 
@@ -388,6 +411,12 @@ class MakeEntry extends Component {
         {this.state.error === true && (
           <Alert className="error" style={{}} severity="error">
             Please fill out all of the required fields
+          </Alert>
+        )}
+           <br />
+        {this.state.pay_day_error === true && (
+          <Alert className="error" style={{}} severity="error">
+            Sorry, you already have an entry on record for this pay period, your entry has not been saved successfully!
           </Alert>
         )}
         <h3 style={{ textAlign: "center", margin:'2%' }}>
@@ -564,16 +593,17 @@ class MakeEntry extends Component {
                 value={this.state.detent_hours}
                 onChange={(event) => this.handleChange(event, "detent_hours")}
               >
+                  <FormControlLabel
+                  value="No"
+                  control={<GreenRadio />}
+                  label="No"
+                />
                 <FormControlLabel
                   value="Yes"
                   control={<YellowRadio />}
                   label="Yes"
                 />
-                <FormControlLabel
-                  value="No"
-                  control={<GreenRadio />}
-                  label="No"
-                />
+              
               </RadioGroup>
             </FormControl>{" "}
             <br />
@@ -750,6 +780,7 @@ const mapStateToProps = (state) => ({
   user: state.user,
   entries: state.students.studententriesadmin,
   students: state.students.studentlist,
+  studentHistory: state.studentHistory.studentHistoryReducer,
 });
 
 export default withRouter(connect(mapStateToProps)(MakeEntry));
