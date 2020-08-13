@@ -6,6 +6,7 @@ const encryptLib = require("../modules/encryption");
 const pool = require("../modules/pool");
 const userStrategy = require("../strategies/user.strategy");
 const sgMail = require("@sendgrid/mail");
+let crypto = require("crypto");
 const router = express.Router();
 const moment = require('moment');
 
@@ -15,37 +16,45 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
-// router.post("/forgot/:email", (req, res) => {
-//   let email = req.body.username
-//   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-//    const msg = {
-//      to: email,
-//      from: "no-reply@legacyfoundation.com",
-//      subject: "request to reset password",
-//      html: `
-//   <h3>Click below to reset your password</h3>
-//   <a href="http://localhost:3000/#/forgotpassword/${email}">Reset Password</a>
-//   <p>If you did not request this email, please disregard it and delete it.</p>
-//   `,
-//    };
-//    sgMail.send(msg);
-// });
+router.post("/forgot/:email", (req, res) => {
+  let email = req.body.username
+  let token = crypto.randomBytes(8).toString("hex");
+  const queryText = `UPDATE "user" SET token=$1 WHERE email=$2 `;
+    pool.query(queryText, [token, email]);
+  sgMail.setApiKey('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');
+   const msg = {
+     to: email,
+     from: "christopherjay71186@gmail.com",
+     subject: "request to reset password",
+     html: `
+  <h2>Click below to reset your password</h2>
+  <h3>Your access token is: ${token}</h3>
+  <a href="http://localhost:3000/#/forgotpassword/${email}">Reset Password</a>
+  <p>If you did not request this email, please disregard it and delete it.</p>
+  `,
+   };
+   sgMail.send(msg);
+});
 
-// router.post("/forgot/admin/:email", (req, res) => {
-//   let email = req.body.username;
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-//   const msg = {
-//     to: email,
-//     from: "no-reply@legacyfoundation.com",
-//     subject: "request to reset password",
-//     html: `
-//   <h3>Click below to reset your password</h3>
-//   <a href="http://localhost:3000/#/forgotpassword/${email}">Reset Password</a>
-//   <p>If you did not request this email, please disregard it and delete it.</p>
-//   `,
-//   };
-//   sgMail.send(msg);
-// });
+router.post("/forgot/admin/:email", (req, res) => {
+  let email = req.body.username;
+    let token = crypto.randomBytes(16).toString("hex");
+    const queryText = `UPDATE "user" SET token=$1 WHERE email=$2 `;
+    pool.query(queryText, [token, email]);
+sgMail.setApiKey('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');
+  const msg = {
+    to: email,
+    from: "christopherjay71186@gmail.com",
+    subject: "request to reset password",
+    html: `
+  <h2>Click below to reset your password</h2>
+  <h3>Your access token is: ${token}</h3>
+  <a href="http://localhost:3000/#/forgotpassword/${email}">Reset Password</a>
+  <p>If you did not request this email, please disregard it and delete it.</p>
+  `,
+  };
+  sgMail.send(msg);
+});
 
 
 

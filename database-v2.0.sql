@@ -5,7 +5,8 @@ CREATE OR REPLACE TABLE "user" (
     "email" varchar,
     "password" varchar,
     "role" varchar,
-    "last_login" TIMESTAMPTZ
+    "last_login" TIMESTAMPTZ,
+	"token" varchar(255)
     
 );
 
