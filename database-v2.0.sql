@@ -20,6 +20,7 @@ CREATE OR REPLACE TABLE "admin" (
 	"password" varchar(255) NOT NULL,
 	"created_at" DATE NOT NULL DEFAULT 'now()',
 	"role" varchar(255) NOT NULL,
+	"token" varchar(255)
 	CONSTRAINT "admin_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -46,6 +47,7 @@ CREATE OR REPLACE TABLE "student" (
 	"strikes" integer,
 	"inactive" varchar(255) DEFAULT 'no',
 	"balance_due" NUMERIC(10,2) NOT NULL DEFAULT 0,
+	"token" varchar(255)
 	CONSTRAINT "student_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
