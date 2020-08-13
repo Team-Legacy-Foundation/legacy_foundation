@@ -2,11 +2,14 @@ const express = require('express');
 const encryptLib = require("../modules/encryption");
 const pool = require('../modules/pool');
 const router = express.Router();
+const {
+  rejectUnauthenticated,
+} = require("../modules/authentication-middleware");
 
 /**
  * GET route template
  */
-router.get('/studentlist', (req, res) => {
+router.get('/studentlist', rejectUnauthenticated, (req, res) => {
     console.log('We are about to get the student list');
 
     const queryText = `SELECT * FROM student ORDER BY lcf_id;`;
@@ -21,7 +24,7 @@ router.get('/studentlist', (req, res) => {
     
 });
 
-router.get('/student/:id', (req, res) => {
+router.get('/student/:id', rejectUnauthenticated, (req, res) => {
     console.log('We are about to get student with certain id');
 
     const queryText = `SELECT * FROM student WHERE lcf_id=$1;`;
@@ -36,7 +39,7 @@ router.get('/student/:id', (req, res) => {
 });
 
 
-router.get('/studententries', (req, res) => {
+router.get('/studententries', rejectUnauthenticated, (req, res) => {
     console.log('We are about to get the student entries');
 
     const queryText = `SELECT * FROM "entry" JOIN "student" ON "student"."lcf_id" = "entry"."lcf_id";`;
@@ -53,7 +56,7 @@ router.get('/studententries', (req, res) => {
 
 
 // PUT /api/student/lcf_id
-router.put(`/updatestudent/:lcf_id`, (req, res) => {
+router.put(`/updatestudent/:lcf_id`, rejectUnauthenticated, (req, res) => {
 
       //console.log("this is the new student we are about to update", req.body);
 
@@ -120,7 +123,7 @@ router.put(`/updatestudent/:lcf_id`, (req, res) => {
 });
 // end PUT /api/student/lcf_id
 
-router.put(`/updateentry/:lcf_id`, (req, res) => {
+router.put(`/updateentry/:lcf_id`, rejectUnauthenticated, (req, res) => {
       // HTTP REQUEST BODY
       const entry = req.body; // pull the object out out of the HTTP REQUEST
       const {
@@ -182,7 +185,7 @@ router.put(`/updateentry/:lcf_id`, (req, res) => {
   
 
 
-router.put(`/updatepassword/:lcf_id`, (req, res) => {
+router.put(`/updatepassword/:lcf_id`, rejectUnauthenticated, (req, res) => {
 
       //console.log("this is the new student we are about to update", req.body);
 
@@ -223,7 +226,7 @@ router.put(`/updatepassword/:lcf_id`, (req, res) => {
 // end PUT /api/student/lcf_id
 
 // PUT /api/student/lcf_id
-router.put("/deactivate", (req, res) => {
+router.put("/deactivate", rejectUnauthenticated, (req, res) => {
  // grabs id and places it in path
  const lcf_id = req.body.lcf_id;
   let queryText = `UPDATE student SET inactive = 'yes' WHERE  lcf_id = $1`;
@@ -241,7 +244,7 @@ router.put("/deactivate", (req, res) => {
     });
 });//end PUT
 
-router.put("/activate", (req, res) => {
+router.put("/activate", rejectUnauthenticated, (req, res) => {
   // grabs id and places it in path
   const lcf_id = req.body.lcf_id;
   let queryText = `UPDATE student SET inactive = 'no' WHERE  lcf_id = $1`;
@@ -262,7 +265,7 @@ router.put("/activate", (req, res) => {
 
 ///////////////////// Grabs value from the history table based on lcf_id ////////////////////////////////////
 
-router.get('/history/:id', (req, res) => {
+router.get('/history/:id', rejectUnauthenticated, (req, res) => {
   const id = req.params.id
   console.log('Grabbing all records from history');
   const queryText = 'SELECT * FROM history WHERE lcf_id = $1 ORDER BY date_submitted DESC'

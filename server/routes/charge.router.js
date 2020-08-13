@@ -9,7 +9,7 @@ const moment = require('moment');
 
 
  
-router.post("/", (req, res) => {
+router.post("/", rejectUnauthenticated, (req, res) => {
   
     // HTTP REQUEST BODY
     const charge = req.body; // pull the object out out of the HTTP REQUEST

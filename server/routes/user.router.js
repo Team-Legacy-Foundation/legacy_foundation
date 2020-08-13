@@ -51,7 +51,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 
 //Handles POST to the student table to add a new student
 //The password is encrypted before being inserted into the database
-router.post("/addadmin", (req, res, next) => {
+router.post("/addadmin", rejectUnauthenticated, (req, res, next) => {
   console.log("this is the new admin we are about to register", req.body);
 
   // pull out the incoming object data
@@ -115,7 +115,7 @@ router.post("/addadmin", (req, res, next) => {
 
 //Handles POST to the student table to add a new student
 //The password is encrypted before being inserted into the database
-router.post("/addstudent", (req, res, next) => {
+router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
   console.log("this is the new student we are about to register", req.body);
  
 
@@ -202,7 +202,7 @@ router.post("/addstudent", (req, res, next) => {
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
-router.post("/register", (req, res, next) => {
+router.post("/register", rejectUnauthenticated, (req, res, next) => {
   const email = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
 
@@ -242,7 +242,7 @@ router.post("/logout", (req, res) => {
 
 
 // PUT /api/user/adminpasswordreset/admin_id
-router.put(`/adminpasswordreset/:admin_id`, (req, res) => {
+router.put(`/adminpasswordreset/:admin_id`, rejectUnauthenticated, (req, res) => {
   console.log('we are about to change the admin password:', req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
   const adminID = req.params.admin_id;
@@ -277,7 +277,7 @@ router.put(`/adminpasswordreset/:admin_id`, (req, res) => {
 
 
 // PUT /api/user/studentpasswordreset/student_id
-router.put(`/studentpasswordreset/:lcf_id`, (req, res) => {
+router.put(`/studentpasswordreset/:lcf_id`, rejectUnauthenticated, (req, res) => {
   console.log('we are about to change the student password:', req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
   const studentID = req.params.lcf_id;
@@ -309,7 +309,7 @@ router.put(`/studentpasswordreset/:lcf_id`, (req, res) => {
 });
 // end PUT /api/user/studentpasswordreset/student_id
 
-router.put(`/passwordforgot`, (req, res) => {
+router.put(`/passwordforgot`, rejectUnauthenticated, (req, res) => {
   console.log("we are about to change the student password:", req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
   const email = req.body.email;
@@ -338,7 +338,7 @@ router.put(`/passwordforgot`, (req, res) => {
     });
 });
 
-router.put(`/passwordforgot/admin`, (req, res) => {
+router.put(`/passwordforgot/admin`, rejectUnauthenticated, (req, res) => {
   console.log("we are about to change the admin password:", req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
   const email = req.body.email;
@@ -368,7 +368,7 @@ router.put(`/passwordforgot/admin`, (req, res) => {
 
 //Need to delete for testing purposes
 //DELETE student
-router.delete("/:id", (req, res) => {
+router.delete("/:id", rejectUnauthenticated, (req, res) => {
   pool
     .query('DELETE FROM "student" "user" WHERE lcf_id=$1', [req.params.id])
     .then((result) => {
