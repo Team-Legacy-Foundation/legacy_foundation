@@ -21,6 +21,13 @@ class PastStudentEntries extends Component {
        this.props.dispatch({ type: "FETCH_ENTRY", });
   }
 
+  total(amount) {
+    let total = 0
+    for (let i = 0; i < amount.length; i++) {
+      const element = amount[i];
+      total += Number(element.amt_to_savings)
+    }return total.toFixed(2)
+  }
   
   render() {
     const gunnarStyle = { minHeight: "500px", minWidth: "150px", textAlign:'center' };
@@ -113,7 +120,7 @@ class PastStudentEntries extends Component {
           
         </Table>
         </Paper>
-        <div>Total savings to date ($):</div>
+        <div>Total savings to date ($ {this.total(this.props.studentHistory)}):</div>
       </div>
     );}
   }
