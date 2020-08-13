@@ -13,16 +13,18 @@ class ForgotPassword extends Component {
     email: "",
     password: "",
     retype_password: "",
+    token: "",
   };
 
   componentDidMount() {
-    let email = window.location.hash;
-    email = email.slice(17);
+    let token = window.location.hash;
+    token = token.slice(17, 49);
+      let email = window.location.hash;
+      email = email.slice(50);
     this.setState({
+      token: token,
       email: email,
-    })
-
-  
+    });
   }
   //This function dispatched our newly added admin to the database from state
   //We first validate the inputs to make sure we are not sending empty inputs to the server
@@ -36,6 +38,8 @@ class ForgotPassword extends Component {
     console.log("this is the user", this.props.user);
 
     if (
+      this.state.token &&
+      this.state.password &&
       this.state.retype_password &&
       this.state.password === this.state.retype_password
     ) {
@@ -43,12 +47,13 @@ class ForgotPassword extends Component {
       this.props.dispatch({
         type: "FORGOT_STUDENT_PASSWORD",
         payload: {
+          token: this.state.token,
           email: this.state.email,
           password: this.state.password,
         },
       });
 
-   this.props.history.push("/home")
+      this.props.history.push("/home");
     } else {
       this.props.dispatch({ type: "RESET_STUDENT_PASSWORD_ERROR" });
     }
@@ -62,14 +67,13 @@ class ForgotPassword extends Component {
   };
 
   render() {
-    return(
+    return (
       <div>
         <div className="navbuttonscontainer">
           <Link to="/home">
             <Button variant="outline-primary">Home</Button>
           </Link>{" "}
         </div>
- 
         <Card
           border="info"
           style={{ width: "95%", margin: "3% auto", padding: "2%" }}

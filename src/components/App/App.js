@@ -81,12 +81,12 @@ class App extends Component {
             <ProtectedRoute exact path="/makeentry" component={MakeEntry} />
             <Route
               exact
-              path="/forgotpassword/:email/"
+              path="/forgotpassword/:token/:email"
               component={ForgotPassword}
             />
             <Route
               exact
-              path="/forgotpassword/admin/:email/"
+              path="/forgotpassword/admin/:token/:email"
               component={ForgotPasswordAdmin}
             />
             <ProtectedRoute

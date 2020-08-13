@@ -41,7 +41,7 @@ function* loginUser(action) {
 
 function* forgotPassword(action) {
   try {
-    yield axios.post("/api/user/forgot/:email/", action.payload);
+    yield axios.post("/api/user/forgot/:token/:email", action.payload);
   } catch (error) {
     console.log("Error with user login:", error);
     if (error.response.status === 401) {
@@ -59,7 +59,7 @@ function* forgotPassword(action) {
 
 function* forgotPasswordAdmin(action) {
   try {
-    yield axios.post("/api/user/forgot/admin/:email/", action.payload);
+    yield axios.post("/api/user/forgot/admin/:token/:email", action.payload);
   } catch (error) {
     console.log("Error with user login:", error);
     if (error.response.status === 401) {

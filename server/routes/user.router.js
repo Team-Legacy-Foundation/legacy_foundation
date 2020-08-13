@@ -9,6 +9,7 @@ const sgMail = require("@sendgrid/mail");
 let crypto = require("crypto");
 const router = express.Router();
 const moment = require('moment');
+require("dotenv").config();
 
 // Handles Ajax request for user information if user is authenticated
 router.get("/", rejectUnauthenticated, (req, res) => {
@@ -16,31 +17,80 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
-router.post("/forgot/:email", (req, res) => {
+router.post("/forgot/:token/:email", (req, res) => {
   let email = req.body.username
-  let token = crypto.randomBytes(8).toString("hex");
-  const queryText = `UPDATE "user" SET token=$1 WHERE email=$2 `;
-    pool.query(queryText, [token, email]);
-  sgMail.setApiKey('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');
-   const msg = {
-     to: email,
-     from: "christopherjay71186@gmail.com",
-     subject: "request to reset password",
-     html: `
+  let token = crypto.randomBytes(16).toString("hex");
+  const queryText = `UPDATE "student" SET token=$1 WHERE student_email=$2 `;
+    pool
+      .query(queryText, [token, email])
+      .then((result) => {
+        const query2Text =
+          `UPDATE "user" SET token=$1 WHERE email=$2 `;
+        pool
+          .query(query2Text, [
+      token, email
+          ])
+          .then(() => {
+              sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+              const msg = {
+                to: email,
+                from: "christopherjay71186@gmail.com",
+                subject: "request to reset password",
+                html: `
   <h2>Click below to reset your password</h2>
-  <h3>Your access token is: ${token}</h3>
-  <a href="http://localhost:3000/#/forgotpassword/${email}">Reset Password</a>
+  <a href="http://localhost:3000/#/forgotpassword/${token}/${email}">Reset Password</a>
   <p>If you did not request this email, please disregard it and delete it.</p>
   `,
-   };
-   sgMail.send(msg);
+              };
+              sgMail.send(msg);
+            res.status(201).send(result.rows)
+          })
+
+          .catch(function (error) {
+            console.log("Sorry, there was an error with your query: ", error);
+            res.sendStatus(500); // HTTP SERVER ERROR
+          });
+      })
+      .catch(function (error) {
+        console.log("Sorry, there is an error", error);
+        res.sendStatus(500);
+      });
+
 });
 
 router.post("/forgot/admin/:email", (req, res) => {
   let email = req.body.username;
     let token = crypto.randomBytes(16).toString("hex");
-    const queryText = `UPDATE "user" SET token=$1 WHERE email=$2 `;
-    pool.query(queryText, [token, email]);
+    const queryText = `UPDATE "admin" SET token=$1 WHERE email=$2 `;
+    pool
+      .query(queryText, [token, email])
+      .then((result) => {
+        const query2Text = `UPDATE "user" SET token=$1 WHERE email=$2 `;
+        pool
+          .query(query2Text, [token, email])
+          .then(() => {
+              sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+              const msg = {
+                to: email,
+                from: "christopherjay71186@gmail.com",
+                subject: "request to reset password",
+                html: `
+  <h2>Click below to reset your password</h2>
+  <a href="http://localhost:3000/#/forgotpassword/${token}/${email}">Reset Password</a>
+  <p>If you did not request this email, please disregard it and delete it.</p>
+  `,
+              };
+              sgMail.send(msg);
+            res.status(201).send(result.rows)})
+          .catch(function (error) {
+            console.log("Sorry, there was an error with your query: ", error);
+            res.sendStatus(500); // HTTP SERVER ERROR
+          });
+      })
+      .catch(function (error) {
+        console.log("Sorry, there is an error", error);
+        res.sendStatus(500);
+      });
 sgMail.setApiKey('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');
   const msg = {
     to: email,
@@ -318,20 +368,21 @@ router.put(`/studentpasswordreset/:lcf_id`, rejectUnauthenticated, (req, res) =>
 });
 // end PUT /api/user/studentpasswordreset/student_id
 
-router.put(`/passwordforgot`, rejectUnauthenticated, (req, res) => {
+router.put(`/passwordforgot`, (req, res) => {
   console.log("we are about to change the student password:", req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
   const email = req.body.email;
+  const token = req.body.token;
   // setting query text to update the username
-  const queryText = `UPDATE "student" SET password=$1 WHERE student_email=$2 `;
+  const queryText = `UPDATE "student" SET password=$1 WHERE token=$2 `;
 
   pool
-    .query(queryText, [newPassword, email])
+    .query(queryText, [newPassword, token])
     .then((result) => {
       console.log("Success in updating password or email for student!");
 
-      const query2Text = `UPDATE "user" SET password=$1 WHERE email=$2`;
-      const queryValue = [newPassword, email];
+      const query2Text = `UPDATE "user" SET password=$1 WHERE token=$2`;
+      const queryValue = [newPassword, token];
       pool
         .query(query2Text, queryValue)
         .then(() => res.status(201).send(result.rows))
@@ -347,20 +398,20 @@ router.put(`/passwordforgot`, rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.put(`/passwordforgot/admin`, rejectUnauthenticated, (req, res) => {
+router.put(`/passwordforgot/admin`, (req, res) => {
   console.log("we are about to change the admin password:", req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
-  const email = req.body.email;
+  const token = req.body.token;
   // setting query text to update the username
-  const queryText = `UPDATE "admin" SET password=$1 WHERE email=$2 `;
+  const queryText = `UPDATE "admin" SET password=$1 WHERE token=$2 `;
 
   pool
-    .query(queryText, [newPassword, email])
+    .query(queryText, [newPassword, token])
     .then((result) => {
       console.log("Success in updating password or email for admin!");
 
-      const query2Text = `UPDATE "user" SET password=$1 WHERE email=$2`;
-      const queryValue = [newPassword, email];
+      const query2Text = `UPDATE "user" SET password=$1 WHERE token=$2`;
+      const queryValue = [newPassword, token];
       pool
         .query(query2Text, queryValue)
         .then(() => res.sendStatus(201).res.send(result.rows))
