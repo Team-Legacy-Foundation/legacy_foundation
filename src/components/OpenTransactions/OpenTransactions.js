@@ -22,10 +22,10 @@ componentDidMount () {
 runConfirm() {
  Swal.fire({
    title: "Please confirm details below",
-   html: `Clicking "Confirm Report" will run the report. This action can't be undone. 
+   html: `Clicking "Confirm Report" will run the report. <br/> This action can't be undone. <br/>
       Please review the information for any discrepancies. 
-      Click cancel to correct any mistakes and rerun the report when corections are made.
-      If you are sur the information is correct click "Confirm Report" to run the report`,
+      Click cancel to correct any mistakes and rerun the report when corrections are made.<br/>
+      If you are sure the information is correct, click "Confirm Report" to run the report`,
    icon: "question",
    showCancelButton: true,
    confirmButtonColor: "#5cb85c",

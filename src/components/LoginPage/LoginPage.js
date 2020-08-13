@@ -262,7 +262,7 @@ class LoginPage extends Component {
                   </div> */}
                 {/* )}
               </div> */}
-            )}
+            {/*})}*/}
           </center>
           {/* <center>
           <button

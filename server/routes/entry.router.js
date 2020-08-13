@@ -10,7 +10,7 @@ const moment = require('moment');
 /**
  * GET route template
  */
-router.get('/', (req, res) => {
+router.get('/', rejectUnauthenticated, (req, res) => {
     pool
       .query("SELECT * from entry") 
       .then((result) => {
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
       });
 }) //end GET
 
-router.get('/:id', (req, res) => {
+router.get('/:id', rejectUnauthenticated, (req, res) => {
   pool
     .query("SELECT * from entry WHERE lcf_id=$1",[req.params.id])
     .then((result) => {
@@ -40,7 +40,7 @@ router.get('/:id', (req, res) => {
 
 
  
-router.post("/", (req, res) => {
+router.post("/", rejectUnauthenticated, (req, res) => {
   console.log('This means entry router is running')
     // HTTP REQUEST BODY
     const entry = req.body; // pull the object out out of the HTTP REQUEST
@@ -122,7 +122,7 @@ router.post("/", (req, res) => {
 
 
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", rejectUnauthenticated, (req, res) => {
   pool
     .query('DELETE FROM entry WHERE id=$1', [req.params.id])
     .then((result) => {
