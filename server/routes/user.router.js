@@ -34,7 +34,7 @@ router.post("/forgot/:token/:email", (req, res) => {
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
               const msg = {
                 to: email,
-                from: "christopherjay71186@gmail.com",
+                from: "no.reply.legacyfoundation@gmail.com",
                 subject: "request to reset password",
                 html: `
   <h2>Click below to reset your password</h2>
@@ -72,7 +72,7 @@ router.post("/forgot/admin/:email", (req, res) => {
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
               const msg = {
                 to: email,
-                from: "christopherjay71186@gmail.com",
+                from: "no.reply.legacyfoundation@gmail.com",
                 subject: "request to reset password",
                 html: `
   <h2>Click below to reset your password</h2>
