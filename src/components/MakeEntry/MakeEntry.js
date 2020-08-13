@@ -68,6 +68,10 @@ class MakeEntry extends Component {
   };
 
   componentDidMount() {
+     this.props.dispatch({
+       type: "GET_STUDENTS",
+     });
+
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
@@ -337,6 +341,27 @@ class MakeEntry extends Component {
         "MMMM Do YYYY"
       );
       pay_day = moment(pay_day).format("MMMM Do YYYY");
+
+
+          const studentList = this.props.students;
+
+    for (let student of studentList) {
+     
+      if (this.props.user.lcf_id === student.lcf_id && ( student.inactive === 'yes')) { 
+        return (
+          <div >
+            <Paper elevation={5}
+            style={{margin:'5%', padding:'5%'}}>
+            <center><h2>Sorry, you cannot make an entry at this moment. Your account is currently inactive, please contact the admin for further details.</h2></center>
+            <center><h2>Thank you!</h2></center>
+            
+            </Paper>
+          </div>
+        );
+      }
+    }
+
+
     for (let entry of entries) {
       entry.pay_day = new Date(entry.pay_day);
       entry.previous_pay_day = new Date(entry.previous_pay_day);
@@ -355,6 +380,7 @@ class MakeEntry extends Component {
         );
       }
     }
+
 
     return (
       <div>
@@ -723,6 +749,7 @@ class MakeEntry extends Component {
 const mapStateToProps = (state) => ({
   user: state.user,
   entries: state.students.studententriesadmin,
+  students: state.students.studentlist,
 });
 
 export default withRouter(connect(mapStateToProps)(MakeEntry));

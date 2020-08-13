@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import MUITable from "../MUITable/MUITable";
 import { withRouter } from "react-router";
 import EditIcon from '@material-ui/icons/Edit';
-
+import moment from 'moment';
 //import { response } from "express";
 
 class StudentEntries extends Component {
@@ -32,6 +32,7 @@ class StudentEntries extends Component {
       return <Redirect to='/opentransactions'/>
     }
   }
+  
 
   render() { //TODO: Add delete option for admin so that if an entry was submitted too early, they get rid of it
     const columns = [
@@ -178,6 +179,25 @@ class StudentEntries extends Component {
         },
       },
     ];
+
+    
+    let date = moment();
+    let previous_pay_day = moment("2020-08-10T00:00:00.000")
+    let pay_day = moment(previous_pay_day)
+
+      function getDate() {
+        if (date >= pay_day) {
+          previous_pay_day = pay_day;
+          pay_day = moment(previous_pay_day).add(2, "week");
+          getDate();
+        }
+      }
+      getDate();
+
+      previous_pay_day = moment(previous_pay_day).format(
+        "MMMM Do YYYY"
+      );
+      pay_day = moment(pay_day).format("MMMM Do YYYY");
     return (
       <div><br/>
          <center><h1 >Current Entries</h1></center>
@@ -199,7 +219,7 @@ class StudentEntries extends Component {
         <MUITable
           data={this.getStudentArray(this.props.entries)}
           columns={columns}
-          title={"Entries for Current Pay Period"}
+          title={`Entries for Current Pay Period: ${previous_pay_day} - ${pay_day}`}
           
         />
         </div>
