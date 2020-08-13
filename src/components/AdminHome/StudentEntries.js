@@ -32,6 +32,7 @@ class StudentEntries extends Component {
       return <Redirect to='/opentransactions'/>
     }
   }
+  
 
   render() { //TODO: Add delete option for admin so that if an entry was submitted too early, they get rid of it
     const columns = [

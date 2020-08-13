@@ -66,8 +66,10 @@ pageRedirect() {
                 entry.last_name, 
                 // moment(entry.pay_day).format("MMMM Do YYYY") &&
                 // moment(entry.date_submitted).format("MMMM Do YYYY") &&
-                entry.pay_day,
-                entry.date_submitted,
+              
+                moment.utc(entry.pay_day).local().format("L"),
+                moment.utc(entry.date_submitted).local().format("L"),
+                
                 entry.pass_class,
                 entry.gpa,
                 entry.clean_attend,
