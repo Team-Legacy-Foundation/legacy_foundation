@@ -9,18 +9,21 @@ import { Link } from "react-router-dom";
 
 class ForgotPasswordAdmin extends Component {
   state = {
-    lcf_id: "",
     email: "",
     password: "",
     retype_password: "",
+    token: "",
   };
 
     componentDidMount() {
-    let email = window.location.hash;
-    email = email.slice(23);
-    this.setState({
-      email: email,
-    })
+     let token = window.location.hash;
+     token = token.slice(23, 55);
+     let email = window.location.hash;
+     email = email.slice(56);
+     this.setState({
+       token: token,
+       email: email,
+     });
   }
   //This function dispatched our newly added admin to the database from state
   //We first validate the inputs to make sure we are not sending empty inputs to the server
@@ -34,6 +37,7 @@ class ForgotPasswordAdmin extends Component {
     console.log("this is the user", this.props.user);
 
     if (
+      this.state.token &&
       this.state.password &&
       this.state.retype_password &&
       this.state.password === this.state.retype_password
@@ -41,6 +45,7 @@ class ForgotPasswordAdmin extends Component {
       this.props.dispatch({
         type: "FORGOT_ADMIN_PASSWORD",
         payload: {
+          token: this.state.token,
           email: this.state.email,
           password: this.state.password,
         },

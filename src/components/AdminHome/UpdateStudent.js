@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import Card from 'react-bootstrap/Card';
 import moment from "moment";
 import Swal from "sweetalert2";
-import { Paper } from "@material-ui/core";
+
 
 
    
@@ -134,7 +134,7 @@ let id = url_array[url_array.length-1];
          showCancelButton: true,
          confirmButtonColor: "#3085d6",
          cancelButtonColor: "#d33",
-         confirmButtonText: "Confirm updated information",
+         confirmButtonText: "Confirm my entry",
        }).then((result) => {
          if (result.value) {
            //send the updated student to the server through a redux saga
@@ -176,11 +176,14 @@ let id = url_array[url_array.length-1];
     console.log('this is now props.editStudent', this.props.editStudent)
 
     return (
-      <div><br/>
-        <center><h1>Update Student Information</h1></center>
+      <div>
+        <h1 style={{ width: "50%", margin: "2% 35%" }}>
+          Update Student Information
+          
+          
+        </h1>
 
-        <Paper elevation={5}
-        style={{ width: '90%', margin: '3% auto', padding: '2%' }} >
+        <Card border = "info" style={{ width: '90%', margin: '3% auto', padding: '2%' }} >
         <Form className="addstudent">
           {" "}
           {/* <== does this className need to change? */}
@@ -302,17 +305,16 @@ let id = url_array[url_array.length-1];
               />
             </Col> */}
           </Row>
-          <center>
           <Button
             onClick={(event) => this.updateStudent(event)}
             variant="success"
             type="submit"
-            style={{ width: "20%", marginTop:'2%' }}
+            style={{ width: "40%", margin: "7% 30% 2%" }}
           >
             Update Student Info
-          </Button> </center>
+          </Button>
         </Form>
-        </Paper>
+        </Card>
       </div>
     );
   }
