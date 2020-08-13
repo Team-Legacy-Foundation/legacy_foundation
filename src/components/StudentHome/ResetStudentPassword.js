@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
+import { Alert } from "@material-ui/lab";
 
 class ResetStudentPassword extends Component {
   state = {
@@ -14,6 +15,10 @@ class ResetStudentPassword extends Component {
     //email: this.props.user.email,
     password: "",
     retype_password: "",
+    password_empty_error: '',
+    retype_password_empty_error: '',
+    password_nomatch_error: '',
+    retype_password_nomatch_error: ''
   };
 
   //This function dispatched our newly added admin to the database from state
@@ -49,8 +54,21 @@ class ResetStudentPassword extends Component {
         password: "",
         retype_password: "",
       });
-    } else {
-      this.props.dispatch({ type: "RESET_STUDENT_PASSWORD_ERROR" });
+    } else if (this.state.password === '') {
+      this.setState({ password_empty_error: true });
+
+      setTimeout(() => {
+        this.setState({ password_empty_error: false, }); }, 5000);
+    }else if (this.state.retpye_password === '') {
+      this.setState({ retype_password_empty_error: true });
+
+      setTimeout(() => {
+        this.setState({ retype_password_empty_error: false, }); }, 5000);
+    }else if (this.state.retpye_password !== this.state.password){
+      this.setState({ retype_password_nomatch_error: true, password_nomatch_error: true });
+
+      setTimeout(() => {
+        this.setState({ retype_password_nomatch_error: false, password_nomatch_error: false}); }, 5000);
     }
   }; // end resetStudentPassword
 
@@ -69,6 +87,18 @@ class ResetStudentPassword extends Component {
         <center>
           <h1>Reset Student Password</h1>
         </center>
+
+        {(this.state.password_empty_error === true || this.state.retype_password_empty_error === true) && (
+          <Alert className="error" style={{}} severity="error">
+            Please enter a new password to reset your old password.
+          </Alert>
+        )}
+    
+        {(this.state.password_nomatch_error === true || this.state.retype_password_nomatch_error === true) && (
+          <Alert className="error" style={{}} severity="error">
+            Your new password entry does not match. Please re-enter
+          </Alert>
+        )}
         <Paper
           elevation={5}
           border="info"

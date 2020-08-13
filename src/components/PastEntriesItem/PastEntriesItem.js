@@ -29,7 +29,6 @@ class PastEntriesItem extends Component {
       
     
       <TableRow>
-          <TableCell style={gunnarStyle}>{entryItem.id}</TableCell>
           <TableCell style={gunnarStyle}>{moment(entryItem.pay_day).format("MMMM Do YYYY")}</TableCell>
           <TableCell style={gunnarStyle}>{moment(entryItem.date_submitted).format("MMMM Do YYYY")}</TableCell>
           <TableCell style={gunnarStyle}>{entryItem.pass_class}</TableCell>
