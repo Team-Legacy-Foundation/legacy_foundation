@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import moment from "moment";
 import Button from "react-bootstrap/Button";
+import Swal from "sweetalert2";
 
 
 //The purpose of this page is to update the student's entry this past pay period
@@ -41,28 +42,39 @@ class AddAdminForm extends Component {
       this.state.password &&
       this.state.role
     ) {
-      //send the new student to the server through a redux saga
-      this.props.dispatch({
-        type: "REGISTER_ADMIN",
-        payload: {
-          first_name: this.state.first_name,
-          last_name: this.state.last_name,
-          role: this.state.role,
-          email: this.state.email,
-          password: this.state.password,
-          created_at: this.state.created_at,
-        },
-      });
+      //send the new admin to the server through a redux saga
+    
 
-      this.setState({
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        role: "",
-      });
+       Swal.fire({
+         title: "Please confirm new admin details below",
+         html: `1. First Name: ${this.state.first_name} </br>
+          2. Last Name: ${this.state.last_name} </br>
+          3. Role: ${this.state.role} </br>
+          4. Email: ${this.state.email} </br>`,
+         icon: "question",
+         showCancelButton: true,
+         confirmButtonColor: "#5cb85c",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Confirm my entry",
+       }).then((result) => {
+         console.log("Here is result.value", result.value);
+         if (result.value) {
+         this.props.dispatch({
+           type: "REGISTER_ADMIN",
+           payload: {
+             first_name: this.state.first_name,
+             last_name: this.state.last_name,
+             role: this.state.role,
+             email: this.state.email,
+             password: this.state.password,
+             created_at: this.state.created_at,
+           },
+         });
 
-      this.props.history.push("/home");
+           Swal.fire("Success!", "Your new admin has been added.", "success");
+           this.props.history.push("/home");
+         }
+       });
     } else {
       this.props.dispatch({ type: "ADD_ADMIN_ERROR" });
     }
