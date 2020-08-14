@@ -68,7 +68,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
         return;
     }
         let date = moment.utc();
-        let previous_pay_day = moment.utc("2020-08-10T00:00:00.000");
+        let previous_pay_day = moment.utc("2020-08-10T00:00:00.000-05");
         let pay_day = moment.utc(previous_pay_day)
           .add(2, "week")
 
