@@ -51,7 +51,7 @@ class AdminResetPassword extends Component {
          Swal.fire({
            icon: "Success",
            title: "Activation",
-           text: `Student number ${this.state.admin_id} password has been reset`,
+           text: `Admin number ${this.state.admin_id} password has been reset`,
          });
 
          this.props.history.push("/home");
