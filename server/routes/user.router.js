@@ -38,9 +38,15 @@ router.post("/forgot/:token/:email", (req, res) => {
                 from: "no.reply.legacyfoundation@gmail.com",
                 subject: "request to reset password",
                 html: `
-  <h2>Click below to reset your password</h2>
-  <a href="${domain}/#/forgotpassword/${token}/${email}">Reset Password</a>
-  <p>If you did not request this email, please disregard it and delete it.</p>
+  <div>
+  <div style="background-color:black;"><img
+        src="https://legacychildrensfoundation.com/wp-content/uploads/2020/04/LCFLogo_H_RGB_kp.jpg"
+       width="150"
+      /></div>
+  <h2 style="text-align:center;">Click below to reset your password</h2>
+  <p style="text-align:center;"><a href="${domain}/#/forgotpassword/${token}/${email}" style="text-align:center;">Reset Password</a></p>
+  <p style="text-align:center;">If you did not request this email, please disregard it and delete it.</p>
+  </div>
   `,
               };
               sgMail.send(msg);
@@ -77,9 +83,15 @@ router.post("/forgot/admin/:token/:email", (req, res) => {
                 from: "no.reply.legacyfoundation@gmail.com",
                 subject: "request to reset password",
                 html: `
-  <h2>Click below to reset your password</h2>
-  <a href = "${domain}/#/forgotpassword/admin/${token}/${email}"> Reset Password </a>
-  <p>If you did not request this email, please disregard it and delete it.</p>
+  <div>
+  <div style="background-color:black;"><img
+        src="https://legacychildrensfoundation.com/wp-content/uploads/2020/04/LCFLogo_H_RGB_kp.jpg"
+       width="150"
+      /></div>
+  <h2 style="text-align:center;">Click below to reset your password</h2>
+  <p style="text-align:center;"><a href="${domain}/#/forgotpassword/${token}/${email}" style="text-align:center;">Reset Password</a></p>
+  <p style="text-align:center;">If you did not request this email, please disregard it and delete it.</p>
+  </div>
   `,
               };
               sgMail.send(msg);
@@ -181,6 +193,7 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
   const lcf_start_date = req.body.lcf_start_date;
   const student_email = req.body.student_email;
   const password = encryptLib.encryptPassword(req.body.password);
+  const password2 = req.body.password;
   const pif_amount = Number(req.body.pif_amount).toFixed(2);
   const created_at = moment.utc().format();
   const role = "student";
@@ -232,7 +245,27 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
           'student',
           new Date(),
         ])
-        .then(() => res.status(201).send(result.rows))
+        .then(() => {
+            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+            let domain = process.env.DOMAIN_NAME;
+            const msg = {
+              to: student_email,
+              from: "no.reply.legacyfoundation@gmail.com",
+              subject: "Welcome!",
+              html: `
+  <div>
+  <div style="background-color:black;"><img
+        src="https://legacychildrensfoundation.com/wp-content/uploads/2020/04/LCFLogo_H_RGB_kp.jpg"
+       width="150"
+      /></div>
+  <h2 style="text-align:center;">Welcome ${first_name}!</h2>
+  <p style="text-align:center;">Your temporary password is <b>${password2}</b>, please login to your account and reset your password</p>
+  <p style="text-align:center;">If you did not request this email, please disregard it and delete it.</p>
+  </div>
+  `,
+            };
+            sgMail.send(msg);
+          res.status(201).send(result.rows)})
         .catch(function (error) {
           console.log("Sorry, there was an error with your query: ", error);
           res.sendStatus(500); // HTTP SERVER ERROR
