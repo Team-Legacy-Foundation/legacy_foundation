@@ -86,8 +86,10 @@ class PastStudentEntries extends Component {
           </TableHead>
           <TableBody>
            {(entry.length !== 0)&& <TableRow style={{backgroundColor: 'yellow'}} >
-            <TableCell style={gunnarStyle}>{moment(entry.pay_day).format("MMMM Do YYYY")}</TableCell>
-            <TableCell style={gunnarStyle}>{moment(entry.date_submitted).format("MMMM Do YYYY")}</TableCell>
+
+            <TableCell style={gunnarStyle}>{moment.utc(entry.pay_day).format("MMMM Do YYYY")}</TableCell>
+            <TableCell style={gunnarStyle}>{moment.utc(entry.date_submitted).format("MMMM Do YYYY")}</TableCell>
+
             <TableCell style={gunnarStyle}>{entry.pass_class}</TableCell>
             <TableCell style={gunnarStyle}>{entry.gpa}</TableCell>
             <TableCell style={gunnarStyle}>{entry.clean_attend}</TableCell>

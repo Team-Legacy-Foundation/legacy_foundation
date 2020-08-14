@@ -45,7 +45,7 @@ componentDidUpdate() {
                 entry.last_name,
                 entry.email,
                 entry.role,
-                moment(entry.created_at).format("MMMM Do YYYY")
+                moment.utc(entry.created_at).format("MMMM Do YYYY")
               ])
       return (
         
