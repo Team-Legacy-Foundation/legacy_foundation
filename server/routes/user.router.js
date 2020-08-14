@@ -341,7 +341,7 @@ router.put(`/adminpasswordreset/:admin_id`, rejectUnauthenticated, (req, res) =>
       const queryValue = [newPassword, adminID];
       pool
         .query(query2Text, queryValue)
-             .then(() => res.sendStatus(201).res.send(result.rows))
+             .then(() => res.status(201).send(result.rows))
           .catch(function (error) {
           console.log("Sorry, there was an error with your query: ", error);
           res.sendStatus(500); // HTTP SERVER ERROR
