@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import {
-  Table,
-  TableHead,
-  TableBody,
   TableRow,
   TableCell,
 } from "@material-ui/core";

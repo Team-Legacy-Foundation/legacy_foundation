@@ -8,7 +8,6 @@ import {
   TableRow,
   TableCell,
 } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import './PastStudentEntries.css';
 import EntryItem from '../PastEntriesItem/PastEntriesItem';
 import Paper from "@material-ui/core/Paper";
