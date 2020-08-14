@@ -33,7 +33,7 @@ class PastAdminDeductions extends Component {
                 item.lcf_id,
                 item.first_name,
                 item.last_name,
-                moment.utc(item.date).local().calendar(),
+                moment.utc(item.date).calendar(),
                 item.type,
                 item.description,
                 item.amount,
