@@ -4,8 +4,6 @@ import { withRouter } from "react-router";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Iframe from "react-iframe";
-import moment from "moment";
-
 import "./StudentHome.css";
 
 class StudentHome extends Component {

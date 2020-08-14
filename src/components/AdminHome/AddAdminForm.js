@@ -2,16 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
-
-import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import moment from "moment";
-
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
+
 
 //The purpose of this page is to update the student's entry this past pay period
 
@@ -72,13 +69,13 @@ class AddAdminForm extends Component {
   }; // end registerAdmin
 
   render() {
-    const data = this.props.admin.map((entry) => [
-      entry.first_name,
-      entry.last_name,
-      entry.email,
-      entry.role,
-      moment(entry.created_at).format("MMMM Do YYYY"),
-    ]);
+    // const data = this.props.admin.map((entry) => [
+    //   entry.first_name,
+    //   entry.last_name,
+    //   entry.email,
+    //   entry.role,
+    //   moment(entry.created_at).format("MMMM Do YYYY"),
+    // ]);
     return (
       <div>
         <br />

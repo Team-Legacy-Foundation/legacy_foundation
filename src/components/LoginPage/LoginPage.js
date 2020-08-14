@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import logo from "../../images/image.png";
-
 import {
   Grid,
-  Snackbar,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import Swal from "sweetalert2";
@@ -278,6 +274,7 @@ class LoginPage extends Component {
           <img
             id="shapes"
             src="https://legacychildrensfoundation.com/wp-content/uploads/2020/03/shapes-bg-color.png"
+          alt="Colored Shapes"
           />
         </Grid>
         {/* </div> */}

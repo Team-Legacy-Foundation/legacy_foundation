@@ -200,7 +200,7 @@ class AdminHome extends Component {
                         this.props.students
                       );
                       const student = studentsArray[dataIndex];
-                      {
+                      
                         //send the updated student to the server through a redux saga
                         this.props.dispatch({
                           type: "DEACTIVATE_STUDENT",
@@ -216,7 +216,7 @@ class AdminHome extends Component {
                         this.props.dispatch({
                           type: "GET_STUDENTS",
                         });
-                      }
+                      
                     }}
                   >
                     Deactivate
@@ -230,7 +230,7 @@ class AdminHome extends Component {
                         this.props.students
                       );
                       const student = studentsArray[dataIndex];
-                      {
+                      
                         //send the updated student to the server through a redux saga
                         this.props.dispatch({
                           type: "ACTIVATE_STUDENT",
@@ -246,7 +246,7 @@ class AdminHome extends Component {
                         this.props.dispatch({
                           type: "GET_STUDENTS",
                         });
-                      }
+                      
                     }}
                   >
                     Activate

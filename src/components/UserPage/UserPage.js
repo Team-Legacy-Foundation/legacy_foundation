@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import LogOutButton from '../LogOutButton/LogOutButton';
 import StudentHome from '../StudentHome/StudentHome';
 import AdminHome from '../AdminHome/AdminHome';
 
