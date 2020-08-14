@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
-import { Alert } from "@material-ui/lab";
+
 
 class ForgotPassword extends Component {
   state = {
