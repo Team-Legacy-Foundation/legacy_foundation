@@ -112,7 +112,7 @@ class AddStudent extends Component {
           10. PIF Amount ${pif_amount}`,
         icon: "question",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#5cb85c",
         cancelButtonColor: "#d33",
         confirmButtonText: "Confirm my entry",
       }).then((result) => {

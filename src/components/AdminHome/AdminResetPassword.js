@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import { Alert } from "@material-ui/lab";
+import Swal from "sweetalert2";
 
 class AdminResetPassword extends Component {
   state = {
@@ -47,6 +48,13 @@ class AdminResetPassword extends Component {
           password: this.state.password,
         },
       });
+         Swal.fire({
+           icon: "Success",
+           title: "Activation",
+           text: `Admin number ${this.state.admin_id} password has been reset`,
+         });
+
+         this.props.history.push("/home");
 
       this.setState({
         admin_id: this.props.user.admin_id,

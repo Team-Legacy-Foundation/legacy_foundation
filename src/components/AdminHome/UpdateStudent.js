@@ -132,7 +132,7 @@ let id = url_array[url_array.length-1];
       9. PIF Amount: ${this.state.pif_amount} </br>`,
          icon: "question",
          showCancelButton: true,
-         confirmButtonColor: "#3085d6",
+         confirmButtonColor: "#5cb85c",
          cancelButtonColor: "#d33",
          confirmButtonText: "Confirm my entry",
        }).then((result) => {

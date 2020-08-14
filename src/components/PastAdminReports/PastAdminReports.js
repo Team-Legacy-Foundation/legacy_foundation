@@ -43,8 +43,10 @@ class PastAdminReports extends Component {
                 item.lcf_id,
                 item.first_name,
                 item.last_name,
+
                 moment.utc(item.pay_day).format('L'),
                 moment.utc(item.date_submitted).format('L'),
+
                 item.pass_class,
                 item.gpa,
                 item.clean_attend,

@@ -215,8 +215,8 @@ class MakeEntry extends Component {
       9. comments: ${comments}`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#5cb85c",
+      cancelButtonColor: "#fcb70a",
       confirmButtonText: "Confirm my entry",
     }).then((result) => {
       if (result.value) {
