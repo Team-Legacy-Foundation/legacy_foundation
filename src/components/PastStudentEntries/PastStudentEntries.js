@@ -32,7 +32,7 @@ class PastStudentEntries extends Component {
   render() {
     const gunnarStyle = { minHeight: "500px", minWidth: "150px", textAlign:'center' };
     
-    if (this.props.studentHistory.length === 0) { //conditional rendering to handle case of no entries for student
+    if (this.props.studentHistory.length === 0 ) { //conditional rendering to handle case of no entries for student
       return (
         <Paper elevation={5} style={{margin:'5%', padding:'5%', textAlign:'center'}}>
           <h2>It looks like you don't have any past entries! Check back once you've made one</h2>
@@ -55,8 +55,9 @@ class PastStudentEntries extends Component {
         <center><h1>Past Entries</h1></center><br/>
       
 
-
+        <h5>Total Savings to Date: ($ {this.total(this.props.studentHistory)})</h5>
       <Paper elevation={5} style={{height: "100%", overflow: "scroll", border: "",}}>
+        
         <Table style={{margin:'1%',}}>
           <TableHead>
             <TableRow style={gunnarStyle}>
@@ -120,7 +121,7 @@ class PastStudentEntries extends Component {
           
         </Table>
         </Paper>
-        <div>Total savings to date ($ {this.total(this.props.studentHistory)}):</div>
+        
       </div>
     );}
   }
