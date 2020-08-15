@@ -11,13 +11,13 @@ import {
   FormControl,
   FormLabel,
   withStyles,
-  Slider
+  Slider,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
 import "./MakeEntry.css";
-import moment from 'moment';
+import moment from "moment";
 
 const GreenRadio = withStyles({
   root: {
@@ -63,20 +63,18 @@ class MakeEntry extends Component {
     error: false,
     pay_day_error: false,
     dupeEntry: false,
-  
   };
 
   componentDidMount() {
-     this.props.dispatch({
-       type: "GET_STUDENTS",
-     });
+    this.props.dispatch({
+      type: "GET_STUDENTS",
+    });
 
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
-   
   }
-  
+
   handleChange = (event, fieldName) => {
     this.setState({ [fieldName]: event.target.value });
   };
@@ -157,32 +155,27 @@ class MakeEntry extends Component {
       return;
     }
 
-
     let historyEntries = this.props.studentHistory;
     let date = moment();
-    let previous_pay_day = moment("2020-08-10T00:00:00.000-05")
-    let pay_day = moment(previous_pay_day)
+    let previous_pay_day = moment("2020-08-10T00:00:00.000-05");
+    let pay_day = moment(previous_pay_day);
 
-      function getDate() {
-        if (date >= pay_day) {
-          previous_pay_day = pay_day;
-          pay_day = moment(previous_pay_day).add(2, "week");
-          getDate();
-        }
+    function getDate() {
+      if (date >= pay_day) {
+        previous_pay_day = pay_day;
+        pay_day = moment(previous_pay_day).add(2, "week");
+        getDate();
       }
-      getDate();
+    }
+    getDate();
 
-      previous_pay_day = moment(previous_pay_day).format(
-        "MMMM Do YYYY"
-      );
-      pay_day = moment(pay_day).format("MMMM Do YYYY");
+    previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
+    pay_day = moment(pay_day).format("MMMM Do YYYY");
 
-    for (let history of historyEntries){
- 
+    for (let history of historyEntries) {
       let history_pay_day = moment(history.pay_day).format("MMMM Do YYYY");
 
-      if (history_pay_day === pay_day){
-
+      if (history_pay_day === pay_day) {
         this.setState({
           pay_day_error: true,
         });
@@ -193,10 +186,8 @@ class MakeEntry extends Component {
           });
         }, 5000);
         return;
-        
       }
     }
-
 
     Swal.fire({
       title: "Please confirm details below",
@@ -248,7 +239,6 @@ class MakeEntry extends Component {
   };
 
   render() {
-  
     const inputProps = {
       max: 10,
       min: 0,
@@ -340,62 +330,74 @@ class MakeEntry extends Component {
 
     let { entries } = this.props;
     let date = moment();
-    let previous_pay_day = moment("2020-08-10T00:00:00.000-05") //midnight central time 
-    let pay_day = moment(previous_pay_day)
+    let previous_pay_day = moment("2020-08-10T00:00:00.000-05"); //midnight central time
+    let pay_day = moment(previous_pay_day);
 
-      function getDate() {
-        if (date >= pay_day) {
-          previous_pay_day = pay_day;
-          pay_day = moment(previous_pay_day).add(2, "week");
-          getDate();
-        }
+    function getDate() {
+      if (date >= pay_day) {
+        previous_pay_day = pay_day;
+        pay_day = moment(previous_pay_day).add(2, "week");
+        getDate();
       }
-      getDate();
+    }
+    getDate();
 
-      previous_pay_day = moment(previous_pay_day).format(
-        "MMMM Do YYYY"
-      );
-      pay_day = moment(pay_day).format("MMMM Do YYYY");
-       
+    previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
+    pay_day = moment(pay_day).format("MMMM Do YYYY");
 
-          const studentList = this.props.students;
+    const studentList = this.props.students;
 
     for (let student of studentList) {
-     
-      if (this.props.user.lcf_id === student.lcf_id && ( student.inactive === 'yes')) { 
+      if (
+        this.props.user.lcf_id === student.lcf_id &&
+        student.inactive === "yes"
+      ) {
         return (
-          <div >
-            <Paper elevation={5}
-            style={{margin:'5%', padding:'5%'}}>
-            <center><h2>Sorry, you cannot make an entry at this moment. Your account is currently inactive, please contact the admin for further details.</h2></center>
-            <center><h2>Thank you!</h2></center>
-            
+          <div>
+            <Paper elevation={5} style={{ margin: "5%", padding: "5%" }}>
+              <center>
+                <h2>
+                  Sorry, you cannot make an entry at this moment. Your account
+                  is currently inactive, please contact the admin for further
+                  details.
+                </h2>
+              </center>
+              <center>
+                <h2>Thank you!</h2>
+              </center>
             </Paper>
           </div>
         );
       }
     }
-
 
     for (let entry of entries) {
       entry.pay_day = new Date(entry.pay_day);
       entry.previous_pay_day = new Date(entry.previous_pay_day);
 
-      if (this.props.user.lcf_id === entry.lcf_id && ( entry.pay_day > date || entry.previous_pay_day <= date)) { //TODO: ADD History conditional so
+      if (
+        this.props.user.lcf_id === entry.lcf_id &&
+        (entry.pay_day > date || entry.previous_pay_day <= date)
+      ) {
+        //TODO: ADD History conditional so
         //no duplicate entries can be submitted (i.e.checked against history and entry tables)
         return (
-          <div >
-            <Paper elevation={5}
-            style={{margin:'5%', padding:'5%'}}>
-            <center><h2>Entry already submitted for this pay period, please check back next pay period</h2></center>
-            <center><h2>Thank you!</h2></center>
-            
+          <div>
+            <Paper elevation={5} style={{ margin: "5%", padding: "5%" }}>
+              <center>
+                <h2>
+                  Entry already submitted for this pay period, please check back
+                  next pay period
+                </h2>
+              </center>
+              <center>
+                <h2>Thank you!</h2>
+              </center>
             </Paper>
           </div>
         );
       }
     }
-
 
     return (
       <div>
@@ -405,16 +407,25 @@ class MakeEntry extends Component {
             Please fill out all of the required fields
           </Alert>
         )}
-           <br />
+        <br />
         {this.state.pay_day_error === true && (
           <Alert className="error" style={{}} severity="error">
-            Sorry, you already have an entry on record for this pay period, your entry has not been saved successfully!
+            Sorry, you already have an entry on record for this pay period, your
+            entry has not been saved successfully!
           </Alert>
         )}
-        <h3 style={{ textAlign: "center", margin:'2%' }}>
+        <h3 style={{ textAlign: "center", margin: "2%" }}>
           This entry is for the week of: {previous_pay_day} - {pay_day}
         </h3>
-        <Paper elevation={5} style={{ padding: "5%", marginLeft: "5%", marginRight:'5%', marginBottom:'5%' }}>
+        <Paper
+          elevation={5}
+          style={{
+            padding: "5%",
+            marginLeft: "5%",
+            marginRight: "5%",
+            marginBottom: "5%",
+          }}
+        >
           <form onSubmit={this.submitInfo}>
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
@@ -585,7 +596,7 @@ class MakeEntry extends Component {
                 value={this.state.detent_hours}
                 onChange={(event) => this.handleChange(event, "detent_hours")}
               >
-                  <FormControlLabel
+                <FormControlLabel
                   value="No"
                   control={<GreenRadio />}
                   label="No"
@@ -595,7 +606,6 @@ class MakeEntry extends Component {
                   control={<YellowRadio />}
                   label="Yes"
                 />
-              
               </RadioGroup>
             </FormControl>{" "}
             <br />
@@ -736,12 +746,16 @@ class MakeEntry extends Component {
               maxLength={1000}
               onChange={(event) => this.handleChange(event, "comments")} //onChange of input values set local state
             />{" "}
-            
             <center>
               <Button
-                style={{ marginTop: "3%", marginLeft: '5%', marginRight:'5%', backgroundColor:'#b89c09', color:'white' }}
+                style={{
+                  marginTop: "3%",
+                  marginLeft: "5%",
+                  marginRight: "5%",
+                  backgroundColor: "#b89c09",
+                  color: "white",
+                }}
                 variant="contained"
-                
                 className="button"
                 onClick={() => {
                   this.props.history.push("/home");
@@ -751,7 +765,13 @@ class MakeEntry extends Component {
               </Button>
 
               <Button
-              style={{ marginTop: "3%", marginLeft: '5%', marginRight:'5%', backgroundColor:'green', color:'white' }}
+                style={{
+                  marginTop: "3%",
+                  marginLeft: "5%",
+                  marginRight: "5%",
+                  backgroundColor: "green",
+                  color: "white",
+                }}
                 variant="contained"
                 type="submit"
                 color="primary"
@@ -762,7 +782,6 @@ class MakeEntry extends Component {
             </center>
           </form>
         </Paper>
-        
       </div>
     );
   }
