@@ -33,7 +33,7 @@ class StudentHome extends Component {
     return (
       <div style={{ width: "99%" }}>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={12} lg={12} style={{ margin: "2%" }}>
+          <Grid item xs={12} sm={12} md={12} lg={12} style={{ marginTop: "2%" }}>
             <center>
               {this.props.editStudent ? (
                 <h1>Hello there {this.props.editStudent.first_name}!</h1>
@@ -47,7 +47,7 @@ class StudentHome extends Component {
           {/* <Grid item xs={12} sm={4} md={4} lg={4} style={{margin:'3%'}}>
    </Grid> */}
 
-          <Grid item xs={12} sm={12} md={4} lg={4}>
+          {/* <Grid item xs={12} sm={12} md={4} lg={4}>
             <Paper
               elevation={5}
               style={{ border: "", padding: "4%", margin: "5%" }}
@@ -56,18 +56,18 @@ class StudentHome extends Component {
               <hr></hr> <br />
               <br />
               <br />
-              {/* This could be a tool for the LCF folks to type something up they want sent out for every student to see? But where/how do they send something out. Create a portal on admin end? STRETCH <br/><br/>
+              This could be a tool for the LCF folks to type something up they want sent out for every student to see? But where/how do they send something out. Create a portal on admin end? STRETCH <br/><br/>
               This could also be where students who had data changed get told about it. How would that functionality work?<br/><br/>
-              Conditionally render that if nothing here, put something like "no new notifications" */}
+              Conditionally render that if nothing here, put something like "no new notifications"
             </Paper>
             <br />
             <br />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} sm={12} md={4} lg={4}>
+          <Grid item xs={12} sm={12} md={6} lg={6}>
             <Paper
               elevation={5}
-              style={{ border: "", padding: "4%", margin: "5%" }}
+              style={{ border: "", padding: "4%", margin: "3%" }}
             >
               <center>
                 <Iframe
@@ -82,7 +82,7 @@ class StudentHome extends Component {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} sm={12} md={3} lg={4}>
+          <Grid item xs={12} sm={12} md={4} lg={4}>
             <Paper elevation={5} style={{ padding: "4%", margin: "5%" }}>
               <h3>Payment Information</h3>
               <hr></hr>
