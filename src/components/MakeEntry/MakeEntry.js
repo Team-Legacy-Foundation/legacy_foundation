@@ -155,7 +155,9 @@ class MakeEntry extends Component {
       return;
     }
 
-    let historyEntries = this.props.studentHistory; 
+
+    let historyEntries = this.props.studentHistory;
+
 
     let date = moment();
     let previous_pay_day = moment("2020-08-10T00:00:00.000-05");
@@ -171,10 +173,12 @@ class MakeEntry extends Component {
     getDate();
 
     previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
-    pay_day = moment(pay_day).format("MMMM Do YYYY");
+
+    pay_day = moment(pay_day).format("MMMM Do YYYY hh:mm:ss");
 
     for (let history of historyEntries) {
-      let history_pay_day = moment(history.pay_day).format("MMMM Do YYYY");
+      let history_pay_day = moment.utc(history.pay_day).format("MMMM Do YYYY hh:mm:ss"); //trying to add time
+
 
       /////////////
       console.log(date, previous_pay_day)
