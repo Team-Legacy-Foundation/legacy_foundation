@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import MUITable from "../MUITable/MUITable";
 import moment from "moment";
 import { Alert } from "@material-ui/lab";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Card from "react-bootstrap/Card";
 import Paper from "@material-ui/core/Paper";
 
 import Swal from "sweetalert2";

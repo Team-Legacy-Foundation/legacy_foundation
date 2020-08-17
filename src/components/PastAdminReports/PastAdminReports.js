@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import MUITable from '../MUITable/MUITable';
 import moment from "moment";
 import InfoIcon from '@material-ui/icons/Info';
@@ -45,8 +43,10 @@ class PastAdminReports extends Component {
                 item.lcf_id,
                 item.first_name,
                 item.last_name,
-                moment(item.pay_day).format('L'),
-                moment(item.date_submitted).format('L'),
+
+                moment.utc(item.pay_day).format('L'),
+                moment.utc(item.date_submitted).format('L'),
+
                 item.pass_class,
                 item.gpa,
                 item.clean_attend,

@@ -10,7 +10,8 @@ class Instructions extends Component {
       <div>
         <br />
         <center>
-          <h1>Instructions for Application Use</h1><br/>
+          <h1>Instructions for Application Use</h1>
+          <br />
         </center>
         <center>
           <Paper
@@ -19,7 +20,7 @@ class Instructions extends Component {
           >
             <div>
               <br />
-              
+
               <br />
               <div style={{ textAlign: "left", paddingLeft: "5%" }}>
                 <u>
@@ -30,20 +31,26 @@ class Instructions extends Component {
                 <Button variant="success">Add New Student</Button> button.
                 <br />
                 2. Once the student is successfully created (will appear in
-                Student List on Homepage), an email can be sent out to the
-                student with their login information which is:
+                Student List on Homepage), an email will automatically be sent
+                out to the student with their login information which is:
                 <br />
                 &emsp; &emsp; *email used upon LCF signup
                 <br />
-                &emsp; &emsp; *password created by Admin when creating new
-                student account
+                &emsp; &emsp; *temporary password created by Admin when creating
+                new student account
                 <br />
                 &emsp; OR this can presented to the student in person. <br />
+                &emsp;
+                <i>
+                  Students should be reminded to check their spam folder for
+                  this email as it may be marked as spam initially.
+                </i>
+                <br />
                 3. Once the student logs into their account, they will be able
                 to change their password by clicking the "Reset Password" tab
-                and entering a new password
+                and entering a new password.
                 <br />
-                &emsp; (make sure the student double checks that their new
+                &emsp; (Make sure the student double checks that their new
                 password works).
                 <br />
                 4. The Admin can change a student's information at any time by
@@ -54,8 +61,8 @@ class Instructions extends Component {
                 button found in the row of the student on the Admin Homepage.
                 <br />
                 5. The Admin can also change a student's status from "active" to
-                "inactive" via the Change Status column found on the Admin
-                Homepage.
+                "inactive" and vice versa via the Change Status column found on
+                the Admin Homepage.
                 <br />
                 &emsp; Students who are inactive in the database can still log
                 into their account but will not be able to make entries.
@@ -86,7 +93,7 @@ class Instructions extends Component {
                 <br />
                 &emsp; The Admin will be able to review entries and see if
                 students submit BEFORE they should (i.e. before they have
-                fininshed up school for that pay period).
+                finished school for that pay period).
               </div>
               <br />
               <br />
@@ -122,7 +129,7 @@ class Instructions extends Component {
                 button on the bottom to move back to the entry list and correct
                 it.
                 <br />
-                10.Otherwise if the final calculated number for each student
+                10.Otherwise, if the final calculated number for each student
                 looks good, the Admin can click{" "}
                 <Button variant="success">Confirm Report</Button> to push
                 everything to the Past Reports Page.
@@ -172,9 +179,13 @@ class Instructions extends Component {
                 <Button variant="success">Create New Charge</Button> button to
                 add that charge to the student's account. <br />A record of such
                 charges made can be found via the "Past Deductions" tab in the
-                navbar.<br/>
-                Please note that these charges are automatically taken out of the student's paycheck for the next pay period.<br/>
-                An outstanding balance will remain if the amount of funds going to student does not fully cover the charge amount.
+                navbar.
+                <br />
+                Please note that these charges are automatically taken out of
+                the student's paycheck for the next pay period.
+                <br />
+                An outstanding balance will remain if the amount of funds going
+                to student does not fully cover the charge amount.
               </div>
               <br />
               <br />
@@ -182,9 +193,11 @@ class Instructions extends Component {
                 <u>
                   <h2> Password Resets</h2>
                 </u>
-                If a password reset is needed by a student, they will contact an
-                Admin. The Admin will then confirm the student's credentials
-                (name, LCF ID) and reset their password.
+                If a password reset is needed by a student, they can use the
+                "Forgot Password" button found on the login page to get an email
+                sent to their email on file. <br />
+                Otherwise they will contact an Admin. The Admin will confirm the
+                student's credentials (name, LCF ID) and reset their password manually.
                 <br />
                 This new password can then be given to the student so that they
                 can login and change their password to a password they will

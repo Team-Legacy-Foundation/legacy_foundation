@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import {
-  Table,
-  TableHead,
-  TableBody,
   TableRow,
   TableCell,
 } from "@material-ui/core";
@@ -29,8 +26,8 @@ class PastEntriesItem extends Component {
       
     
       <TableRow>
-          <TableCell style={gunnarStyle}>{moment(entryItem.pay_day).format("MMMM Do YYYY")}</TableCell>
-          <TableCell style={gunnarStyle}>{moment(entryItem.date_submitted).format("MMMM Do YYYY")}</TableCell>
+          <TableCell style={gunnarStyle}>{moment.utc(entryItem.pay_day).format("MMMM Do YYYY")}</TableCell>
+          <TableCell style={gunnarStyle}>{moment.utc(entryItem.date_submitted).format("MMMM Do YYYY")}</TableCell>
           <TableCell style={gunnarStyle}>{entryItem.pass_class}</TableCell>
           <TableCell style={gunnarStyle}>{entryItem.gpa}</TableCell>
           <TableCell style={gunnarStyle}>{entryItem.clean_attend}</TableCell>

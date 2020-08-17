@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import { Alert } from "@material-ui/lab";

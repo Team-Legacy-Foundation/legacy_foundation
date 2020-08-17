@@ -20,8 +20,9 @@ const Nav = (props) => (
       <img
         className="logo"
         src={logo}
-        alit="logo"
-        style={{ width: 1100, float:'left' }}
+        alt="legacy foundation logo"
+        style={{ float:'left', maxWidth:'20%' }}
+        
       />
       {/* {props.user.id && props.user.role === "admin"&& (
         <>

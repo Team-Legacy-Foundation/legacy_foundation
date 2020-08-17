@@ -200,7 +200,7 @@ class AdminHome extends Component {
                         this.props.students
                       );
                       const student = studentsArray[dataIndex];
-                      {
+                      
                         //send the updated student to the server through a redux saga
                         this.props.dispatch({
                           type: "DEACTIVATE_STUDENT",
@@ -216,7 +216,7 @@ class AdminHome extends Component {
                         this.props.dispatch({
                           type: "GET_STUDENTS",
                         });
-                      }
+                      
                     }}
                   >
                     Deactivate
@@ -230,7 +230,7 @@ class AdminHome extends Component {
                         this.props.students
                       );
                       const student = studentsArray[dataIndex];
-                      {
+                      
                         //send the updated student to the server through a redux saga
                         this.props.dispatch({
                           type: "ACTIVATE_STUDENT",
@@ -246,7 +246,7 @@ class AdminHome extends Component {
                         this.props.dispatch({
                           type: "GET_STUDENTS",
                         });
-                      }
+                      
                     }}
                   >
                     Activate
@@ -299,7 +299,7 @@ class AdminHome extends Component {
         entry.grad_year &&
         entry.school_attend &&
         entry.lcf_id &&
-        moment(entry.lcf_start_date).format("MMMM Do YYYY") &&
+        moment.utc(entry.lcf_start_date).format("MMMM Do YYYY") &&
         entry.student_email &&
         entry.password &&
         entry.balance_due &&
@@ -317,12 +317,12 @@ class AdminHome extends Component {
         entry.first_name, // 0
         entry.last_name, // 1
         entry.last_login == null ? <>Hasn't logged in</> :
-        moment(entry.last_login).fromNow(),
+        moment.utc(entry.last_login).fromNow(),
         Number(entry.grade), // 2
         entry.grad_year, // 3
         entry.school_attend, // 4
         entry.lcf_id, // 5
-        moment(entry.lcf_start_date).format("MMMM Do YYYY"), //This will change "last login" at some point
+        moment.utc(entry.lcf_start_date).format("MMMM Do YYYY"), //This will change "last login" at some point
         entry.student_email,
         //entry.password,
         entry.pif_amount,

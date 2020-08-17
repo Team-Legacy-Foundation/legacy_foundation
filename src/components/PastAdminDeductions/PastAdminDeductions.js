@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import MUITable from '../MUITable/MUITable';
+import MUITable from "../MUITable/MUITable";
 import moment from "moment";
 
 //QUESTION: Do we need another table to store past admin reports in?
@@ -11,55 +9,43 @@ import moment from "moment";
 //What we want is the ability for the admin to click on the pay period in question
 //amd get presented with a table of all the students' entries for that pay period
 class PastAdminDeductions extends Component {
-
   componentDidMount() {
-    
     this.props.dispatch({
       type: "FETCH_DEDUCTIONS",
     });
   }
 
   render() {
-
     return (
+      <div style={{ padding: "2%" }}>
+        <center>
+          <h1>Past Deductions</h1>
+        </center>
+        <br />
 
-   
-   
-       <div style={{padding: '2%'}}>
-      <center><h1 >Past Deductions</h1></center><br/>
-     
-     <MUITable
-     
-            data={this.props.deductionList
-            .map((item) => [
-                item.lcf_id,
-                item.first_name,
-                item.last_name,
-                moment.utc(item.date).calendar(),
-                item.type,
-                item.description,
-                item.amount,
-                
-
-              ])}
-            columns={[
-              "LCF ID",
-              "First Name",
-              "Last Name",
-              "Date",
-              "Type",
-              "Description",
-              "Amount",
-              
-            ]}
-            title={"Past Deductions"}
-          />
-      
-          
-         
+        <MUITable
+          data={this.props.deductionList.map((item) => [
+            item.lcf_id,
+            item.first_name,
+            item.last_name,
+            moment(item.date).format("MMMM Do YYYY"), //no time associated with this, otherwise shows incorrect time
+            item.type,
+            item.description,
+            item.amount,
+          ])}
+          columns={[
+            "LCF ID",
+            "First Name",
+            "Last Name",
+            "Date",
+            "Type",
+            "Description",
+            "Amount",
+          ]}
+          title={"Past Deductions"}
+        />
       </div>
-    
-     );
+    );
   }
 }
 
@@ -69,7 +55,7 @@ const mapStateToProps = (state) => ({
   entries: state.students.studententriesadmin,
   calculations: state.calculations.calculations,
   history: state.history.history,
-  deductionList: state.deductionList.deductionList
+  deductionList: state.deductionList.deductionList,
 });
 
 export default withRouter(connect(mapStateToProps)(PastAdminDeductions));

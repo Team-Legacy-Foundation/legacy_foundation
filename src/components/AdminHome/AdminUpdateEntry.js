@@ -1,16 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import { green, yellow } from "@material-ui/core/colors";
 import {
   TextField,
-  Grid,
   RadioGroup,
   FormControlLabel,
   Radio,
-  Select,
-  MenuItem,
   Button,
   FormControl,
   FormLabel,
@@ -207,11 +203,7 @@ class AdminUpdateEntry extends Component {
   };
 
   render() {
-    const inputPropsGpa = {
-      step: 0.01,
-      max: 4.0,
-      min: 0,
-    };
+   
     const inputProps = {
       max: 10,
       min: 0,

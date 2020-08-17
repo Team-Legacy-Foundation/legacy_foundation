@@ -4,8 +4,6 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
 import moment from "moment";
 import { Alert } from "@material-ui/lab";
 import Swal from "sweetalert2";
@@ -114,7 +112,7 @@ class AddStudent extends Component {
           10. PIF Amount ${pif_amount}`,
         icon: "question",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#5cb85c",
         cancelButtonColor: "#d33",
         confirmButtonText: "Confirm my entry",
       }).then((result) => {

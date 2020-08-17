@@ -44,7 +44,7 @@ class UpdateStudent extends Component {
         entry.grad_year &&
         entry.school_attend &&
         entry.lcf_id &&
-        moment(entry.lcf_start_date).format("L") &&
+        moment.utc(entry.lcf_start_date).format() &&
         entry.student_email &&
         entry.password &&
         entry.pif_amount
@@ -85,7 +85,7 @@ let id = url_array[url_array.length-1];
           grad_year: item.grad_year,
           school_attend: item.school_attend,
           lcf_id: item.lcf_id,
-          lcf_start_date: moment(item.lcf_start_date).format("YYYY-MM-DD"),
+          lcf_start_date: moment.utc(item.lcf_start_date).format("YYYY-MM-DD"),
           student_email: item.student_email,
           password: "",
           pif_amount: item.pif_amount,
@@ -132,7 +132,7 @@ let id = url_array[url_array.length-1];
       9. PIF Amount: ${this.state.pif_amount} </br>`,
          icon: "question",
          showCancelButton: true,
-         confirmButtonColor: "#3085d6",
+         confirmButtonColor: "#5cb85c",
          cancelButtonColor: "#d33",
          confirmButtonText: "Confirm my entry",
        }).then((result) => {

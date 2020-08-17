@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import Row from 'react-bootstrap/Row'
 import Button from "react-bootstrap/Button";
-import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import moment from "moment";
 import MUITable from '../MUITable/MUITable';
@@ -49,7 +45,7 @@ componentDidUpdate() {
                 entry.last_name,
                 entry.email,
                 entry.role,
-                moment(entry.created_at).format("MMMM Do YYYY")
+                moment.utc(entry.created_at).format("MMMM Do YYYY")
               ])
       return (
         

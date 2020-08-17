@@ -1,14 +1,8 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
 import MUIDataTable from "mui-datatables";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-// import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-// import { createMuiTheme } from '@material-ui/core';
-// import red from '@material-ui/core/colors/red';
-//MAKE SURE TO NOT USE PROPS IN STATE
+
+
 class MUITable extends Component {
   componentDidMount() {
     this.props.dispatch({
