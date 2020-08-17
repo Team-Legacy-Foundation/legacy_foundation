@@ -155,7 +155,8 @@ class MakeEntry extends Component {
       return;
     }
 
-    let historyEntries = this.props.studentHistory;
+    let historyEntries = this.props.studentHistory; 
+
     let date = moment();
     let previous_pay_day = moment("2020-08-10T00:00:00.000-05");
     let pay_day = moment(previous_pay_day);
