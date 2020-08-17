@@ -175,7 +175,13 @@ class MakeEntry extends Component {
     for (let history of historyEntries) {
       let history_pay_day = moment(history.pay_day).format("MMMM Do YYYY");
 
-      if (history_pay_day == pay_day) {
+      /////////////
+      console.log(date, previous_pay_day)
+      console.log('Trying to compare', history_pay_day, 'and', pay_day)
+
+      ////////////
+
+      if (history_pay_day === pay_day) {
         this.setState({
           pay_day_error: true,
         });
@@ -186,7 +192,7 @@ class MakeEntry extends Component {
           });
         }, 5000);
         return;
-      }
+      } //end if statement
     }
 
     Swal.fire({
@@ -236,7 +242,7 @@ class MakeEntry extends Component {
         console.log("state is", this.state);
       }
     });
-  };
+  }; //ends SubmitInfo
 
   render() {
     const inputProps = {
