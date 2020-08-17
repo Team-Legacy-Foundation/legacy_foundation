@@ -175,7 +175,7 @@ class MakeEntry extends Component {
     pay_day = moment(pay_day).format("MMMM Do YYYY hh:mm:ss");
 
     for (let history of historyEntries) {
-      let history_pay_day = moment.utc(history.pay_day).format("MMMM Do YYYY hh:mm:ss");
+      let history_pay_day = moment.utc(history.pay_day).format("MMMM Do YYYY hh:mm:ss"); //trying to add time
 
       /////////////
       console.log(date, previous_pay_day)
