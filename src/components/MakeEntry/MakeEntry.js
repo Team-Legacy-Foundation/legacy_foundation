@@ -175,7 +175,7 @@ class MakeEntry extends Component {
     for (let history of historyEntries) {
       let history_pay_day = moment(history.pay_day).format("MMMM Do YYYY");
 
-      if (history_pay_day === pay_day) {
+      if (history_pay_day == pay_day) {
         this.setState({
           pay_day_error: true,
         });
