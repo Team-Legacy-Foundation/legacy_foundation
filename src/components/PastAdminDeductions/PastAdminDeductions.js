@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import MUITable from '../MUITable/MUITable';
+import MUITable from "../MUITable/MUITable";
 import moment from "moment";
 
 //QUESTION: Do we need another table to store past admin reports in?
@@ -9,17 +9,15 @@ import moment from "moment";
 //What we want is the ability for the admin to click on the pay period in question
 //amd get presented with a table of all the students' entries for that pay period
 class PastAdminDeductions extends Component {
-
   componentDidMount() {
-    
     this.props.dispatch({
       type: "FETCH_DEDUCTIONS",
     });
   }
 
   render() {
-
     return (
+<<<<<<< HEAD
 
    
    
@@ -57,8 +55,7 @@ class PastAdminDeductions extends Component {
           <br/>
          
       </div>
-    
-     );
+    );
   }
 }
 
@@ -68,7 +65,7 @@ const mapStateToProps = (state) => ({
   entries: state.students.studententriesadmin,
   calculations: state.calculations.calculations,
   history: state.history.history,
-  deductionList: state.deductionList.deductionList
+  deductionList: state.deductionList.deductionList,
 });
 
 export default withRouter(connect(mapStateToProps)(PastAdminDeductions));
