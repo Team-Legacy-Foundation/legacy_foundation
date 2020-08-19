@@ -7,9 +7,10 @@ const {
 
 const moment = require('moment');
 
-/**
- * GET route template
- */
+//This route primarily handles things related to the entry table
+//(i.e. entries are the information gathered from students from the "Make Entry" form)
+
+//GET all rows found in the entry table
 router.get('/', rejectUnauthenticated, (req, res) => {
     pool
       .query("SELECT * from entry") 
@@ -22,6 +23,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
       });
 }) //end GET
 
+//GET an entry based off the lcf_id passed in
 router.get('/:id', rejectUnauthenticated, (req, res) => {
   pool
     .query("SELECT * from entry WHERE lcf_id=$1",[req.params.id])
@@ -34,12 +36,7 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
     });
 }) //end GET
 
-/**
- * POST route template
- */
-
-
- 
+//POST i.e. make a new entry in the entry table. 
 router.post("/", rejectUnauthenticated, (req, res) => {
   console.log('This means entry router is running')
     // HTTP REQUEST BODY
@@ -84,12 +81,8 @@ router.post("/", rejectUnauthenticated, (req, res) => {
 
 
     const queryText = `
-
-
         INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`; //grabs database
-
-
 
     pool
       .query(queryText, [
@@ -121,7 +114,9 @@ router.post("/", rejectUnauthenticated, (req, res) => {
 }); // end POST
 
 
-
+//Delete an entry based off the id of the entry itself
+//USED FOR TESTING PURPOSES
+//Ideally, entries are not deleted willy nilly
 router.delete("/:id", rejectUnauthenticated, (req, res) => {
   pool
     .query('DELETE FROM entry WHERE id=$1', [req.params.id])

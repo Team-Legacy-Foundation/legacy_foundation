@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 import { withRouter } from "react-router";
 import { Paper } from "@material-ui/core";
 
+//This form is for adding a student to the application
+
 class AddStudent extends Component {
   state = {
     first_name: "",
@@ -22,8 +24,8 @@ class AddStudent extends Component {
     student_email: "",
     password: "",
     pif_amount: "",
-    email_error: false,
-    lcfID_error: false,
+    email_error: false, //used for toast error handling if email exists
+    lcfID_error: false, //used for toast error handling if LCF ID exists
     error: false,
     created_at: moment.utc().format(),
   };
@@ -40,6 +42,8 @@ class AddStudent extends Component {
     console.log("Are we in here");
     event.preventDefault();
 
+    //The if statement below is used to validate inputs and make sure we are not dispatching empty 
+    //inputs to the server
     if (
       this.state.first_name &&
       this.state.last_name &&
@@ -52,11 +56,10 @@ class AddStudent extends Component {
       this.state.password &&
       this.state.pif_amount
     ) {
-      // console.log('we are about to send the state', this.state);
-
+      
+      //The for loop checks to see if the email being added for the new student has been used
+      //for another student who has already been added to the system
       let allStudents = this.props.students;
-      //   console.log("this.props.student", this.props.students)
-
       for (let student of allStudents) {
         if (student.student_email === this.state.student_email) {
           this.setState({
@@ -71,6 +74,7 @@ class AddStudent extends Component {
           return;
         }
 
+//The if statement below checks to see if the id being added has been already been added to the system in the past
         if (Number(student.lcf_id) === Number(this.state.lcf_id)) {
           this.setState({
             lcfID_error: true,
@@ -98,6 +102,9 @@ class AddStudent extends Component {
         pif_amount,
       } = this.state;
 
+
+//This is a sweet alert confirmation, with a nested dispatch to register a student. 
+//The dispatch is fired if the sweet alert is confirmed
       Swal.fire({
         title: "Please confirm new student details below",
         html: `1. First Name: ${first_name} </br>
@@ -152,7 +159,7 @@ class AddStudent extends Component {
     }
   }; // end registerStudent
 
-  //This function handles storing input values into state on change
+  //This function handles storing input values into state on change 
   handleInputChangeFor = (propertyName) => (event) => {
     this.setState({
       [propertyName]: event.target.value,
@@ -313,7 +320,7 @@ class AddStudent extends Component {
                 onClick={(event) => this.registerStudent(event)}
                 variant="success"
                 type="submit"
-                style={{ width: "20%", marginTop:'2%' }}
+                style={{ width: "20%", marginTop: "2%" }}
               >
                 Create New Student
               </Button>
@@ -327,7 +334,7 @@ class AddStudent extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  students: state.students.studentlist,
+  students: state.students.studentlist, //brings in list of students from global state
 });
 
 export default withRouter(connect(mapStateToProps)(AddStudent));

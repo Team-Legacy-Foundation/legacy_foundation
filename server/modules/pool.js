@@ -1,10 +1,7 @@
-/* the only line you likely need to change is
+//Brought in as part of project template
+//Helps figure out which database to look at (according to .env file)
 
- database: 'prime_app',
-
- change `prime_app` to the name of your database, and you should be all set!
-*/
-
+//Bring in required 
 const pg = require('pg');
 const url = require('url');
 

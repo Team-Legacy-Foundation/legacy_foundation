@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import { Alert } from "@material-ui/lab";
 import Swal from "sweetalert2";
 
+//The component below is f
 class AdminResetPassword extends Component {
   state = {
     admin_id: this.props.user.admin_id,

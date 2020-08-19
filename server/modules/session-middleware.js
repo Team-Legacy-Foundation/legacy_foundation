@@ -1,3 +1,4 @@
+//Brought in as part of the project template
 // No changes should be required in this file
 
 const cookieSession = require('cookie-session');
@@ -14,8 +15,8 @@ const warnings = require('../constants/warnings');
 */
 
 const serverSessionSecret = () => {
-  if (!process.env.SERVER_SESSION_SECRET ||
-      process.env.SERVER_SESSION_SECRET.length < 8 ||
+  if (!process.env.SERVER_SESSION_SECRET || //check to see if this exists
+      process.env.SERVER_SESSION_SECRET.length < 8 || //want secret to be a ceetain length (longer = more secure)
       process.env.SERVER_SESSION_SECRET === warnings.exampleBadSecret) {
     // Warning if user doesn't have a good secret
     console.log(warnings.badSecret);

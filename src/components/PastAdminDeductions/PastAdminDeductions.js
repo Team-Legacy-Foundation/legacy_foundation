@@ -18,7 +18,6 @@ class PastAdminDeductions extends Component {
   render() {
     return (
 
-
    
    
        <div style={{padding: '2%'}}>

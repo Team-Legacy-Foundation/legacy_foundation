@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-
+// Used for walking thru the pages while submiting a pay peroid on the admin side.
 const redirect = (state = false, action) => {
   switch (action.type) {
     case "SET_REDIRECT":

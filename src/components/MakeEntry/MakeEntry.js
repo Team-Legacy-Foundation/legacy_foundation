@@ -20,6 +20,7 @@ import "./MakeEntry.css";
 import moment from "moment";
 
 const GreenRadio = withStyles({
+  // turns the radio button green
   root: {
     color: green[400],
     "&$checked": {
@@ -30,6 +31,7 @@ const GreenRadio = withStyles({
 })((props) => <Radio color="default" {...props} />);
 
 const YellowRadio = withStyles({
+  // turns the radio button yellow
   root: {
     color: yellow[400],
     "&$checked": {
@@ -39,12 +41,10 @@ const YellowRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-//The purpose of this page is to capture the student's activity the past pay period
-//REVIEW: Do we want job and activity to be sepate questions?
-//They technically both go into the same column
-//Either can work, but I think just asking one question is easier
+//The purpose of this page is to capture the student's activity for the past pay period
 class MakeEntry extends Component {
   state = {
+    //state info for entry form
     lcf_id: this.props.user.lcf_id,
     pass_class: "",
     gpa: 0,
@@ -54,69 +54,86 @@ class MakeEntry extends Component {
     truant: 0,
     clean_attend: 0,
     detent_hours: null,
-    // after_school: "",
     act_or_job: null,
     passed_ua: null,
     current_service_hours: 0,
     hw_rm_attended: null,
     comments: null,
+    //error values used to conditionally render error toasts, default is false
     error: false,
     pay_day_error: false,
     dupeEntry: false,
   };
 
   componentDidMount() {
+    //grabs student data from database
     this.props.dispatch({
       type: "GET_STUDENTS",
     });
-
+    //fetch entries for admins
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
-  }
+  } //end componentDidMount
 
+  //This function handles storing input values into state on change
   handleChange = (event, fieldName) => {
     this.setState({ [fieldName]: event.target.value });
-  };
+  }; //end handleChange
+
+  // handleChange for gpa
   handleChangeGpa = (event, gpa) => {
     gpa = Number(gpa);
     this.setState({
       gpa,
     });
-  };
+  }; //end handleChangeGpa
+
+  //handleChange for absent
   handleChangeAbsent = (event, absent) => {
     absent = Number(absent);
     this.setState({
       absent,
     });
-  };
+  }; //end handleChangeAbsent
+
+  //handleChange for tardy
   handleChangeTardy = (event, tardy) => {
     tardy = Number(tardy);
     this.setState({
       tardy,
     });
-  };
+  }; //end handleChangeTardy
+
+  //handleChange for late
   handleChangeLate = (event, late) => {
     late = Number(late);
     this.setState({
       late,
     });
-  };
+  }; //end handleChangeLate
+
+  //handleChange for truant
   handleChangeTruant = (event, truant) => {
     truant = Number(truant);
     this.setState({
       truant,
     });
-  };
+  }; //end handleChangeTruant
+
+  //handleChange for attendance
   handleChangeAttendance = (event, clean_attend) => {
     clean_attend = Number(clean_attend);
     this.setState({
       clean_attend,
     });
-  };
+  }; //end handleChange
 
+  //this function sends user information to the server to store in the database
   submitInfo = (event) => {
+    //prevents any default actions
     event.preventDefault();
+    //grabs local state and defines it in a var of the same name
     const {
       pass_class,
       lcf_id,
@@ -133,6 +150,8 @@ class MakeEntry extends Component {
       hw_rm_attended,
       comments,
     } = this.state;
+
+    //don't run function if any of these values below are null
     if (
       pass_class === null ||
       detent_hours === null ||
@@ -143,54 +162,60 @@ class MakeEntry extends Component {
       current_service_hours === "" ||
       hw_rm_attended === null
     ) {
+      //...if they are null set error state to true to conditionally render alert toast
       this.setState({
         error: true,
       });
-
+      //...set it back to false after 5 secondss
       setTimeout(() => {
         this.setState({
           error: false,
         });
       }, 5000);
+      //stop the function
       return;
     }
 
-
+    //saves studentHistory from reducer to historyEntries
     let historyEntries = this.props.studentHistory;
-
-
+    //current date
     let date = moment();
+    //preset previous_pay_day
     let previous_pay_day = moment("2020-08-10T00:00:00.000-05");
+    //preset pay_day
     let pay_day = moment(previous_pay_day);
 
+    //function to set pay_day and previous_pay_day to the current pay period
     function getDate() {
+    //if date is greater or equal to the current date, run the logic below
       if (date >= pay_day) {
+        //define previous_pay_day to be the same as current pay_day
         previous_pay_day = pay_day;
+        //define current pay_day to be pay_day plus 2 weeks
         pay_day = moment(previous_pay_day).add(2, "week");
+        //call the function again.
         getDate();
       }
     }
+    //call getDate
     getDate();
-
+    //formats previous_pay_day
     previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
-
+    //formats current pay_day
     pay_day = moment(pay_day).format("MMMM Do YYYY hh:mm:ss");
-
+    //loops through historyEntries
     for (let history of historyEntries) {
-      let history_pay_day = moment.utc(history.pay_day).format("MMMM Do YYYY hh:mm:ss"); //trying to add time
-
-
-      /////////////
-      console.log(date, previous_pay_day)
-      console.log('Trying to compare', history_pay_day, 'and', pay_day)
-
-      ////////////
-
+      //formats history_pay_day
+      let history_pay_day = moment
+        .utc(history.pay_day)
+        .format("MMMM Do YYYY hh:mm:ss"); //trying to add time
+      //checks to see if a student has made an entry for that pay period
       if (history_pay_day === pay_day) {
+        //sets state to true which conditionally renders an error
         this.setState({
           pay_day_error: true,
         });
-
+        //...turns it back to false after 5 seconds
         setTimeout(() => {
           this.setState({
             pay_day_error: false,
@@ -199,7 +224,7 @@ class MakeEntry extends Component {
         return;
       } //end if statement
     }
-
+    //begin sweetAlerts
     Swal.fire({
       title: "Please confirm details below",
       html: `1. Passing classes: ${pass_class} </br>
@@ -221,6 +246,9 @@ class MakeEntry extends Component {
       cancelButtonColor: "#fcb70a",
       confirmButtonText: "Confirm my entry",
     }).then((result) => {
+      //end sweetAlerts
+
+      //on confirm run the dispatch to send makeEntry info over to redux sagas
       if (result.value) {
         this.props.dispatch({
           type: "ADD_ENTRY",
@@ -234,7 +262,6 @@ class MakeEntry extends Component {
             truant: truant,
             clean_attend: clean_attend,
             detent_hours: detent_hours,
-            // after_school: after_school,
             act_or_job: act_or_job,
             passed_ua: passed_ua,
             current_service_hours: current_service_hours,
@@ -242,18 +269,21 @@ class MakeEntry extends Component {
             comments: comments,
           },
         });
-        Swal.fire("Success!", "Your entry has been logged.", "success");
+        //begin sweetAlerts
+        Swal.fire("Success!", "Your entry has been logged.", "success"); //end sweetAlerts
+        //pushes user back to homepage
         this.props.history.push("/home");
-        console.log("state is", this.state);
       }
     });
   }; //ends SubmitInfo
 
   render() {
+    // sets min and max for service hours text box
     const inputProps = {
       max: 10,
       min: 0,
     };
+    //defines marks on sliders, displays value below each spot on each slider
     const marks = [
       {
         value: 0,
@@ -300,6 +330,7 @@ class MakeEntry extends Component {
         label: "10",
       },
     ];
+    //same as marks but specific for the gpa slider
     const marksGpa = [
       {
         value: 0,
@@ -338,31 +369,42 @@ class MakeEntry extends Component {
         label: "4",
       },
     ];
-
+    //saves entries from reducer to var of same name
     let { entries } = this.props;
+    //current date
     let date = moment();
+    //preset previous_pay_day
     let previous_pay_day = moment("2020-08-10T00:00:00.000-05"); //midnight central time
+    //preset current pay_day
     let pay_day = moment(previous_pay_day);
-
+    //this function defines the current pay period
     function getDate() {
+      //if date is greater or equal to the current date, run the logic below
       if (date >= pay_day) {
+        //define previous_pay_day to be the same as current pay_day
         previous_pay_day = pay_day;
+        //define current pay_day to be pay_day plus 2 weeks
         pay_day = moment(previous_pay_day).add(2, "week");
+        //call the function again.
         getDate();
       }
     }
+    //call getDate
     getDate();
-
+    //formats previous_pay_day
     previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
+    //formats current pay_day
     pay_day = moment(pay_day).format("MMMM Do YYYY");
-
+    //saves students from reducer to studentList
     const studentList = this.props.students;
 
     for (let student of studentList) {
+      //checks lcf_id of student and if the student is active
       if (
         this.props.user.lcf_id === student.lcf_id &&
         student.inactive === "yes"
       ) {
+        // if the student is inactive they can not make an entry, this message appears instead when they click on make entry
         return (
           <div>
             <Paper elevation={5} style={{ margin: "5%", padding: "5%" }}>
@@ -381,17 +423,20 @@ class MakeEntry extends Component {
         );
       }
     }
-
+    //loops through entries
     for (let entry of entries) {
+      //makes sure pay_day is a Date value
       entry.pay_day = new Date(entry.pay_day);
+      //makes sure previous_pay_day is a Date value
       entry.previous_pay_day = new Date(entry.previous_pay_day);
-
+      //checks lcf_id of student and if they've already made an entry
       if (
         this.props.user.lcf_id === entry.lcf_id &&
         (entry.pay_day > date || entry.previous_pay_day <= date)
       ) {
-        //TODO: ADD History conditional so
-        //no duplicate entries can be submitted (i.e.checked against history and entry tables)
+        //...if they did make an entry, 
+        //this notification appears rather then the entry forum 
+        //when the student clicks on make entry
         return (
           <div>
             <Paper elevation={5} style={{ margin: "5%", padding: "5%" }}>
@@ -409,7 +454,7 @@ class MakeEntry extends Component {
         );
       }
     }
-
+    //WHERE I LAST LEFT OFF -Chris
     return (
       <div>
         <br />
@@ -464,7 +509,7 @@ class MakeEntry extends Component {
             <p>2. What is your current GPA?</p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.gpa}
@@ -486,7 +531,7 @@ class MakeEntry extends Component {
             </p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.absent}
@@ -508,7 +553,7 @@ class MakeEntry extends Component {
             <p>3b. How many school days were you tardy this pay period?</p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.tardy}
@@ -530,7 +575,7 @@ class MakeEntry extends Component {
             <p>3c. How many school days were you late this pay period?</p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.late}
@@ -550,7 +595,7 @@ class MakeEntry extends Component {
             <p>3d. How many school days were you truant this pay period?</p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.truant}
@@ -576,7 +621,7 @@ class MakeEntry extends Component {
             </p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.clean_attend}
@@ -793,6 +838,8 @@ class MakeEntry extends Component {
             </center>
           </form>
         </Paper>
+        <br />
+        <br />
       </div>
     );
   }

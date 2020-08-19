@@ -7,6 +7,8 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 
+//this is the page where admins get routed to from their email link when they
+//forget their password
 class ForgotPasswordAdmin extends Component {
   state = {
     email: "",
@@ -15,44 +17,48 @@ class ForgotPasswordAdmin extends Component {
     token: "",
   };
 
-    componentDidMount() {
-     let token = window.location.hash;
-     token = token.slice(23, 55);
-     let email = window.location.hash;
-     email = email.slice(56);
-     this.setState({
-       token: token,
-       email: email,
-     });
+  componentDidMount() {
+    // grabs the token from the header, this comes in from the token generated
+    // from the database when the forgot password email is sent
+    // this is used for verification purposes
+    let token = window.location.hash;
+    token = token.slice(23, 55);
+    // grabs the email address of the user from the header,
+    // this comes in from the email that the user enters when they forget their password
+    // this is used for verification purposes
+    let email = window.location.hash;
+    email = email.slice(56);
+    //sets the state with the information above to get it ready to send to
+    //the server
+    this.setState({
+      token: token,
+      email: email,
+    });
   }
-  //This function dispatched our newly added admin to the database from state
-  //We first validate the inputs to make sure we are not sending empty inputs to the server
+  //function to send information from user to the server to reset their password
   resetAdminPassword = (event) => {
+    //prevents any default actions
     event.preventDefault();
-
-    console.log(
-      "we are about to send the state to change the admin password",
-      this.state
-    );
-    console.log("this is the user", this.props.user);
-
+    //validates of the information in state is populated
     if (
       this.state.token &&
       this.state.password &&
       this.state.retype_password &&
       this.state.password === this.state.retype_password
     ) {
-      this.props.dispatch({
-        type: "FORGOT_ADMIN_PASSWORD",
-        payload: {
-          token: this.state.token,
-          email: this.state.email,
-          password: this.state.password,
-        },
-      });
-
-      this.props.history.push("/home");
-    } else {
+        //send the new password to the server through a redux saga
+        this.props.dispatch({
+          type: "FORGOT_ADMIN_PASSWORD",
+          payload: {
+            token: this.state.token,
+            email: this.state.email,
+            password: this.state.password,
+          },
+        });
+        //sends user back to the homescreen after resetting password
+        this.props.history.push("/home");
+      } else {
+        //error if password reset fails
       this.props.dispatch({ type: "RESET_STUDENT_PASSWORD_ERROR" });
     }
   }; // end resetAdminPassword
@@ -68,6 +74,7 @@ class ForgotPasswordAdmin extends Component {
     return (
       <div>
         <div className="navbuttonscontainer">
+          {/* Takes the admin back to the homepage */}
           <Link to="/home">
             <Button variant="outline-primary">Home</Button>
           </Link>{" "}
@@ -80,8 +87,10 @@ class ForgotPasswordAdmin extends Component {
           <h1 style={{ width: "50%", margin: "5% 35%" }}>
             Reset Admin Password
           </h1>
+          {/* begin form for resetting admin password */}
           <Form className="addstudent">
             <Row>
+              {/* enter password */}
               <Col>
                 <Form.Label>New Admin Password</Form.Label>
                 <Form.Control
@@ -92,6 +101,7 @@ class ForgotPasswordAdmin extends Component {
                   onChange={this.handleInputChangeFor("password")}
                 />
               </Col>
+              {/* type password in again to verify */}
               <Col>
                 <Form.Label>Re-type New Admin Password</Form.Label>
                 <Form.Control
@@ -103,7 +113,7 @@ class ForgotPasswordAdmin extends Component {
                 />
               </Col>
             </Row>
-
+            {/* button that runs reset password link */}
             <Link to="/home">
               <Button
                 onClick={(event) => this.resetAdminPassword(event)}
@@ -117,11 +127,12 @@ class ForgotPasswordAdmin extends Component {
           </Form>
         </Card>
       </div>
-    );
-  }
-}
+    ); //end return
+  } //end render
+} //end ForgotPasswordAdmin
 
 const mapStateToProps = (state) => ({
+  //redux state for user information
   user: state.user,
 });
 

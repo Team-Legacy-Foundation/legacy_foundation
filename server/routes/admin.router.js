@@ -6,7 +6,11 @@ const {
     rejectUnauthenticated,
   } = require("../modules/authentication-middleware");
 
+//This route deals with much of the functions found in database_functions.sql
+//That is, running the calculations from the student entries and confirming them if all looks good
+//Reminder that confirming entries means they get pushed to the History table and no longer editable
 
+//GETs a list of all the admins found in the admin table
 router.get('/adminlist', rejectUnauthenticated, (req, res) => {
     console.log('We are about to get the admin list');
 
@@ -22,12 +26,12 @@ router.get('/adminlist', rejectUnauthenticated, (req, res) => {
 
 });
 ///////////////////////// Calls function to run the calculations for entries //////////////////////////
-
+//This takes entries in the entries table and runs the logic to see how much each student should receive
 router.get('/calc', rejectUnauthenticated, (req, res) => {
     console.log('running the calculations for entries');
     const queryText = 'CALL calc()';
     pool.query(queryText)
-    .then((result) => {
+    .then((result) => { //if everything goes well, these new calculations are put into the open_transaction table
         res.sendStatus(200)
     }).catch((error) => {
         console.log('error running the calculations', error);
@@ -51,7 +55,7 @@ router.get('/pending', rejectUnauthenticated, (req, res) => {
 
 router.get('/confirm', rejectUnauthenticated, (req, res) => {
     console.log('Finalizing transactions');
-    const queryText = 'CALL confirm()';
+    const queryText = 'CALL confirm()'; //this is run when the admin clicks the 'confirm payroll' button on the open_transaction componnent
     pool.query(queryText)
     .then((result) => {
         res.sendStatus(200)
@@ -60,11 +64,11 @@ router.get('/confirm', rejectUnauthenticated, (req, res) => {
         res.sendStatus(500);
     });
 });
-///////////////////// Grabs everything from the history table ////////////////////////////////////
 
+///////////////////// Grabs everything from the history table ////////////////////////////////////
 router.get('/history', rejectUnauthenticated, (req, res) => {
     console.log('Grabbing all records from history');
-    const queryText = 'SELECT * FROM history'
+    const queryText = 'SELECT * FROM history' //this is useful for the admin to view all past entries via the 'past reports' tab
     pool.query(queryText)
     .then((result) => {
         res.send(result.rows).status(200);
@@ -73,8 +77,10 @@ router.get('/history', rejectUnauthenticated, (req, res) => {
         res.sendStatus(500);
     });
 });
-////////////////////// Grabs everything from the charge_student table ///////////////////////////////
 
+
+////////////////////// Grabs everything from the charge_student table ///////////////////////////////
+//this allows the admin to view all past charges via the 'Past Deductions' tab
 router.get ('/chargehistory', rejectUnauthenticated, (req, res) => {
     console.log('grabbing all deduction history');
     const queryText = `SELECT charge_student.lcf_id, charge_student.date, type, description, amount, first_name, last_name FROM charge_student
@@ -88,6 +94,10 @@ router.get ('/chargehistory', rejectUnauthenticated, (req, res) => {
     })
 })
 
+//this is used if a certain item from open_transaction is needed to be deleted
+//mainly for testing purposes
+//With how the app runs, open_transaction gets emptied everytime a new payroll is ran
+//i.e. open_transaction is only there to 'bridge the gap' between checking entries and submitting them
 router.delete("/:id", rejectUnauthenticated, (req, res) => {
     pool
       .query('DELETE FROM "open_transaction" WHERE id=$1', [req.params.id])

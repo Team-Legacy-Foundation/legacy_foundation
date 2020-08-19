@@ -365,7 +365,7 @@ class AdminUpdateEntry extends Component {
             <p>3. What is your current GPA?</p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.gpa}
@@ -387,7 +387,7 @@ class AdminUpdateEntry extends Component {
             </p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.absent}
@@ -409,7 +409,7 @@ class AdminUpdateEntry extends Component {
             <p>4b. How many school days were you tardy this pay period?</p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.tardy}
@@ -431,7 +431,7 @@ class AdminUpdateEntry extends Component {
             <p>4c. How many school days were you late this pay period?</p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.late}
@@ -451,7 +451,7 @@ class AdminUpdateEntry extends Component {
             <p>4d. How many school days were you truant this pay period?</p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.truant}
@@ -477,7 +477,7 @@ class AdminUpdateEntry extends Component {
             </p>
             <Slider
               style={{
-                width: "40%",
+                width: "80%",
               }}
               required
               defaultValue={this.state.clean_attend}

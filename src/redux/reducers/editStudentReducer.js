@@ -1,5 +1,5 @@
 const editStudentReducer = (state = {}, action) => {
- 
+ // Stores the information for a single student
   //let newState = { ...state };
   switch (action.type) {
     case 'EDIT_STUDENT':

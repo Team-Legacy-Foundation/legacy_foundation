@@ -225,6 +225,7 @@ class StudentEntries extends Component {
         </div>
         <br/>
         <br/>
+       
       </div>
     );
   }

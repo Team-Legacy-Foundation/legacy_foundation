@@ -11,7 +11,7 @@ import Button from "react-bootstrap/Button";
 import Swal from "sweetalert2";
 
 
-//The purpose of this page is to update the student's entry this past pay period
+//The purpose of this page is to add an admin to the system, only seen by an admin user
 
 class AddAdminForm extends Component {
   state = {
@@ -24,17 +24,18 @@ class AddAdminForm extends Component {
   };
   componentDidMount() {}
 
+  //This function handles inputs and stores them in state
   handleInputChangeFor = (propertyName) => (event) => {
     this.setState({
       [propertyName]: event.target.value,
     });
-  };
+  };//End of handleInputChangeFor
 
   registerAdmin = (event) => {
     event.preventDefault();
 
     console.log("we are about to send the state", this.state);
-
+    //The if statement below validates the inputs, does not send them if any are empty
     if (
       this.state.first_name &&
       this.state.last_name &&
@@ -44,7 +45,8 @@ class AddAdminForm extends Component {
     ) {
       //send the new admin to the server through a redux saga
     
-
+      //This is a sweet alerts confirmation, there is a nested redux saga dispatch 
+      //If successful, it will route the user to the home page
        Swal.fire({
          title: "Please confirm new admin details below",
          html: `1. First Name: ${this.state.first_name} </br>
@@ -72,7 +74,7 @@ class AddAdminForm extends Component {
          });
 
            Swal.fire("Success!", "Your new admin has been added.", "success");
-           this.props.history.push("/home");
+           this.props.history.push("/home"); //send the user to the homepage
          }
        });
     } else {
@@ -81,13 +83,7 @@ class AddAdminForm extends Component {
   }; // end registerAdmin
 
   render() {
-    // const data = this.props.admin.map((entry) => [
-    //   entry.first_name,
-    //   entry.last_name,
-    //   entry.email,
-    //   entry.role,
-    //   moment(entry.created_at).format("MMMM Do YYYY"),
-    // ]);
+ 
     return (
       <div>
         <br />

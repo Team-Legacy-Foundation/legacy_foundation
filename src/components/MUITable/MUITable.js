@@ -14,7 +14,6 @@ class MUITable extends Component {
     });
   }
 
-  //TODO: Try and clean up/get rid of state
   state = {
     //title: this.props.title,
     setResponsive: "vertical",

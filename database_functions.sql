@@ -1,5 +1,7 @@
 -----------------------------------------CALC FUNCTION-----------------------------------------------------
 --CALL calc() TO RUN THIS FUNCTION
+--This function runs all the calculations to figure how much money the student with receive for a specific pay period.
+--Shows the total amount, how much is going to the students bank account, and how much the student will get a check for.
 
 CREATE OR REPLACE PROCEDURE calc(
 	)
@@ -74,7 +76,11 @@ INSERT INTO "open_transaction"(
 
 ---------------------------------CONFIRM FUNCTION TO PUSH TO HISTORY AND UPDATE STUDENT BALANCE DUE----------------------------------------------
 
-------CALL confirm() TO RUN THIS FUNCTION
+--CALL confirm() TO RUN THIS FUNCTION
+--This function takes all the information from calculated from the previous function and inserts it into the right places.
+--So after the admin confirmed all the amounts are correct they will run this function pushing it into history
+--and updates the student new amount due from what was paid out of their check depending on how much they owe
+--Also clears out the student entries and open transactions tables to make way for the next pay period.
 
 CREATE OR REPLACE PROCEDURE confirm(
 	)
@@ -104,14 +110,3 @@ AS $BODY$INSERT INTO history(
 
 	$BODY$;
 
--- --------------------------------JUST EASY FUNCTION TO DO THE CHARGE TO STUDENT--------------------------------------
-
--- ----CALL charge_student() TO CALL THIS FUNCTION
-
--- CREATE OR REPLACE PROCEDURE charge_student(
--- 	)
--- LANGUAGE 'sql'
--- AS $BODY$	UPDATE student
--- 	SET balance_due = balance_due + amount
--- 	FROM charge_student
--- 	WHERE student.lcf_id = charge_student.lcf_id$BODY$;

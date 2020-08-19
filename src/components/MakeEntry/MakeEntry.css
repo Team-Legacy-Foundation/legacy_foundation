@@ -1,8 +1,10 @@
 .error {
+  /* styling for the toast that pops up when there's an error */
       position: fixed;
       right: 2%;
       top: 2%;
       z-index: 2000000;
+      /* runs animation that fades the toast error in when error fails */
       animation-name: error;
       animation-duration: 0.5s;
       animation-iteration-count: 1;
@@ -10,7 +12,7 @@
 }
 
 @keyframes error {
-  /*enters from right side and ends in middle of page*/
+  /*slowly fades in when error appears*/
   0% {
     opacity: 0;
   }
