@@ -111,6 +111,8 @@ class StudentHome extends Component {
             </Paper>
           </Grid>
         </Grid>
+        <br/>
+        <br/>
       </div>
     );
   }

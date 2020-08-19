@@ -3,48 +3,14 @@ const axios = require("axios");
 // override default axios adapter so that it ignores cors for server-side requests
 axios.defaults.adapter = require("axios/lib/adapters/http");
 
-//Bring in need reducers here:
+//Many of the tests repeat the same structure as they test very similar things
+//What is mainly looked at is the status code received, as well as:
+// If a PUT, that the chnaged thing comes back from the database changed
+//If a GET, that certain data is actually received back
 
-//Here is what a sample test could look like :
+//Many of the calculations relied on expecting a certain value back from the student total and student savings amount
 
-// test('Reducer returns default state if state is undefined', () => {
-//   const result = currentItemReducer(undefined, {});
-//   expect(typeof (result)).toBe(typeof ([]));
-
-//   expect(result).toEqual({
-//     emotionValue: 0,
-//     iconsArray: [],
-//     note: '',
-//   });
-// });
-
-//Or if just testing put specfific function:
-
-// test('pass in good case',() => {
-//   expect(dna('CTAGGGTA')).toEqual('CTAGGGTA');
-// });
-
-//Example from pet hotel:
-
-//
-
-// let petOwner = null;
-// let pet = null;
-
-// const SERVER_URL = 'http://localhost:5000';
-// test('Create a new petOwner via HTTP POST', async () => {
-//     const newOwner = {name: 'test owner', emailAddress: 'test@example.com'};
-//     const response = await axios.post(`${SERVER_URL}/api/petowners`, newOwner);
-//     petOwner = response.data;
-//     expect(response.status).toBe(201);
-//     expect(typeof(response.data)).toBe(typeof({}));
-//     expect(typeof(response.data.id)).toBe(typeof(0));
-//     console.log(`Pet Owner created with id ${petOwner.id}`);
-//     // console.log(response.data);
-// });
-
-//////////////////////////////////////////////////////////////////////////////
-//**************Admins**************** */
+//**************Admins**************** */ Room for more tests if wanted (having to do with admin creation, deletion, etc.)
 //----------POST a new admin-----------
 
 //---------GET an admin-----------------
@@ -76,9 +42,9 @@ test("Create a new student via HTTP POST", async () => {
   );
   student = response.data[0];
   expect(response.status).toBe(201);
-  expect(typeof response.data).toBe(typeof []); //I think response right now is set to just get id back?
-  expect(typeof student.lcf_id).toBe(typeof 0);
-  expect(student.lcf_id > 0);
+  expect(typeof response.data).toBe(typeof []); //check to see the type of response back
+  expect(typeof student.lcf_id).toBe(typeof 0); //want id to be a typeof number
+  expect(student.lcf_id > 0); //if id received back is less then 0, we have problems
   console.log(`Student created  ${student.lcf_id}`);
   console.log("hi", response.data);
 });
@@ -88,9 +54,8 @@ test(`Get the student via HTTP GET`, async () => {
   const response = await axios.get(
     `${SERVER_URL}/api/student/student/${student.lcf_id}`
   );
-  expect(response.status).toBe(200);
-  // expect(response.data.id).toBe(student.id);
-  // expect(typeof(response.data)).toBe(typeof({}));
+  expect(response.status).toBe(200); //check status code
+  
   console.log(`student with id ${student.lcf_id} successfully retrieved.`);
 });
 
@@ -1622,12 +1587,15 @@ test("Delete the student via HTTP DELETE", async () => {
 });
 //121212121212121212
 
-
+///-------ROOM FOR OTHER TESTS-----------------------
 //-------------Make sure charges are appropriately calculated-----------
 
 //-----------Check case where student is overcharged (charge balance must remain)-----
+// A student can never have a negative paycheck nor should have their savings charged
 
 //----------Check Pay It Forward is ran correctly--------------
+//This means making sure PIF takes out of amount going to student, not savings or anything like that
+
 test("Create a new student via HTTP POST with a PIF amount", async () => {
   const newStudent = {
     lcf_id: 100,

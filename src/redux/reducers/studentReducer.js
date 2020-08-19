@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-
+// Stores the information from the students table in the database
 const studentlist = (state = [], action) => {
     switch (action.type) {
         case "SET_STUDENTS":
@@ -8,8 +8,6 @@ const studentlist = (state = [], action) => {
             return state;
     }
 };
-
-
 
 const studententriesadmin = (state = [], action) => {
     switch (action.type) {

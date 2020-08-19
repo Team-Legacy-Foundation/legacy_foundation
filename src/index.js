@@ -10,6 +10,8 @@ import rootSaga from './redux/sagas'; // imports ./redux/sagas/index.js
 
 import App from './components/App/App';
 
+//Much of this file was brought in from the project template
+
 const sagaMiddleware = createSagaMiddleware();
 
 // this line creates an array of all of redux middleware you want to use
@@ -27,7 +29,7 @@ const store = createStore(
   compose(
     applyMiddleware(...middlewareList),
     // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    //Redux tools removed for production builds (error on mobile and Safari possibly)
+    //    ^--------Redux tools removed for production builds (error on mobile and Safari)
   )
 );
 
@@ -35,9 +37,9 @@ const store = createStore(
 // rootSaga contains all of our other sagas
 sagaMiddleware.run(rootSaga);
 
-ReactDOM.render(
+ReactDOM.render(// need to bring App itself in
   <Provider store={store}>
-    <App />
+    <App /> 
   </Provider>,
   document.getElementById('react-root'),
 );

@@ -28,18 +28,12 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-/* Routes */
+/* Routes */ 
+//i.e. helps direct necessary actions/data to the correct place
 app.use('/api/user', userRouter);
-//app.use('/addstudent', userRouter);
-
 app.use('/api/student', studentRouter);
-//app.use('/api/user/addstudent', studentRouter)
-
-
 app.use('/api/admin', adminRouter);
-
 app.use('/entry', entryRouter);
-
 app.use('/charge', chargeRouter);
 
 

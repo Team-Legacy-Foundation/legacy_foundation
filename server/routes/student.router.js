@@ -6,24 +6,22 @@ const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
 
-/**
- * GET route template
- */
-router.get('/studentlist', rejectUnauthenticated, (req, res) => {
-    console.log('We are about to get the student list');
 
+//GET to get all students found within the student table and ordered by their lcf_id
+//We order by id because otherwise, they may flip around on the table if you try to reorder them
+router.get('/studentlist', rejectUnauthenticated, (req, res) => {
     const queryText = `SELECT * FROM student ORDER BY lcf_id;`;
     pool.query(queryText)
         .then((result) => {
-            //console.log('Here is the student list', result.rows);
             res.send(result.rows);
         }).catch((error) => {
             console.log(`Error on student query ${error}`);
             res.sendStatus(500);
         });
-    
 });
 
+//GET a singular student based off the passed in lcf_id
+//Mainly used for TESTING
 router.get('/student/:id', rejectUnauthenticated, (req, res) => {
     console.log('We are about to get student with certain id');
 
@@ -35,13 +33,10 @@ router.get('/student/:id', rejectUnauthenticated, (req, res) => {
             console.log(`Error on student query ${error}`);
             res.sendStatus(500);
         });
-    
 });
 
-
+//GETs all entries from entry table and joins on student table by lcf_id
 router.get('/studententries', rejectUnauthenticated, (req, res) => {
-    console.log('We are about to get the student entries');
-
     const queryText = `SELECT * FROM "entry" JOIN "student" ON "student"."lcf_id" = "entry"."lcf_id";`;
     pool.query(queryText)
         .then((result) => {
@@ -51,15 +46,12 @@ router.get('/studententries', rejectUnauthenticated, (req, res) => {
             console.log(`Error on student entry query ${error}`);
             res.sendStatus(500);
         });
-
 });
 
 
-// PUT /api/student/lcf_id
+//PUT or update on student's information
+//this is used when the admin needs to change a student's information in the student table
 router.put(`/updatestudent/:lcf_id`, rejectUnauthenticated, (req, res) => {
-
-      //console.log("this is the new student we are about to update", req.body);
-
       // pull out the incoming object data
       const first_name = req.body.first_name;
       const last_name = req.body.last_name;
@@ -75,10 +67,10 @@ router.put(`/updatestudent/:lcf_id`, rejectUnauthenticated, (req, res) => {
       //const created_at = req.body.created_at;
       const role = "student";
       admin_id = null;
-
       //initialize the id you will get from the student
       let student_id = "";
 
+//double insert is needed since some of the information is found within the user AND student table
       const queryText = `UPDATE "student" SET lcf_id=$1, first_name =$2, last_name=$3, school_attend=$4, school_id=$5, student_email=$6, grade=$7, grad_year=$8, lcf_start_date=$9, role=$10, pif_amount=$11  
                 WHERE lcf_id =$1 RETURNING id`;
       pool
@@ -89,7 +81,6 @@ router.put(`/updatestudent/:lcf_id`, rejectUnauthenticated, (req, res) => {
           school_attend,
           school_id,
           student_email,
-          
           grade,
           grad_year,
           lcf_start_date,
@@ -97,8 +88,6 @@ router.put(`/updatestudent/:lcf_id`, rejectUnauthenticated, (req, res) => {
           pif_amount,
         ])
         .then((result) => {
-          console.log("this is the response", result.rows[0].id);
-          //student_id = result.rows[0].id;
           //now lets add student information to the user table
           const query2Text = `UPDATE "user" SET lcf_id=$1, admin_id=$2, email=$3, role=$4 WHERE lcf_id =$1`;
           pool
@@ -106,9 +95,7 @@ router.put(`/updatestudent/:lcf_id`, rejectUnauthenticated, (req, res) => {
               lcf_id,
               admin_id,
               student_email,
-              
               role,
-             
             ])
             .then(() => res.sendStatus(201))
             .catch(function (error) {
@@ -123,6 +110,8 @@ router.put(`/updatestudent/:lcf_id`, rejectUnauthenticated, (req, res) => {
 });
 // end PUT /api/student/lcf_id
 
+//PUT or update a student's entry
+//this is done by an admin BEFORE payroll is ran fully
 router.put(`/updateentry/:lcf_id`, rejectUnauthenticated, (req, res) => {
       // HTTP REQUEST BODY
       const entry = req.body; // pull the object out out of the HTTP REQUEST
@@ -144,15 +133,13 @@ router.put(`/updateentry/:lcf_id`, rejectUnauthenticated, (req, res) => {
         comments,
         
       } = entry;
-      if (entry === undefined) {
+      if (entry === undefined) { //make sure bad data does not get through
           // stop, dont touch the database
           res.sendStatus(400); // 400 BAD REQUEST
           return;
       }
       
-      
       const queryText = `
-  
           UPDATE "entry" SET pass_class=$2, gpa=$3, clean_attend=$4, detent_hours=$5, act_or_job=$6, passed_ua=$7, current_service_hours=$8, hw_rm_attended=$9, comments=$10 
           WHERE lcf_id = $1;`; 
   
@@ -184,28 +171,22 @@ router.put(`/updateentry/:lcf_id`, rejectUnauthenticated, (req, res) => {
   
   
 
-
+//PUT or update a student's password
+//this is used by an admin when they go to manually reset a student's password
 router.put(`/updatepassword/:lcf_id`, rejectUnauthenticated, (req, res) => {
-
-      //console.log("this is the new student we are about to update", req.body);
 
       // pull out the incoming object data
        const password = encryptLib.encryptPassword(req.body.password);
        const lcf_id = req.body.lcf_id;
-    
-
       //initialize the id you will get from the student
       let student_id = "";
 
-      const queryText = `UPDATE "student" SET password=$1
-                WHERE lcf_id =${lcf_id}`;
+      const queryText = `UPDATE "student" SET password=$1 WHERE lcf_id =${lcf_id}`;
       pool
         .query(queryText, [
           password,
         ])
         .then((result) => {
-          //console.log("this is the response in update password", result.rows[0].id);
-          //student_id = result.rows[0].id;
           //now lets add student information to the user table
           const query2Text = `UPDATE "user" SET password=$1 WHERE lcf_id =${lcf_id}`;
           pool
@@ -225,7 +206,11 @@ router.put(`/updatepassword/:lcf_id`, rejectUnauthenticated, (req, res) => {
 });
 // end PUT /api/student/lcf_id
 
-// PUT /api/student/lcf_id
+
+// this route handles the deactivating of a student
+//If an admin wishes to set a student as inactive, this will change the status in their 'inactive' column
+//An admin can see on their homepage if a student is inactive or not (based on button shown to them)
+//When a student is inactive, they can still log in but no longer make new entries
 router.put("/deactivate", rejectUnauthenticated, (req, res) => {
  // grabs id and places it in path
  const lcf_id = req.body.lcf_id;
@@ -244,6 +229,8 @@ router.put("/deactivate", rejectUnauthenticated, (req, res) => {
     });
 });//end PUT
 
+//this route handles the activating of a student
+//like stated above, an admin can toggle a student from 'active' to 'inactive' and vice versa
 router.put("/activate", rejectUnauthenticated, (req, res) => {
   // grabs id and places it in path
   const lcf_id = req.body.lcf_id;
@@ -263,8 +250,9 @@ router.put("/activate", rejectUnauthenticated, (req, res) => {
 });//end PUT
 // // end PUT /api/student/lcf_id
 
-///////////////////// Grabs value from the history table based on lcf_id ////////////////////////////////////
 
+///////////////////// Grabs value from the history table based on lcf_id ////////////////////////////////////
+//this is mainly used for when checking history table to see if that specific student already made an entry for the pay period
 router.get('/history/:id', rejectUnauthenticated, (req, res) => {
   const id = req.params.id
   console.log('Grabbing all records from history');
@@ -277,65 +265,5 @@ router.get('/history/:id', rejectUnauthenticated, (req, res) => {
       res.sendStatus(500);
   });
 });
-
-
-
-
-/**
- * POST route template
- */
-// router.post('/', (req, res) => {
-// const student = req.body;
-
-// const {
-//     first_name,
-//     last_name,
-//     grade,
-//     grad_year,
-//     school_attend,
-//     lcf_id,
-//     lcf_start_date,
-//     student_email,
-//     password,
-//     pif_amount,
-//     created_at,
-    
-//   } = student;
-//   if (student === undefined) {
-//       // stop, dont touch the database
-//       res.sendStatus(400); // 400 BAD REQUEST
-//       return;
-//   }
-  
-//   const queryText = `
-//       INSERT INTO "student" (lcf_id, first_name, last_name, grade, grad_year, school_attend, student_email, password, created_at, lcf_start_date, role, last_login, pif_amount) 
-//       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`; //grabs database
-//   pool
-//     .query(queryText, [
-//       lcf_id,
-//       first_name,
-//       last_name,
-//       grade,
-//       grad_year,
-//       school_attend,
-//       student_email,
-//       password,
-//       created_at,
-//       lcf_start_date,
-//       'student',
-//       new Date(),
-//       pif_amount
-//     ])
-//     .then(function (result) {
-//       // result.rows: 'INSERT 0 1';
-//       // it worked!
-//       console.log('post worked!')
-//       res.sendStatus(200); // 200: OK
-//     })
-//     .catch(function (error) {
-//       console.log("Sorry, there was an error with your query: ", error);
-//       res.sendStatus(500); // HTTP SERVER ERROR
-//     });
-// });
 
 module.exports = router;

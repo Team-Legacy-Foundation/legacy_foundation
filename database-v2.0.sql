@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE "user" (
+CREATE TABLE "user" (
 	"id" SERIAL PRIMARY KEY,
     "lcf_id" int,
     "admin_id" int,
@@ -12,7 +12,7 @@ CREATE OR REPLACE TABLE "user" (
 
 
 
-CREATE OR REPLACE TABLE "admin" (
+CREATE TABLE "admin" (
 	"id" serial NOT NULL,
 	"first_name" varchar(255) NOT NULL,
 	"last_name" varchar(255) NOT NULL,
@@ -28,7 +28,7 @@ CREATE OR REPLACE TABLE "admin" (
 
 
 
-CREATE OR REPLACE TABLE "student" (
+CREATE TABLE "student" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL UNIQUE,
 	"first_name" varchar(255) NOT NULL,
@@ -55,7 +55,7 @@ CREATE OR REPLACE TABLE "student" (
 
 
 
-CREATE OR REPLACE TABLE "entry" (
+CREATE TABLE "entry" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL,
 	"pay_day" DATE,
@@ -79,7 +79,7 @@ CREATE OR REPLACE TABLE "entry" (
 
 
 
-CREATE OR REPLACE TABLE "open_transaction" (
+CREATE TABLE "open_transaction" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL,
 	"first_name" varchar(255) NOT NULL,
@@ -113,7 +113,7 @@ CREATE OR REPLACE TABLE "open_transaction" (
 
 
 
-CREATE OR REPLACE TABLE "gpa_rates" (
+CREATE TABLE "gpa_rates" (
 	"id" serial NOT NULL,
 	"gpa" NUMERIC(10,2) NOT NULL,
 	"amount" NUMERIC(10,2) NOT NULL,
@@ -124,7 +124,7 @@ CREATE OR REPLACE TABLE "gpa_rates" (
 
 
 
-CREATE OR REPLACE TABLE "daily_rates" (
+CREATE TABLE "daily_rates" (
 	"id" serial NOT NULL,
 	"school_year" integer NOT NULL,
 	"amount" NUMERIC(10,2) NOT NULL,
@@ -135,7 +135,7 @@ CREATE OR REPLACE TABLE "daily_rates" (
 
 
 
-CREATE OR REPLACE TABLE "charge_student" (
+CREATE TABLE "charge_student" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL,
 	"admin_id" integer NOT NULL,
@@ -150,7 +150,7 @@ CREATE OR REPLACE TABLE "charge_student" (
 
 
 
-CREATE OR REPLACE TABLE "history" (
+CREATE TABLE "history" (
 	"id" serial NOT NULL,
 	"lcf_id" integer NOT NULL,
 	"first_name" varchar(255) NOT NULL,

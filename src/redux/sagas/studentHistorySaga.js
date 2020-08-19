@@ -1,11 +1,12 @@
 import { put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 
-
+// Saga grabs the history for the student that is logged in at the time
 function* fetchStudentHistory(action) {
     try {
+        // sends out the get to grab the information
         const response = yield axios.get(`/api/student/history/${action.payload}`)
-        console.log('send info to student history reducer', response)
+        // takes the information from get and sends to a reducer
         yield put({ type: "SET_STUDENT_HISTORY", payload: response.data });
     } catch (error) {
         console.log("problem with setting student history", error)

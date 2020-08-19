@@ -102,8 +102,8 @@ function* logoutUser(action) {
 function* loginSaga() {
   yield takeLatest('LOGIN', loginUser);
   yield takeLatest('LOGOUT', logoutUser);
-    yield takeLatest('FORGOT_PASSWORD', forgotPassword);
-    yield takeLatest('FORGOT_PASSWORD_ADMIN', forgotPasswordAdmin);
+  yield takeLatest('FORGOT_PASSWORD', forgotPassword);
+  yield takeLatest('FORGOT_PASSWORD_ADMIN', forgotPasswordAdmin);
 }
 
 export default loginSaga;

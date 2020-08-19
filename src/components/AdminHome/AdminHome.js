@@ -10,7 +10,7 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import EditIcon from '@material-ui/icons/Edit';
 //import { response } from "express";
 
-
+// This component is for the admin homepage
 class AdminHome extends Component {
   componentDidMount() {
     this.props.dispatch({
@@ -28,6 +28,8 @@ class AdminHome extends Component {
 
   render() {
 
+    //The constants below are for the MUI table
+    //
     const columns = [
       
       {
@@ -83,6 +85,7 @@ class AdminHome extends Component {
           },
         },
       },
+      //The code below if for resetting a student's password from the MUI table
       {
         name: "Reset Password",
         options: {
@@ -112,6 +115,7 @@ class AdminHome extends Component {
           },
         },
       },
+      // The code below gives information for headings for the MUI table
       {
         name: "First Name",
         options: {

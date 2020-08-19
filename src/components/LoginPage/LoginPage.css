@@ -1,30 +1,26 @@
 #shapes{
+  /* design styling of the login page */
 object-fit:cover;
 width:100% !important;
 max-height:100%;
 }
 
 .reglogin{
+  /* styling of the login box */
   background-color: #dbd5d5;
   width: 85%;
-  
-  /* margin: 20px auto; */
   padding: 15px;
   border-radius: 2px;
-  
-  
-  
   height:100%;
   border: 1px solid;
   padding: 10px;
-  box-shadow: 5px 10px;
-
-  
-  
+  box-shadow: 5px 10px; 
 }
 
 .loginError {
+  /* styling for the toast that pops up when there's an error */
       position: fixed;
+      /* runs animation that fades the toast error in when error fails */
       animation-name: loginError;
       animation-duration: 0.5s;
       animation-iteration-count: 1;
@@ -32,7 +28,7 @@ max-height:100%;
 }
 
 @keyframes loginError {
-  /*enters from right side and ends in middle of page*/
+  /*slowly fades in when error appears*/
   0% {
     opacity: 0;
   }

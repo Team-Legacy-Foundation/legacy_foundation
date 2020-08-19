@@ -11,12 +11,16 @@ const router = express.Router();
 const moment = require('moment');
 require("dotenv").config();
 
+//NOTE that some routes were brought in from the project template
+//this route deals with users logging in and authicating them (i.e. do they exist in the database?)
+
 // Handles Ajax request for user information if user is authenticated
 router.get("/", rejectUnauthenticated, (req, res) => {
   // Send back user object from the session (previously queried from the database)
   res.send(req.user);
 });
 
+//POST or sends out an email to a student and gives them a token so they can temporarily log in
 router.post("/forgot/:token/:email", (req, res) => {
   let email = req.body.username
   let token = crypto.randomBytes(16).toString("hex");
@@ -30,7 +34,7 @@ router.post("/forgot/:token/:email", (req, res) => {
           .query(query2Text, [
       token, email
           ])
-          .then(() => {
+          .then(() => { //set up information sent off in email to student
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
               let domain = process.env.DOMAIN_NAME;
               const msg = {
@@ -65,6 +69,8 @@ router.post("/forgot/:token/:email", (req, res) => {
 
 });
 
+//POST or create the email that is sent off to admins if they wish to reset their password
+//(without logging in)
 router.post("/forgot/admin/:token/:email", (req, res) => {
   let email = req.body.username;
     let token = crypto.randomBytes(16).toString("hex");
@@ -75,7 +81,7 @@ router.post("/forgot/admin/:token/:email", (req, res) => {
         const query2Text = `UPDATE "user" SET token=$1 WHERE email=$2 `;
         pool
           .query(query2Text, [token, email])
-          .then(() => {
+          .then(() => { //set up information to be sent off inside email
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                let domain = process.env.DOMAIN_NAME;
               const msg = {
@@ -110,10 +116,9 @@ router.post("/forgot/admin/:token/:email", (req, res) => {
 
 
 
-//Handles POST to the student table to add a new student
+//Handles POST to add a new admin
 //The password is encrypted before being inserted into the database
 router.post("/addadmin", rejectUnauthenticated, (req, res, next) => {
-  console.log("this is the new admin we are about to register", req.body);
 
   // pull out the incoming object data
   const first_name = req.body.first_name;
@@ -169,19 +174,11 @@ router.post("/addadmin", rejectUnauthenticated, (req, res, next) => {
 });
 
 
-
-
-
-
-
 //Handles POST to the student table to add a new student
 //The password is encrypted before being inserted into the database
 router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
-  console.log("this is the new student we are about to register", req.body);
- 
 
   // pull out the incoming object data
-  
   const first_name = req.body.first_name;
   const last_name = req.body.last_name;
   const school_id = req.body.school_id || 0;
@@ -229,10 +226,6 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
       balance_due
     ])
     .then((result) => {
-      console.log("this is the response", result.rows[0].id);
-      //res.status(201).send(result.rows[0]);
-      
-      //lcf_id = result.rows[0].id;
       //now lets add student information to the user table
       const query2Text =
         'INSERT INTO "user" (lcf_id, admin_id, email, password, role, last_login) VALUES ($1, $2, $3, $4, $5, $6)';
@@ -245,7 +238,7 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
           'student',
           new Date(),
         ])
-        .then(() => {
+        .then(() => { //upon adding a new student, want email to be automatically sent out prompting the student how to login
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             let domain = process.env.DOMAIN_NAME;
             const msg = {
@@ -278,9 +271,7 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
 });
 
 
-
-
-
+////////////ROUTE BELOW IS PART OF TEMPLATE AND REMAINS HERE IN CASE OF OPEN REGISTRATION BEING NEEDED//////////
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
@@ -294,7 +285,7 @@ router.post("/register", rejectUnauthenticated, (req, res, next) => {
     .query(queryText, [email, password])
     .then(() => res.sendStatus(201))
     .catch(() => res.sendStatus(500));
-});
+});/////////////////////////////////////////////////////////////////////////////////////////
 
 // Handles login form authenticate/login POST
 // userStrategy.authenticate('local') is middleware that we run on this route
@@ -306,7 +297,7 @@ router.post("/login", userStrategy.authenticate("local"), (req, res) => {
   // setting query text to update the username
   const queryText = `update "user" set "last_login" = NOW() WHERE "email"=$1`;
 
-  pool.query(queryText, [email]).then((result) => {
+  pool.query(queryText, [email]).then((result) => {//when someone logs in, want to capture the time they log in
     const query2Text = `UPDATE "student" SET "last_login" = NOW() WHERE "student_email"=$1`;
     pool
       .query(query2Text, [email])
@@ -323,7 +314,7 @@ router.post("/logout", (req, res) => {
 
 
 
-// PUT /api/user/adminpasswordreset/admin_id
+//PUT or updates the admin password from 'reset password' tab admin side
 router.put(`/adminpasswordreset/:admin_id`, rejectUnauthenticated, (req, res) => {
   console.log('we are about to change the admin password:', req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
@@ -353,12 +344,12 @@ router.put(`/adminpasswordreset/:admin_id`, rejectUnauthenticated, (req, res) =>
       res.sendStatus(500); // if there is an error, send server error 500
     });
 });
-// end PUT /user/api/admin_id
+// end PUT
 
 
 
 
-// PUT /api/user/studentpasswordreset/student_id
+//PUT or update the student password via the 'reset password' tab student side
 router.put(`/studentpasswordreset/:lcf_id`, rejectUnauthenticated, (req, res) => {
   console.log('we are about to change the student password:', req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
@@ -371,7 +362,7 @@ router.put(`/studentpasswordreset/:lcf_id`, rejectUnauthenticated, (req, res) =>
     .query(queryText, [newPassword, studentID])
     .then((result) => {
       console.log("Success in updating password or email for student!");
-
+//need double insert since pasword is found within user and student table
       const query2Text = `UPDATE "user" SET password=$1 WHERE lcf_id=$2`;
       const queryValue = [newPassword, studentID];
       pool
@@ -389,8 +380,9 @@ router.put(`/studentpasswordreset/:lcf_id`, rejectUnauthenticated, (req, res) =>
       res.sendStatus(500); // if there is an error, send server error 500
     });
 });
-// end PUT /api/user/studentpasswordreset/student_id
+// end PUT
 
+//Router used to reset student password and creates token for student
 router.put(`/passwordforgot`, (req, res) => {
   console.log("we are about to change the student password:", req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
@@ -421,6 +413,7 @@ router.put(`/passwordforgot`, (req, res) => {
     });
 });
 
+//route used to deal with forgot password for admins and creates token for them
 router.put(`/passwordforgot/admin`, (req, res) => {
   console.log("we are about to change the admin password:", req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
@@ -449,8 +442,9 @@ router.put(`/passwordforgot/admin`, (req, res) => {
     });
 });
 
-//Need to delete for testing purposes
-//DELETE student
+//DELETEs student from student table based off lcf_id
+//USED FOR TESTING PURPOSES
+//Ideally, all students are only 'soft deleted' or in this app, deactivated
 router.delete("/:id", rejectUnauthenticated, (req, res) => {
   pool
     .query('DELETE FROM "student" "user" WHERE lcf_id=$1', [req.params.id])

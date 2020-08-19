@@ -1,3 +1,6 @@
+//brought in as part of template
+//gives warning if a 'bad secret' is used
+//i.e. warns you of SERVER_SESSSION_SECRET in your .env file
 const badSecret = `
 ----------------------------
 

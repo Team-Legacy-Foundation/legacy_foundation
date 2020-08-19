@@ -6,11 +6,9 @@ import moment from "moment";
 import MUITable from '../MUITable/MUITable';
 
 
-
+//This page shows the list of admins currently part of the organization
+//A button on this page allows the admin to add a new admin (AddAdminForm component)
 class AddAdmin extends Component {
-
-      
-
 
       componentDidMount () {
    this.props.dispatch({
@@ -18,18 +16,9 @@ class AddAdmin extends Component {
    });
 }
 
-
-componentDidUpdate() {
-  console.log('update table')
-}
-
 //This function dispatched our newly added admin to the database from state
 //We first validate the inputs to make sure we are not sending empty inputs to the server
      
-
-
-
-
 //This function handles storing input values into state on change
   handleInputChangeFor = propertyName => (event) => {
     this.setState({
@@ -37,7 +26,6 @@ componentDidUpdate() {
     });
   }
 
-  
     render () {
       const data = this.props.admin
                 .map((entry) => [
@@ -48,7 +36,6 @@ componentDidUpdate() {
                 moment.utc(entry.created_at).format("MMMM Do YYYY")
               ])
       return (
-        
       <div><br/>
         <center><h1>Admin Users</h1></center>
         {this.props.user.role === "admin" && (
@@ -61,37 +48,29 @@ componentDidUpdate() {
         )}
           
 
-{/* {this.props.videos.map(videoObj => {
-      return (
-        videoObj.path ? [videoObj.title, videoObj.description, videoObj.visibility, `...${videoObj.path.slice(-40)}`, ''] : []
-      );
-    });} */}
+ {/* The material UI table component, takes in data as props, data is a list of admin brought
+ in from global state */}
 
         <div style={{padding:'1.5%'}}>
     <MUITable
-            data={data}
-            columns={[
+            data={data} //brings in data as an array, in this case, list of admins
+            columns={[ //names the columns found on MUI table
               {name: "First Name"},
               {name: "Last Name"},
               {name: "Admin Email" },
               {name: "Role"},
               {name: "Creation Date"}
             ]}
-            // options={}
-            title={"LCF Admin List"}
+            title={"LCF Admin List"} //give the table a name
           />
           </div>
           <br/>
           <br/>
           <br/>
-       
       </div>
-
-
       );
     }
 }
-
 
 
 const mapStateToProps = state => ({

@@ -10,6 +10,8 @@ import Paper from "@material-ui/core/Paper";
 
 import Swal from "sweetalert2";
 
+//This page is used to give the admin the ability to charge the student via a form
+//i.e. note a debt that needs to be paid and is subtracted from their next paycheck
 class ChargeStudent extends Component {
   state = {
     lcf_id: null,
@@ -20,6 +22,7 @@ class ChargeStudent extends Component {
     no_lcf_id_error: false,
   };
 
+  //need to get a list of all students so admin can choose which one is being charged
   componentDidMount() {
     this.props.dispatch({
       type: "GET_STUDENTS",
@@ -28,8 +31,6 @@ class ChargeStudent extends Component {
 
   chargeStudent = (event) => {
     event.preventDefault();
-
-    //TODO: check in student table to make sure student with lcf_id exists
     if (this.state.lcf_id) {
       //send the updated student to the server through a redux saga
 
@@ -38,7 +39,7 @@ class ChargeStudent extends Component {
 
       for (let student of allStudents) {
         console.log("student ID", student.lcf_id);
-        if (Number(this.state.lcf_id) === Number(student.lcf_id)) {
+        if (Number(this.state.lcf_id) === Number(student.lcf_id)) { //need to check that student actually exists
           this.props.dispatch({
             type: "CHARGE_STUDENT",
             payload: {
@@ -94,13 +95,14 @@ class ChargeStudent extends Component {
     return (
       <div>
         <br />
-        {this.state.lcf_id_error === true && (
+        {this.state.lcf_id_error === true && ( //alerts the admin if the lcf_id of the student does not exist
           <Alert className="error" style={{}} severity="error">
             The LCF ID you entered does not exist in the system, try again!
           </Alert>
         )}
         <br />
-        {this.state.no_lcf_id_error === true && (
+        {/*NOTE: typing the lcf id was later changed to simply choosing a name off the drop down list */}
+        {this.state.no_lcf_id_error === true && ( //checks to make sure that an lcf_id was entered
           <Alert className="error" style={{}} severity="error">
             You have not entered an LCF ID for the student!
           </Alert>
@@ -122,7 +124,9 @@ class ChargeStudent extends Component {
             <Form.Control
               as="select"
               onChange={(event) => this.setState({ lcf_id: event.target.value })}>
-              <option value="">Pick From Below </option>
+              <option value="">Pick From Below </option> {/*As opposed to the admin inputting an lcf id 
+              was changed to selecting a name from a drop dpwn menu of all students currently in the student database table*/}
+
               {this.props.students ? this.props.students.map((student) => (
                     <option key={student.lcf_id} value={student.lcf_id}>
                       {" "}
@@ -134,7 +138,8 @@ class ChargeStudent extends Component {
             </Form.Control>
           </Col>
               <Col>
-                <Form.Label>Charge Type</Form.Label>
+                <Form.Label>Charge Type</Form.Label> 
+                {/*What kind of charge is it?  */}
                 <Form.Control
                   placeholder="Type"
                   type="text"
@@ -148,6 +153,7 @@ class ChargeStudent extends Component {
             <Row>
               <Col>
                 <Form.Label>Description</Form.Label>
+                {/*Admin gives a short description of the charge or reason for the charge  */}
                 <Form.Control
                   placeholder="Description"
                   type="text"
@@ -158,6 +164,7 @@ class ChargeStudent extends Component {
               </Col>
               <Col>
                 <Form.Label>Charge Amount</Form.Label>
+                {/*Dollar amount of charge. How much does the student owe from this?  */}
                 <Form.Control
                   placeholder="Amount"
                   type="number"
@@ -168,7 +175,8 @@ class ChargeStudent extends Component {
               </Col>
             </Row>
             <center>
-            <Button
+            <Button //upon pressing, runs chargeStudent function which, if everything looks good
+            //will send off the entered data to be placed inside the 'charge_student' table in the database
               onClick={(event) => this.chargeStudent(event)}
               variant="success"
               type="submit"

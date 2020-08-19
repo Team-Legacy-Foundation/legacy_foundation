@@ -1,3 +1,4 @@
+/*A number of these stylings were brought in from the projetc template*/
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0px;
@@ -8,16 +9,6 @@ body {
     margin: 50px;
 }
 
-
-
-/* .addstudent{
-     background-color: #dbd5d5;
-     width: 80%;
-     height: 500px;
-     margin: 20px auto;
-     padding: 25px;
-     border-radius: 2px;
-} */
 
 input {
     margin: 5px;

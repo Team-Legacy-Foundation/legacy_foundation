@@ -1,5 +1,7 @@
+//Brought in as part of the project template
+//Deals with salting and hashing of passwords 
+// (i.e. make passwords not appear plaintext in database AND look different no matter the password)
 // No changes should be required in this file
-
 const bcrypt = require('bcryptjs');
 
 const SALT_WORK_FACTOR = 10; // This determines how secure the salt should be
