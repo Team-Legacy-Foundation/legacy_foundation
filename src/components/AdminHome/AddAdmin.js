@@ -81,13 +81,10 @@ componentDidUpdate() {
             title={"LCF Admin List"}
           />
           </div>
-
+          <br/>
+          <br/>
+          <br/>
        
-       
-        
-      
-
-
       </div>
 
 

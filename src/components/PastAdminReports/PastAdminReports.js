@@ -100,7 +100,8 @@ class PastAdminReports extends Component {
             //title={"Past Reports"}
           />
       
-      
+      <br/>
+      <br/>
          
       </div>
     

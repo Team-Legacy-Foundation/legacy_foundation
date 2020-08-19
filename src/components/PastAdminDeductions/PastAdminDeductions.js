@@ -17,33 +17,43 @@ class PastAdminDeductions extends Component {
 
   render() {
     return (
-      <div style={{ padding: "2%" }}>
-        <center>
-          <h1>Past Deductions</h1>
-        </center>
-        <br />
+<<<<<<< HEAD
 
-        <MUITable
-          data={this.props.deductionList.map((item) => [
-            item.lcf_id,
-            item.first_name,
-            item.last_name,
-            moment(item.date).format("MMMM Do YYYY"), //no time associated with this, otherwise shows incorrect time
-            item.type,
-            item.description,
-            item.amount,
-          ])}
-          columns={[
-            "LCF ID",
-            "First Name",
-            "Last Name",
-            "Date",
-            "Type",
-            "Description",
-            "Amount",
-          ]}
-          title={"Past Deductions"}
-        />
+   
+   
+       <div style={{padding: '2%'}}>
+      <center><h1 >Past Deductions</h1></center><br/>
+     
+     <MUITable
+     
+            data={this.props.deductionList
+            .map((item) => [
+                item.lcf_id,
+                item.first_name,
+                item.last_name,
+                moment.utc(item.date).calendar(),
+                item.type,
+                item.description,
+                item.amount,
+                
+
+              ])}
+            columns={[
+              "LCF ID",
+              "First Name",
+              "Last Name",
+              "Date",
+              "Type",
+              "Description",
+              "Amount",
+              
+            ]}
+            title={"Past Deductions"}
+          />
+      
+          <br/>
+          <br/>
+         
       </div>
     );
   }
