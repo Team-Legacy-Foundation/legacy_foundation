@@ -53,7 +53,8 @@ class PastAdminDeductions extends Component {
             title={"Past Deductions"}
           />
       
-          
+          <br/>
+          <br/>
          
       </div>
     

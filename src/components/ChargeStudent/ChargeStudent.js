@@ -179,6 +179,7 @@ class ChargeStudent extends Component {
             </center>
           </Form>
         </Paper>
+        <br/>
       </div>
     );
   }
