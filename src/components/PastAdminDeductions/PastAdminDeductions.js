@@ -17,7 +17,7 @@ class PastAdminDeductions extends Component {
 
   render() {
     return (
-<<<<<<< HEAD
+
 
    
    
