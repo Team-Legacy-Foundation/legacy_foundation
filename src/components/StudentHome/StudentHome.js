@@ -43,27 +43,6 @@ class StudentHome extends Component {
               <h3>LCF ID: {this.props.user.lcf_id}</h3>
             </center>
           </Grid>
-
-          {/* <Grid item xs={12} sm={4} md={4} lg={4} style={{margin:'3%'}}>
-   </Grid> */}
-
-          {/* <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Paper
-              elevation={5}
-              style={{ border: "", padding: "4%", margin: "5%" }}
-            >
-              <h3>Notification Portal</h3>
-              <hr></hr> <br />
-              <br />
-              <br />
-              This could be a tool for the LCF folks to type something up they want sent out for every student to see? But where/how do they send something out. Create a portal on admin end? STRETCH <br/><br/>
-              This could also be where students who had data changed get told about it. How would that functionality work?<br/><br/>
-              Conditionally render that if nothing here, put something like "no new notifications"
-            </Paper>
-            <br />
-            <br />
-          </Grid> */}
-
           <Grid item xs={12} sm={12} md={6} lg={6}>
             <Paper
               elevation={5}

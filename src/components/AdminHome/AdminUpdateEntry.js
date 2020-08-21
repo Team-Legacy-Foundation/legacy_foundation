@@ -57,9 +57,9 @@ class AdminUpdateEntry extends Component {
   };
 
   componentDidMount() {
-    let url_array = document.location.href.split("/");
+    let url_array = document.location.href.split("/"); //get the url
 
-    let id = url_array[url_array.length - 1];
+    let id = url_array[url_array.length - 1]; //gets the id from the url
 
     this.props.entries.map((item, index) => {
       if (item.lcf_id === Number(id)) {
@@ -126,6 +126,7 @@ class AdminUpdateEntry extends Component {
     });
   };
 
+  //Function for submiting info
   submitInfo = (event) => {
     event.preventDefault();
 

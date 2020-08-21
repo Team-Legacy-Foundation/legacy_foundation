@@ -10,13 +10,11 @@ import Swal from "sweetalert2";
 
 
 
-   
+   // This component is for updating student information
 
 class UpdateStudent extends Component {
   
-// let url_array=document.location.href.split("/");
-    
-// let id = url_array[url_array.length-1];
+
   
   state = {
     
@@ -31,8 +29,7 @@ class UpdateStudent extends Component {
     password: "",
     pif_amount: "",
     isLoaded: false
-    //created_at: moment.utc().format(), on update, we dont want to do another created at
-    //created at is only run once, when the student is added for the first time
+    
   };
 
   filterStudentArray = (students) => {
@@ -67,9 +64,7 @@ let id = url_array[url_array.length-1];
       type: "GET_STUDENT_FOR_EDIT", payload: id
     });
 
-    // if (this.props.student) {
-    //   this.setState([...this.props.student]);
-    // }
+   
 
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
@@ -101,12 +96,13 @@ let id = url_array[url_array.length-1];
   }
 
   
-  
+  //Start of update student
 
   updateStudent = (event) => {
     event.preventDefault();
     console.log("we are about to send the state", this.state);
 
+//Form validation to check if all the fields have been filled in
     if (
       this.state.first_name &&
       this.state.last_name &&
@@ -114,9 +110,7 @@ let id = url_array[url_array.length-1];
       this.state.grad_year &&
       this.state.school_attend &&
       this.state.lcf_id &&
-      // this.state.lcf_start_date &&
       this.state.student_email &&
-      // this.state.password &&
       this.state.pif_amount
     ) {
        Swal.fire({
@@ -151,7 +145,7 @@ let id = url_array[url_array.length-1];
                student_email: this.state.student_email,
                password: this.state.password,
                pif_amount: this.state.pif_amount,
-               //created_at: this.state.created_at,
+               
              },
            });
            Swal.fire("Success!", "Your entry has been logged.", "success");
@@ -325,7 +319,7 @@ let id = url_array[url_array.length-1];
 const mapStateToProps = (state) => ({
   user: state.user,
   students: state.students.studentlist,
-  editStudent: state.editStudent
+  editStudent: state.editStudent // Stores the information for a single student
 });
    
 export default connect(mapStateToProps) (UpdateStudent);

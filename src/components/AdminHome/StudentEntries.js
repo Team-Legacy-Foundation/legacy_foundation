@@ -6,7 +6,7 @@ import MUITable from "../MUITable/MUITable";
 import { withRouter } from "react-router";
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
-//import { response } from "express";
+
 
 class StudentEntries extends Component {
   componentDidMount() {
@@ -23,6 +23,8 @@ class StudentEntries extends Component {
     });
   }
 
+  //does dispatch to run calculations and then GET calculations to display on table
+  //(see calculationsSaga.js)
   runReport() {
     this.props.dispatch({ type: "FETCH_CALCULATIONS" });
   }
@@ -34,7 +36,7 @@ class StudentEntries extends Component {
   }
   
 
-  render() { //TODO: Add delete option for admin so that if an entry was submitted too early, they get rid of it
+  render() { //MUI tables for columns for the table
     const columns = [
       {
         name: "Edit",
@@ -180,18 +182,19 @@ class StudentEntries extends Component {
       },
     ];
 
-    
+    //The calculations below show the next pay day 
     let date = moment();
     let previous_pay_day = moment("2020-08-10T00:00:00.000-05")
     let pay_day = moment(previous_pay_day)
-
+  
+    //beginning of getDate
       function getDate() {
         if (date >= pay_day) {
           previous_pay_day = pay_day;
           pay_day = moment(previous_pay_day).add(2, "week");
           getDate();
         }
-      }
+      }//End of getDate
       getDate();
 
       previous_pay_day = moment(previous_pay_day).format(
