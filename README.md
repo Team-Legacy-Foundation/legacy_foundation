@@ -1,7 +1,8 @@
 # Legacy Children's Foundation Payroll Helper Application
 
 ## Description
-The purpose of this app is to 
+The purpose of this app is to help centralize the gathering of student information as well as expedite the payroll process associated with
+the student's earings from attending school and getting good grades. 
 
 ## Installation
 In order to run this from Github, you will need to:
@@ -198,6 +199,17 @@ In order to run this from Github, you will need to:
                 Admins also have the ability to reset their own password if they
                 so choose via the Reset Password tab in the navbar.
               </div>
+
+## Calculation Details
+GPA Bonus
+| GPA        | Bonus Amount ($) |
+| -----------| ---------------- |
+| < 2.0      | NO PAYCHECK      |
+| 2.0 - 2.4  | 0                |
+| 2.5 - 2.9  | 20.00            |
+| 3.0 - 3.4  | 40.00            |
+| 3.5 - 3.9  | 60.00            |
+| 4.0        | 80.00            |
 
 ## Built With
 

@@ -454,22 +454,25 @@ class MakeEntry extends Component {
         );
       }
     }
-    //WHERE I LAST LEFT OFF -Chris
+    
     return (
       <div>
         <br />
+        {/* toast that appears on error, shows up when all required fields are not filled in */}
         {this.state.error === true && (
           <Alert className="error" style={{}} severity="error">
             Please fill out all of the required fields
           </Alert>
         )}
         <br />
+        {/* toast that appears when student tries to make an entry when an entry has alreadt been made */}
         {this.state.pay_day_error === true && (
           <Alert className="error" style={{}} severity="error">
             Sorry, you already have an entry on record for this pay period, your
             entry has not been saved successfully!
           </Alert>
         )}
+        {/* shows current pay period. payDay() function updates to current dates */}
         <h3 style={{ textAlign: "center", margin: "2%" }}>
           This entry is for the week of: {previous_pay_day} - {pay_day}
         </h3>
@@ -482,6 +485,7 @@ class MakeEntry extends Component {
             marginBottom: "5%",
           }}
         >
+          {/* start form for make entry */}
           <form onSubmit={this.submitInfo}>
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
@@ -491,16 +495,20 @@ class MakeEntry extends Component {
                 required
                 aria-label="pass_class"
                 name="pass_class"
+                // sets the value of the input to the value of state
                 value={this.state.pass_class}
+                // onChange run handleChange function to update coorasponding state
                 onChange={(event) => this.handleChange(event, "pass_class")}
               >
                 <FormControlLabel
                   value="Yes"
+                  //calls and renders the green radio button
                   control={<GreenRadio />}
                   label="Yes"
                 />
                 <FormControlLabel
                   value="No"
+                  //calls and renders the yellow radio button
                   control={<YellowRadio />}
                   label="No"
                 />
@@ -508,21 +516,30 @@ class MakeEntry extends Component {
             </FormControl>
             <p>2. What is your current GPA?</p>
             <Slider
+              //sets width of slider to 80% of the screen
               style={{
                 width: "80%",
               }}
               required
+              // sets the default value of the slider to the value of state
               defaultValue={this.state.gpa}
+              // requires a number
               type="number"
               aria-labelledby="discrete-slider-custom"
+              // allows decimals values of up to 0.01
               step={0.01}
               valueLabelDisplay="auto"
+              // max value is 4, gpa max is 4.0 and can't go higher
               max={4}
+              // min value is 0, gpa min value is 0 and can't go lower
               min={0}
               label="GPA"
               name="GPA"
+              // sets the value of the slider to the value of state
               value={this.state.gpa}
+              // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeGpa}
+              // sets the mark values for gpa below the slider.
               marks={marksGpa}
             />{" "}
             <span style={{ marginLeft: 20 }}>GPA: {this.state.gpa}</span>
@@ -534,16 +551,19 @@ class MakeEntry extends Component {
                 width: "80%",
               }}
               required
+              // sets the default value of the input to the value of state
               defaultValue={this.state.absent}
               type="number"
               aria-labelledby="discrete-slider-custom"
-              step={1}
+              step={1} //days are a whole number (no decimals)
               valueLabelDisplay="auto"
-              max={10}
-              min={0}
+              max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+              min={0} //starts at 0 since you can't attend a negative amount of days
               label="absent"
               name="absent"
+              // sets the value of the input to the value of state
               value={this.state.absent}
+              // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeAbsent}
               marks={marks}
             />
@@ -556,16 +576,19 @@ class MakeEntry extends Component {
                 width: "80%",
               }}
               required
+              // sets the default value of the input to the value of state
               defaultValue={this.state.tardy}
               type="number"
               aria-labelledby="discrete-slider-custom"
-              step={1}
+              step={1} //days are a whole number (no decimals)
               valueLabelDisplay="auto"
-              max={10}
-              min={0}
+              max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+              min={0} //starts at 0 since you can't attend a negative amount of days
               label="tardy"
               name="tardy"
+              // sets the value of the input to the value of state
               value={this.state.tardy}
+              // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeTardy}
               marks={marks}
             />{" "}
@@ -578,16 +601,19 @@ class MakeEntry extends Component {
                 width: "80%",
               }}
               required
+              // sets the default value of the input to the value of state
               defaultValue={this.state.late}
               type="number"
               aria-labelledby="discrete-slider-custom"
-              step={1}
+              step={1} //days are a whole number (no decimals)
               valueLabelDisplay="auto"
-              max={10}
-              min={0}
+              max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+              min={0} //starts at 0 since you can't attend a negative amount of days
               label="late"
               name="late"
+              // sets the value of the input to the value of state
               value={this.state.late}
+              // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeLate}
               marks={marks}
             />{" "}
@@ -598,16 +624,19 @@ class MakeEntry extends Component {
                 width: "80%",
               }}
               required
+              // sets the default value of the input to the value of state
               defaultValue={this.state.truant}
               type="number"
               aria-labelledby="discrete-slider-custom"
-              step={1}
+              step={1} //days are a whole number (no decimals)
               valueLabelDisplay="auto"
-              max={10}
-              min={0}
+              max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+              min={0} //starts at 0 since you can't attend a negative amount of days
               label="truant"
               name="truant"
+              // sets the value of the input to the value of state
               value={this.state.truant}
+              // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeTruant}
               marks={marks}
             />{" "}
@@ -627,13 +656,14 @@ class MakeEntry extends Component {
               defaultValue={this.state.clean_attend}
               type="number"
               aria-labelledby="discrete-slider-custom"
-              step={1}
+              step={1} //days are a whole number (no decimals)
               valueLabelDisplay="auto"
-              max={10}
-              min={0}
+              max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+              min={0} //starts at 0 since you can't attend a negative amount of days
               label="attendance"
               name="attendance"
               value={this.state.clean_attend}
+              // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeAttendance}
               marks={marks}
             />{" "}
@@ -646,9 +676,10 @@ class MakeEntry extends Component {
               <FormLabel component="legend" style={{ color: "black" }}>
                 4. Do you have detention hours at school?
               </FormLabel>
-              <RadioGroup
+              <RadioGroup //Yes or No answer (i.e. two options)
                 aria-label="detent_hours"
                 name="detent_hours"
+                // sets the value of the input to the value of state
                 value={this.state.detent_hours}
                 onChange={(event) => this.handleChange(event, "detent_hours")}
               >
@@ -671,9 +702,10 @@ class MakeEntry extends Component {
                 5. Are you involved in any after school activity or job? <br />
                 (At school or at Legacy)
               </FormLabel>
-              <RadioGroup
+              <RadioGroup //Yes or No answer (i.e. two options)
                 aria-label="act_or_job"
                 name="act_or_job"
+                // sets the value of the input to the value of state
                 value={this.state.act_or_job}
                 onChange={(event) => this.handleChange(event, "act_or_job")}
               >
@@ -691,31 +723,14 @@ class MakeEntry extends Component {
             </FormControl>
             <br />
             <br />
-            {/* <FormControl component="fieldset">
-              <FormLabel component="legend" style={{ color: "black" }}>
-                6. Do you have a job?
-              </FormLabel>
-              <RadioGroup
-                aria-label="act_or_job"
-                name="act_or_job"
-                value={this.state.act_or_job}
-                onChange={(event) => this.handleChange(event, "act_or_job")}
-              >
-                <FormControlLabel
-                  value="Yes"
-                  control={<GreenRadio />}
-                  label="Yes"
-                />
-                <FormControlLabel value="No" control={<Radio />} label="No" />
-              </RadioGroup>
-            </FormControl> <br/> <br/> */}
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
                 6. Are you living a drug free life?
               </FormLabel>
-              <RadioGroup
+              <RadioGroup //Yes or No answer (i.e. two options)
                 aria-label="passed_ua"
                 name="passed_ua"
+                // sets the value of the input to the value of state
                 value={this.state.passed_ua}
                 onChange={(event) => this.handleChange(event, "passed_ua")}
               >
@@ -734,7 +749,7 @@ class MakeEntry extends Component {
             <br />
             <p>
               7. How many service hours did you do the past 2 weeks?
-              <TextField
+              <TextField //takes in a number (can be 0)
                 style={{
                   backgroundColor: "white",
                   margin: "5px",
@@ -760,27 +775,29 @@ class MakeEntry extends Component {
               <FormLabel component="legend" style={{ color: "black" }}>
                 8. Were you ontime for mandatory homerooms this pay period?
               </FormLabel>
-              <RadioGroup
+              <RadioGroup //Yes or No answer (i.e. two possible options)
                 aria-label="hw_rm_attended"
                 name="hw_rm_attended"
+                // sets the value of the input to the value of state
                 value={this.state.hw_rm_attended}
+                //onChange of input values set local state
                 onChange={(event) => this.handleChange(event, "hw_rm_attended")}
               >
                 <FormControlLabel
                   value="Yes"
-                  control={<GreenRadio />}
+                  control={<GreenRadio />} //colors button
                   label="Yes"
                 />
                 <FormControlLabel
                   value="No"
-                  control={<YellowRadio />}
+                  control={<YellowRadio />} //colors button
                   label="No"
                 />
               </RadioGroup>
             </FormControl>{" "}
             <br /> <br />
             <p>9. Any comments you would like to leave this pay period?</p>
-            <TextField
+            <TextField //box for student to enter in text
               style={{
                 backgroundColor: "white",
                 margin: "5px",
@@ -800,10 +817,11 @@ class MakeEntry extends Component {
               value={this.state.comments}
               type="text"
               maxLength={1000}
+              //onChange of input values set local state
               onChange={(event) => this.handleChange(event, "comments")} //onChange of input values set local state
             />{" "}
             <center>
-              <Button
+              <Button //button that cancels current entry, i.e. do not submit anything to database
                 style={{
                   marginTop: "3%",
                   marginLeft: "5%",
@@ -814,14 +832,15 @@ class MakeEntry extends Component {
                 variant="contained"
                 className="button"
                 onClick={() => {
-                  this.props.history.push("/home");
+                  this.props.history.push("/home"); //push student back to home page
                 }}
               >
                 Cancel Entry
               </Button>
 
-              <Button
+              <Button //button that, one clicked, submits the entry to the database
                 style={{
+                  //note that it only goes through if it passes all validation
                   marginTop: "3%",
                   marginLeft: "5%",
                   marginRight: "5%",
@@ -838,7 +857,8 @@ class MakeEntry extends Component {
             </center>
           </form>
         </Paper>
-        <br />
+        <br />{" "}
+        {/*Add a little buffer on the bottom of page (prevent cutoff on mobile) */}
         <br />
       </div>
     );

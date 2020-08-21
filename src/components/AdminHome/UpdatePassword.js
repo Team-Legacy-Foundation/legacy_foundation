@@ -8,6 +8,9 @@ import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
 import { Alert } from "@material-ui/lab";
 
+
+
+//This component is for updating password for the admina ccount
 class UpdatePassword extends Component {
   state = {
     password: "",
@@ -33,20 +36,22 @@ class UpdatePassword extends Component {
 
   }
 
+  //beginning of update password
   updatePassword = (event) => {
     event.preventDefault();
 
-    let url_array=document.location.href.split("/");
+    let url_array=document.location.href.split("/"); //Captures the url
     
-let id = url_array[url_array.length-1];
+let id = url_array[url_array.length-1]; //takes id off the end of the url
     console.log("we are about to send the state",id, this.state);
 
+    //Form validation for avoiding empty inputs for a new password reset
     if (this.state.password === null || this.state.password === "" || this.state.retypePassword === null || this.state.retypePassword === ""){
       this.setState({
         emptyError: true
       })
       return;
-    }
+    }//Form validation for password and retype password not being the same
     else if (this.state.password !== this.state.retypePassword){
       this.setState({
         retypeError: true

@@ -23,18 +23,7 @@ const Nav = (props) => (
         alt="legacy foundation logo"
         style={{ float:'left', maxWidth:'20%' }}
         
-      />
-      {/* {props.user.id && props.user.role === "admin"&& (
-        <>
-          
-        </>
-      )}
-      {props.user.id && props.user.role === "student"&& (
-        <>
-          <h2 className="nav-title">Student Dashboard</h2>
-        </>
-      )} */}
-      
+      />    
     </Link>
     
     <div className="nav-right" style={{ diplay:'inline-block',float:'left', paddingTop:'1.5%' }}>
