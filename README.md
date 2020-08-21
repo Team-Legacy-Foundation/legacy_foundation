@@ -201,7 +201,8 @@ In order to run this from Github, you will need to:
               </div>
 
 ## Calculation Details
-GPA Bonus
+
+### GPA Bonus
 | GPA        | Bonus Amount ($) |
 | -----------| ---------------- |
 | < 2.0      | NO PAYCHECK      |
@@ -210,6 +211,12 @@ GPA Bonus
 | 3.0 - 3.4  | 40.00            |
 | 3.5 - 3.9  | 60.00            |
 | 4.0        | 80.00            |
+
+### Base Pay
+| School Year?| Amount ($) |
+| ------------| ---------- |
+|             |            |
+
 
 ## Built With
 

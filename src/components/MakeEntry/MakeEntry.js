@@ -565,7 +565,7 @@ class MakeEntry extends Component {
               value={this.state.absent}
               // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeAbsent}
-              marks={marks}
+              marks={marks} // sets the mark values below the slider.
             />
             <span style={{ marginLeft: 20 }}>
               Days absent: {this.state.absent}
@@ -590,7 +590,7 @@ class MakeEntry extends Component {
               value={this.state.tardy}
               // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeTardy}
-              marks={marks}
+              marks={marks} // sets the mark values below the slider.
             />{" "}
             <span style={{ marginLeft: 20 }}>
               Days tardy: {this.state.tardy}
@@ -615,7 +615,7 @@ class MakeEntry extends Component {
               value={this.state.late}
               // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeLate}
-              marks={marks}
+              marks={marks} // sets the mark values below the slider.
             />{" "}
             <span style={{ marginLeft: 20 }}>Days late: {this.state.late}</span>
             <p>3d. How many school days were you truant this pay period?</p>
@@ -638,7 +638,7 @@ class MakeEntry extends Component {
               value={this.state.truant}
               // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeTruant}
-              marks={marks}
+              marks={marks} // sets the mark values below the slider.
             />{" "}
             <span style={{ marginLeft: 20 }}>
               Days truant: {this.state.truant}
@@ -665,7 +665,7 @@ class MakeEntry extends Component {
               value={this.state.clean_attend}
               // onChange run handleChange function to update coorasponding state
               onChange={this.handleChangeAttendance}
-              marks={marks}
+              marks={marks} // sets the mark values below the slider.
             />{" "}
             <span style={{ marginLeft: 20 }}>
               Attendance: {this.state.clean_attend}
