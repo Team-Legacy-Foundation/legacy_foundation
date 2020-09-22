@@ -52,7 +52,8 @@ class MakeEntry extends Component {
     tardy: 0,
     late: 0,
     truant: 0,
-    clean_attend: 0,
+    clean_attend: 10,
+    clean_attend_storage: 10,
     detent_hours: null,
     act_or_job: null,
     passed_ua: null,
@@ -63,6 +64,7 @@ class MakeEntry extends Component {
     error: false,
     pay_day_error: false,
     dupeEntry: false,
+    toggle: false,
   };
 
   componentDidMount() {
@@ -100,6 +102,7 @@ class MakeEntry extends Component {
   //handleChange for tardy
   handleChangeTardy = (event, tardy) => {
     tardy = Number(tardy);
+
     this.setState({
       tardy,
     });
@@ -122,10 +125,12 @@ class MakeEntry extends Component {
   }; //end handleChangeTruant
 
   //handleChange for attendance
-  handleChangeAttendance = (event, clean_attend) => {
-    clean_attend = Number(clean_attend);
+  handleChangeAttendance = (event) => {
+    let { absent, tardy, late, truant, clean_attend } = this.state;
+
     this.setState({
-      clean_attend,
+      clean_attend: clean_attend - absent - tardy - late - truant,
+      toggle: !this.state.toggle,
     });
   }; //end handleChange
 
@@ -150,7 +155,6 @@ class MakeEntry extends Component {
       hw_rm_attended,
       comments,
     } = this.state;
-
     //don't run function if any of these values below are null
     if (
       pass_class === null ||
@@ -187,7 +191,7 @@ class MakeEntry extends Component {
 
     //function to set pay_day and previous_pay_day to the current pay period
     function getDate() {
-    //if date is greater or equal to the current date, run the logic below
+      //if date is greater or equal to the current date, run the logic below
       if (date >= pay_day) {
         //define previous_pay_day to be the same as current pay_day
         previous_pay_day = pay_day;
@@ -224,6 +228,7 @@ class MakeEntry extends Component {
         return;
       } //end if statement
     }
+
     //begin sweetAlerts
     Swal.fire({
       title: "Please confirm details below",
@@ -434,8 +439,8 @@ class MakeEntry extends Component {
         this.props.user.lcf_id === entry.lcf_id &&
         (entry.pay_day > date || entry.previous_pay_day <= date)
       ) {
-        //...if they did make an entry, 
-        //this notification appears rather then the entry forum 
+        //...if they did make an entry,
+        //this notification appears rather then the entry forum
         //when the student clicks on make entry
         return (
           <div>
@@ -454,7 +459,7 @@ class MakeEntry extends Component {
         );
       }
     }
-    
+
     return (
       <div>
         <br />
@@ -543,133 +548,153 @@ class MakeEntry extends Component {
               marks={marksGpa}
             />{" "}
             <span style={{ marginLeft: 20 }}>GPA: {this.state.gpa}</span>
-            <p>
-              3a. How many days were you absent from school this pay period?
-            </p>
-            <Slider
-              style={{
-                width: "80%",
-              }}
-              required
-              // sets the default value of the input to the value of state
-              defaultValue={this.state.absent}
-              type="number"
-              aria-labelledby="discrete-slider-custom"
-              step={1} //days are a whole number (no decimals)
-              valueLabelDisplay="auto"
-              max={10} //max of 10 since there are only 10 possible school days within a 2 week period
-              min={0} //starts at 0 since you can't attend a negative amount of days
-              label="absent"
-              name="absent"
-              // sets the value of the input to the value of state
-              value={this.state.absent}
-              // onChange run handleChange function to update coorasponding state
-              onChange={this.handleChangeAbsent}
-              marks={marks} // sets the mark values below the slider.
-            />
-            <span style={{ marginLeft: 20 }}>
-              Days absent: {this.state.absent}
-            </span>
-            <p>3b. How many school days were you tardy this pay period?</p>
-            <Slider
-              style={{
-                width: "80%",
-              }}
-              required
-              // sets the default value of the input to the value of state
-              defaultValue={this.state.tardy}
-              type="number"
-              aria-labelledby="discrete-slider-custom"
-              step={1} //days are a whole number (no decimals)
-              valueLabelDisplay="auto"
-              max={10} //max of 10 since there are only 10 possible school days within a 2 week period
-              min={0} //starts at 0 since you can't attend a negative amount of days
-              label="tardy"
-              name="tardy"
-              // sets the value of the input to the value of state
-              value={this.state.tardy}
-              // onChange run handleChange function to update coorasponding state
-              onChange={this.handleChangeTardy}
-              marks={marks} // sets the mark values below the slider.
-            />{" "}
-            <span style={{ marginLeft: 20 }}>
-              Days tardy: {this.state.tardy}
-            </span>
-            <p>3c. How many school days were you late this pay period?</p>
-            <Slider
-              style={{
-                width: "80%",
-              }}
-              required
-              // sets the default value of the input to the value of state
-              defaultValue={this.state.late}
-              type="number"
-              aria-labelledby="discrete-slider-custom"
-              step={1} //days are a whole number (no decimals)
-              valueLabelDisplay="auto"
-              max={10} //max of 10 since there are only 10 possible school days within a 2 week period
-              min={0} //starts at 0 since you can't attend a negative amount of days
-              label="late"
-              name="late"
-              // sets the value of the input to the value of state
-              value={this.state.late}
-              // onChange run handleChange function to update coorasponding state
-              onChange={this.handleChangeLate}
-              marks={marks} // sets the mark values below the slider.
-            />{" "}
-            <span style={{ marginLeft: 20 }}>Days late: {this.state.late}</span>
-            <p>3d. How many school days were you truant this pay period?</p>
-            <Slider
-              style={{
-                width: "80%",
-              }}
-              required
-              // sets the default value of the input to the value of state
-              defaultValue={this.state.truant}
-              type="number"
-              aria-labelledby="discrete-slider-custom"
-              step={1} //days are a whole number (no decimals)
-              valueLabelDisplay="auto"
-              max={10} //max of 10 since there are only 10 possible school days within a 2 week period
-              min={0} //starts at 0 since you can't attend a negative amount of days
-              label="truant"
-              name="truant"
-              // sets the value of the input to the value of state
-              value={this.state.truant}
-              // onChange run handleChange function to update coorasponding state
-              onChange={this.handleChangeTruant}
-              marks={marks} // sets the mark values below the slider.
-            />{" "}
-            <span style={{ marginLeft: 20 }}>
-              Days truant: {this.state.truant}
-            </span>
-            <p>
-              3e. How many school days were you punctual for this pay period?
-              <br />
-              (no tardies, no truancy, no lateness)
-            </p>
-            <Slider
-              style={{
-                width: "80%",
-              }}
-              required
-              defaultValue={this.state.clean_attend}
-              type="number"
-              aria-labelledby="discrete-slider-custom"
-              step={1} //days are a whole number (no decimals)
-              valueLabelDisplay="auto"
-              max={10} //max of 10 since there are only 10 possible school days within a 2 week period
-              min={0} //starts at 0 since you can't attend a negative amount of days
-              label="attendance"
-              name="attendance"
-              value={this.state.clean_attend}
-              // onChange run handleChange function to update coorasponding state
-              onChange={this.handleChangeAttendance}
-              marks={marks} // sets the mark values below the slider.
-            />{" "}
-            <span style={{ marginLeft: 20 }}>
-              Attendance: {this.state.clean_attend}
-            </span>
+            {this.state.toggle === false ? (
+              <>
+                <p>
+                  3a. How many days were you absent from school this pay period?
+                </p>
+                <Slider
+                  style={{
+                    width: "80%",
+                  }}
+                  required
+                  // sets the default value of the input to the value of state
+                  defaultValue={this.state.absent}
+                  type="number"
+                  aria-labelledby="discrete-slider-custom"
+                  step={1} //days are a whole number (no decimals)
+                  valueLabelDisplay="auto"
+                  max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+                  min={0} //starts at 0 since you can't attend a negative amount of days
+                  label="absent"
+                  name="absent"
+                  // sets the value of the input to the value of state
+                  value={this.state.absent}
+                  // onChange run handleChange function to update coorasponding state
+                  onChange={this.handleChangeAbsent}
+                  marks={marks} // sets the mark values below the slider.
+                />
+                <span style={{ marginLeft: 20 }}>
+                  Days absent: {this.state.absent}
+                </span>
+                <p>3b. How many school days were you tardy this pay period?</p>
+                <Slider
+                  style={{
+                    width: "80%",
+                  }}
+                  required
+                  // sets the default value of the input to the value of state
+                  defaultValue={this.state.tardy}
+                  type="number"
+                  aria-labelledby="discrete-slider-custom"
+                  step={1} //days are a whole number (no decimals)
+                  valueLabelDisplay="auto"
+                  max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+                  min={0} //starts at 0 since you can't attend a negative amount of days
+                  label="tardy"
+                  name="tardy"
+                  // sets the value of the input to the value of state
+                  value={this.state.tardy}
+                  // onChange run handleChange function to update coorasponding state
+                  onChange={this.handleChangeTardy}
+                  marks={marks} // sets the mark values below the slider.
+                />{" "}
+                <span style={{ marginLeft: 20 }}>
+                  Days tardy: {this.state.tardy}
+                </span>
+                <p>3c. How many school days were you late this pay period?</p>
+                <Slider
+                  style={{
+                    width: "80%",
+                  }}
+                  required
+                  // sets the default value of the input to the value of state
+                  defaultValue={this.state.late}
+                  type="number"
+                  aria-labelledby="discrete-slider-custom"
+                  step={1} //days are a whole number (no decimals)
+                  valueLabelDisplay="auto"
+                  max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+                  min={0} //starts at 0 since you can't attend a negative amount of days
+                  label="late"
+                  name="late"
+                  // sets the value of the input to the value of state
+                  value={this.state.late}
+                  // onChange run handleChange function to update coorasponding state
+                  onChange={this.handleChangeLate}
+                  marks={marks} // sets the mark values below the slider.
+                />{" "}
+                <span style={{ marginLeft: 20 }}>
+                  Days late: {this.state.late}
+                </span>
+                <p>3d. How many school days were you truant this pay period?</p>
+                <Slider
+                  style={{
+                    width: "80%",
+                  }}
+                  required
+                  // sets the default value of the input to the value of state
+                  defaultValue={this.state.truant}
+                  type="number"
+                  aria-labelledby="discrete-slider-custom"
+                  step={1} //days are a whole number (no decimals)
+                  valueLabelDisplay="auto"
+                  max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+                  min={0} //starts at 0 since you can't attend a negative amount of days
+                  label="truant"
+                  name="truant"
+                  // sets the value of the input to the value of state
+                  value={this.state.truant}
+                  // onChange run handleChange function to update coorasponding state
+                  onChange={this.handleChangeTruant}
+                  marks={marks} // sets the mark values below the slider.
+                />{" "}
+                <span style={{ marginLeft: 20 }}>
+                  Days truant: {this.state.truant}
+                </span>
+                <br />
+                <Button //button that, once clicked, calculates total attendance
+                  style={{
+                    marginTop: "3%",
+                    marginLeft: "5%",
+                    marginRight: "5%",
+                    backgroundColor: "green",
+                    color: "white",
+                  }}
+                  variant="contained"
+                  color="primary"
+                  className="button"
+                  onClick={this.handleChangeAttendance}
+                >
+                  Calculate Attendance
+                </Button>
+              </>
+            ) : (
+              <>
+                <p>Total Attendance</p>
+                <Slider
+                  disabled
+                  style={{
+                    width: "80%",
+                  }}
+                  required
+                  defaultValue={this.state.clean_attend}
+                  type="number"
+                  aria-labelledby="discrete-slider-custom"
+                  step={1} //days are a whole number (no decimals)
+                  valueLabelDisplay="auto"
+                  max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+                  min={0} //starts at 0 since you can't attend a negative amount of days
+                  label="attendance"
+                  name="attendance"
+                  value={this.state.clean_attend}
+                  marks={marks} // sets the mark values below the slider.
+                />{" "}
+                <span style={{ marginLeft: 20 }}>
+                  Attendance: {this.state.clean_attend}
+                </span>
+              </>
+            )}
             <br />
             <br />
             <FormControl component="fieldset">
