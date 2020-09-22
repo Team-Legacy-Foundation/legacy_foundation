@@ -43,9 +43,9 @@ class PastAdminReports extends Component {
           console.log("calc", counter / totalMaps);
         });
         if (counter / totalMaps < 0.8) {
-       Swal.fire("This student is not eligable for a trip")
+       Swal.fire("This student is not eligible for a trip");
         } else {
-        Swal.fire("this student is eligable for a trip")
+        Swal.fire("this student is eligible for a trip");
         }
   }
   render() {
