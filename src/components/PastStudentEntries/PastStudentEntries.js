@@ -53,7 +53,6 @@ class PastStudentEntries extends Component {
       <div style={{margin:'2%'}}>
         <center><h1>Past Entries</h1></center><br/>
       
-
         <h5>Total Savings to Date: ($ {this.total(this.props.studentHistory)})</h5>
       <Paper elevation={5} style={{height: "100%", overflow: "scroll", border: "",}}>
         
