@@ -129,8 +129,7 @@ class AddAdminForm extends Component {
                   }
                 >
                   <option value="">Pick From Below</option>
-                  <option value="admin">Regular Admin</option>
-                  <option value="super admin">Super Admin</option>
+                  <option value="admin">Admin</option>
                 </Form.Control>
               </Col>
               <Col>
@@ -147,7 +146,7 @@ class AddAdminForm extends Component {
                 <Form.Label>Admin Password</Form.Label>
                 <Form.Control
                   placeholder="Admin Password"
-                  type="text"
+                  type="password"
                   name="password"
                   value={this.state.password}
                   onChange={this.handleInputChangeFor("password")}
