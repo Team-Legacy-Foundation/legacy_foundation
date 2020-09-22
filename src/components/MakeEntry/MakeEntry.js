@@ -90,11 +90,66 @@ class MakeEntry extends Component {
     }
     //call getDate
     getDate();
-    if (counter === 1) {
+    if (counter === 3) {
        this.setState({
          clean_attend: 8,
          total_days: 8,
        })
+      } else if (counter === 4) {
+          this.setState({
+            clean_attend: 9,
+            total_days: 9,
+          });
+      } else if (counter === 5) {
+          this.setState({
+            clean_attend: 7,
+            total_days: 7,
+          });
+      } else if (counter === 7) {
+          this.setState({
+            clean_attend: 8,
+            total_days: 8,
+          });
+      } else if (counter === 8) {
+         this.setState({
+           clean_attend: 5,
+           total_days: 5,
+         });
+      } else if (counter === 9) {
+         this.setState({
+           clean_attend: 9,
+           total_days: 9,
+         });
+      } else if (counter === 11) {
+         this.setState({
+           clean_attend: 8,
+           total_days: 8,
+         });
+      } else if (counter === 13) {
+          this.setState({
+            clean_attend: 5,
+            total_days: 5,
+          });
+      } else if (counter === 14) {
+         this.setState({
+           clean_attend: 9,
+           total_days: 9,
+         });
+      } else if (counter === 16) {
+         this.setState({
+           clean_attend: 9,
+           total_days: 9,
+         });
+      } else if (counter === 18) {
+         this.setState({
+           clean_attend: 9,
+           total_days: 9,
+         });
+      } else if (counter === 19) {
+         this.setState({
+           clean_attend: 3,
+           total_days: 3,
+         });
       }
     //formats previous_pay_day
     previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
