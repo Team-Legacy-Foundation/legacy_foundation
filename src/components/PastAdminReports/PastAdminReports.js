@@ -53,7 +53,6 @@ class PastAdminReports extends Component {
       <div style={{ padding: "2%" }}>
         <center>
           <h1>Past Reports</h1>
-          {JSON.stringify(this.props.history[0] && this.props.history[0].lcf_id)}
         </center>
         <div id="tooltip">
           <InfoIcon></InfoIcon>
@@ -67,7 +66,6 @@ class PastAdminReports extends Component {
         <Form>
           <center>
             <Form.Label>Trip Eligibility</Form.Label>
-            <Form.Label>Student Name</Form.Label>
             <Form.Control
               as="select"
               onChange={(event) =>
