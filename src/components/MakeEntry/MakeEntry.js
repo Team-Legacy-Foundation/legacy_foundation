@@ -53,7 +53,7 @@ class MakeEntry extends Component {
     late: 0,
     truant: 0,
     clean_attend: 10,
-    clean_attend_storage: 10,
+    total_days: 10,
     detent_hours: null,
     act_or_job: null,
     passed_ua: null,
@@ -66,6 +66,41 @@ class MakeEntry extends Component {
     dupeEntry: false,
     toggle: false,
   };
+
+  componentWillMount() {
+    //current date
+    let date = moment();
+    //preset previous_pay_day
+    let previous_pay_day = moment("2020-09-21T00:00:00.000-05"); //midnight central time
+    //preset current pay_day
+    let pay_day = moment(previous_pay_day);
+    let counter = 0;
+    //this function defines the current pay period
+    function getDate() {
+      //if date is greater or equal to the current date, run the logic below
+      if (date >= pay_day) {
+        counter++;
+        //define previous_pay_day to be the same as current pay_day
+        previous_pay_day = pay_day;
+        //define current pay_day to be pay_day plus 2 weeks
+        pay_day = moment(previous_pay_day).add(2, "week");
+        //call the function again.
+        getDate();
+      }
+    }
+    //call getDate
+    getDate();
+    if (counter === 1) {
+       this.setState({
+         clean_attend: 8,
+         total_days: 8,
+       })
+      }
+    //formats previous_pay_day
+    previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
+    //formats current pay_day
+    pay_day = moment(pay_day).format("MMMM Do YYYY");
+  }
 
   componentDidMount() {
     //grabs student data from database
@@ -207,6 +242,8 @@ class MakeEntry extends Component {
     previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
     //formats current pay_day
     pay_day = moment(pay_day).format("MMMM Do YYYY hh:mm:ss");
+    console.log("pay_day", pay_day)
+    console.log("previous_pay_day", previous_pay_day)
     //loops through historyEntries
     for (let history of historyEntries) {
       //formats history_pay_day
@@ -294,45 +331,45 @@ class MakeEntry extends Component {
         value: 0,
         label: "0",
       },
+      //   {
+      //     value: 1,
+      //     label: "1",
+      //   },
+      //   {
+      //     value: 2,
+      //     label: "2",
+      //   },
+      //   {
+      //     value: 3,
+      //     label: "3",
+      //   },
+      //   {
+      //     value: 4,
+      //     label: "4",
+      //   },
+      //   {
+      //     value: 5,
+      //     label: "5",
+      //   },
+      //   {
+      //     value: 6,
+      //     label: "6",
+      //   },
+      //   {
+      //     value: 7,
+      //     label: "7",
+      //   },
+      //   {
+      //     value: 8,
+      //     label: "8",
+      //   },
+      //   {
+      //     value: 9,
+      //     label: "9",
+      //   },
       {
-        value: 1,
-        label: "1",
-      },
-      {
-        value: 2,
-        label: "2",
-      },
-      {
-        value: 3,
-        label: "3",
-      },
-      {
-        value: 4,
-        label: "4",
-      },
-      {
-        value: 5,
-        label: "5",
-      },
-      {
-        value: 6,
-        label: "6",
-      },
-      {
-        value: 7,
-        label: "7",
-      },
-      {
-        value: 8,
-        label: "8",
-      },
-      {
-        value: 9,
-        label: "9",
-      },
-      {
-        value: 10,
-        label: "10",
+        value: this.state.total_days,
+        label: this.state.total_days,
       },
     ];
     //same as marks but specific for the gpa slider
@@ -379,13 +416,15 @@ class MakeEntry extends Component {
     //current date
     let date = moment();
     //preset previous_pay_day
-    let previous_pay_day = moment("2020-08-10T00:00:00.000-05"); //midnight central time
+    let previous_pay_day = moment("2020-09-21T00:00:00.000-05"); //midnight central time
     //preset current pay_day
     let pay_day = moment(previous_pay_day);
+    let counter = 0;
     //this function defines the current pay period
     function getDate() {
       //if date is greater or equal to the current date, run the logic below
       if (date >= pay_day) {
+        counter++;
         //define previous_pay_day to be the same as current pay_day
         previous_pay_day = pay_day;
         //define current pay_day to be pay_day plus 2 weeks
@@ -564,7 +603,7 @@ class MakeEntry extends Component {
                   aria-labelledby="discrete-slider-custom"
                   step={1} //days are a whole number (no decimals)
                   valueLabelDisplay="auto"
-                  max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+                  max={this.state.total_days} //max of how many school days in that week, this varies by each week.
                   min={0} //starts at 0 since you can't attend a negative amount of days
                   label="absent"
                   name="absent"
@@ -589,7 +628,7 @@ class MakeEntry extends Component {
                   aria-labelledby="discrete-slider-custom"
                   step={1} //days are a whole number (no decimals)
                   valueLabelDisplay="auto"
-                  max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+                  max={this.state.total_days} //max of how many school days in that week, this varies by each week.
                   min={0} //starts at 0 since you can't attend a negative amount of days
                   label="tardy"
                   name="tardy"
@@ -614,7 +653,7 @@ class MakeEntry extends Component {
                   aria-labelledby="discrete-slider-custom"
                   step={1} //days are a whole number (no decimals)
                   valueLabelDisplay="auto"
-                  max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+                  max={this.state.total_days} //max of how many school days in that week, this varies by each week.
                   min={0} //starts at 0 since you can't attend a negative amount of days
                   label="late"
                   name="late"
@@ -639,7 +678,7 @@ class MakeEntry extends Component {
                   aria-labelledby="discrete-slider-custom"
                   step={1} //days are a whole number (no decimals)
                   valueLabelDisplay="auto"
-                  max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+                  max={this.state.total_days} //max of how many school days in that week, this varies by each week.
                   min={0} //starts at 0 since you can't attend a negative amount of days
                   label="truant"
                   name="truant"
@@ -683,7 +722,7 @@ class MakeEntry extends Component {
                   aria-labelledby="discrete-slider-custom"
                   step={1} //days are a whole number (no decimals)
                   valueLabelDisplay="auto"
-                  max={10} //max of 10 since there are only 10 possible school days within a 2 week period
+                  max={this.state.total_days} //total number of school days, this can vary
                   min={0} //starts at 0 since you can't attend a negative amount of days
                   label="attendance"
                   name="attendance"
