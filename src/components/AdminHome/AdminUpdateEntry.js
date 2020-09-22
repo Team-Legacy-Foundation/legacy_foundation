@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
+import moment from "moment";
 
 const GreenRadio = withStyles({
   root: {
@@ -47,7 +48,8 @@ class AdminUpdateEntry extends Component {
     tardy: 0,
     late: 0,
     truant: 0,
-    clean_attend: 0,
+    clean_attend: 10,
+    total_days: 10,
     detent_hours: "",
     act_or_job: "",
     passed_ua: "",
@@ -55,6 +57,96 @@ class AdminUpdateEntry extends Component {
     hw_rm_attended: "",
     comments: "",
   };
+
+  componentWillMount() {
+    //current date
+    let date = moment();
+    //preset previous_pay_day
+    let previous_pay_day = moment("2020-09-21T00:00:00.000-05"); //midnight central time
+    //preset current pay_day
+    let pay_day = moment(previous_pay_day);
+    let counter = 0;
+    //this function defines the current pay period
+    function getDate() {
+      //if date is greater or equal to the current date, run the logic below
+      if (date >= pay_day) {
+        counter++;
+        //define previous_pay_day to be the same as current pay_day
+        previous_pay_day = pay_day;
+        //define current pay_day to be pay_day plus 2 weeks
+        pay_day = moment(previous_pay_day).add(2, "week");
+        //call the function again.
+        getDate();
+      }
+    }
+    //call getDate
+    getDate();
+    if (counter === 3) {
+      this.setState({
+        clean_attend: 8,
+        total_days: 8,
+      });
+    } else if (counter === 4) {
+      this.setState({
+        clean_attend: 9,
+        total_days: 9,
+      });
+    } else if (counter === 5) {
+      this.setState({
+        clean_attend: 7,
+        total_days: 7,
+      });
+    } else if (counter === 7) {
+      this.setState({
+        clean_attend: 8,
+        total_days: 8,
+      });
+    } else if (counter === 8) {
+      this.setState({
+        clean_attend: 5,
+        total_days: 5,
+      });
+    } else if (counter === 9) {
+      this.setState({
+        clean_attend: 9,
+        total_days: 9,
+      });
+    } else if (counter === 11) {
+      this.setState({
+        clean_attend: 8,
+        total_days: 8,
+      });
+    } else if (counter === 13) {
+      this.setState({
+        clean_attend: 5,
+        total_days: 5,
+      });
+    } else if (counter === 14) {
+      this.setState({
+        clean_attend: 9,
+        total_days: 9,
+      });
+    } else if (counter === 16) {
+      this.setState({
+        clean_attend: 9,
+        total_days: 9,
+      });
+    } else if (counter === 18) {
+      this.setState({
+        clean_attend: 9,
+        total_days: 9,
+      });
+    } else if (counter === 19) {
+      this.setState({
+        clean_attend: 3,
+        total_days: 3,
+      });
+    }
+    //formats previous_pay_day
+    previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
+    //formats current pay_day
+    pay_day = moment(pay_day).format("MMMM Do YYYY");
+  }
 
   componentDidMount() {
     let url_array = document.location.href.split("/"); //get the url
@@ -72,12 +164,12 @@ class AdminUpdateEntry extends Component {
           tardy: item.tardy,
           late: item.late,
           clean_attend: item.clean_attend,
-          detent_hours:item.detent_hours,
+          detent_hours: item.detent_hours,
           act_or_job: item.act_or_job,
           passed_ua: item.passed_ua,
           current_service_hours: item.current_service_hours,
           hw_rm_attended: item.hw_rm_attended,
-          comments:item.comments
+          comments: item.comments,
         });
       } else {
         console.log("FAIL", item.lcf_id);
@@ -119,12 +211,12 @@ class AdminUpdateEntry extends Component {
       truant,
     });
   };
+  //handleChange for attendance
   handleChangeAttendance = (event, clean_attend) => {
-    clean_attend = Number(clean_attend);
     this.setState({
       clean_attend,
     });
-  };
+  }; //end handleChange
 
   //Function for submiting info
   submitInfo = (event) => {
@@ -204,7 +296,6 @@ class AdminUpdateEntry extends Component {
   };
 
   render() {
-   
     const inputProps = {
       max: 10,
       min: 0,
@@ -214,45 +305,45 @@ class AdminUpdateEntry extends Component {
         value: 0,
         label: "0",
       },
+      // {
+      //   value: 1,
+      //   label: "1",
+      // },
+      // {
+      //   value: 2,
+      //   label: "2",
+      // },
+      // {
+      //   value: 3,
+      //   label: "3",
+      // },
+      // {
+      //   value: 4,
+      //   label: "4",
+      // },
+      // {
+      //   value: 5,
+      //   label: "5",
+      // },
+      // {
+      //   value: 6,
+      //   label: "6",
+      // },
+      // {
+      //   value: 7,
+      //   label: "7",
+      // },
+      // {
+      //   value: 8,
+      //   label: "8",
+      // },
+      // {
+      //   value: 9,
+      //   label: "9",
+      // },
       {
-        value: 1,
-        label: "1",
-      },
-      {
-        value: 2,
-        label: "2",
-      },
-      {
-        value: 3,
-        label: "3",
-      },
-      {
-        value: 4,
-        label: "4",
-      },
-      {
-        value: 5,
-        label: "5",
-      },
-      {
-        value: 6,
-        label: "6",
-      },
-      {
-        value: 7,
-        label: "7",
-      },
-      {
-        value: 8,
-        label: "8",
-      },
-      {
-        value: 9,
-        label: "9",
-      },
-      {
-        value: 10,
-        label: "10",
+        value: this.state.total_days,
+        label: this.state.total_days,
       },
     ];
     const marksGpa = [
@@ -384,95 +475,7 @@ class AdminUpdateEntry extends Component {
             />{" "}
             <span style={{ marginLeft: 20 }}>GPA: {this.state.gpa}</span>
             <p>
-              4a. How many days were you absent from school this pay period?
-            </p>
-            <Slider
-              style={{
-                width: "80%",
-              }}
-              required
-              defaultValue={this.state.absent}
-              type="number"
-              aria-labelledby="discrete-slider-custom"
-              step={1}
-              valueLabelDisplay="auto"
-              max={10}
-              min={0}
-              label="absent"
-              name="absent"
-              value={this.state.absent}
-              onChange={this.handleChangeAbsent}
-              marks={marks}
-            />
-            <span style={{ marginLeft: 20 }}>
-              Days absent: {this.state.absent}
-            </span>
-            <p>4b. How many school days were you tardy this pay period?</p>
-            <Slider
-              style={{
-                width: "80%",
-              }}
-              required
-              defaultValue={this.state.tardy}
-              type="number"
-              aria-labelledby="discrete-slider-custom"
-              step={1}
-              valueLabelDisplay="auto"
-              max={10}
-              min={0}
-              label="tardy"
-              name="tardy"
-              value={this.state.tardy}
-              onChange={this.handleChangeTardy}
-              marks={marks}
-            />{" "}
-            <span style={{ marginLeft: 20 }}>
-              Days tardy: {this.state.tardy}
-            </span>
-            <p>4c. How many school days were you late this pay period?</p>
-            <Slider
-              style={{
-                width: "80%",
-              }}
-              required
-              defaultValue={this.state.late}
-              type="number"
-              aria-labelledby="discrete-slider-custom"
-              step={1}
-              valueLabelDisplay="auto"
-              max={10}
-              min={0}
-              label="late"
-              name="late"
-              value={this.state.late}
-              onChange={this.handleChangeLate}
-              marks={marks}
-            />{" "}
-            <span style={{ marginLeft: 20 }}>Days late: {this.state.late}</span>
-            <p>4d. How many school days were you truant this pay period?</p>
-            <Slider
-              style={{
-                width: "80%",
-              }}
-              required
-              defaultValue={this.state.truant}
-              type="number"
-              aria-labelledby="discrete-slider-custom"
-              step={1}
-              valueLabelDisplay="auto"
-              max={10}
-              min={0}
-              label="truant"
-              name="truant"
-              value={this.state.truant}
-              onChange={this.handleChangeTruant}
-              marks={marks}
-            />{" "}
-            <span style={{ marginLeft: 20 }}>
-              Days truant: {this.state.truant}
-            </span>
-            <p>
-              4e. How many school days were you punctual for this pay period?
+              4. How many school days were you punctual for this pay period?
               <br />
               (no tardies, no truancy, no lateness)
             </p>
@@ -548,24 +551,6 @@ class AdminUpdateEntry extends Component {
             </FormControl>
             <br />
             <br />
-            {/* <FormControl component="fieldset">
-              <FormLabel component="legend" style={{ color: "black" }}>
-                6. Do you have a job?
-              </FormLabel>
-              <RadioGroup
-                aria-label="act_or_job"
-                name="act_or_job"
-                value={this.state.act_or_job}
-                onChange={(event) => this.handleChange(event, "act_or_job")}
-              >
-                <FormControlLabel
-                  value="Yes"
-                  control={<GreenRadio />}
-                  label="Yes"
-                />
-                <FormControlLabel value="No" control={<Radio />} label="No" />
-              </RadioGroup>
-            </FormControl> <br/> <br/> */}
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
                 7. Are you living a drug free life?
@@ -589,24 +574,6 @@ class AdminUpdateEntry extends Component {
               </RadioGroup>
             </FormControl>
             <br />
-            {/* <FormControl component="fieldset">
-              <FormLabel component="legend" style={{ color: "black" }}>
-                6. Do you have a job?
-              </FormLabel>
-              <RadioGroup
-                aria-label="act_or_job"
-                name="act_or_job"
-                value={this.state.act_or_job}
-                onChange={(event) => this.handleChange(event, "act_or_job")}
-              >
-                <FormControlLabel
-                  value="Yes"
-                  control={<GreenRadio />}
-                  label="Yes"
-                />
-                <FormControlLabel value="No" control={<Radio />} label="No" />
-              </RadioGroup>
-            </FormControl> <br/> <br/> */}
             <p>
               8. How many service hours did you do the past 2 weeks?
               <TextField
@@ -679,17 +646,19 @@ class AdminUpdateEntry extends Component {
             />{" "}
             <br />
             <br />
-              <center>
-              <Button style={{ margin: "6%" }}
+            <center>
+              <Button
+                style={{ margin: "6%" }}
                 variant="contained"
                 color="secondary"
                 className="button"
-                onClick={()=>{this.props.history.push("/totalstudententries")}}
+                onClick={() => {
+                  this.props.history.push("/totalstudententries");
+                }}
               >
                 Cancel Update
               </Button>
-          
-         
+
               <Button
                 variant="contained"
                 type="submit"
