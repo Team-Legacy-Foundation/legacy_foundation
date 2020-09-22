@@ -73,8 +73,6 @@ class PastAdminReports extends Component {
               }
             >
               <option value="">Pick From Below </option>{" "}
-              {/*As opposed to the admin inputting an lcf id 
-              was changed to selecting a name from a drop dpwn menu of all students currently in the student database table*/}
               {this.props.students
                 ? this.props.students.map((student) => (
                     <option key={student.lcf_id} value={student.lcf_id}>
