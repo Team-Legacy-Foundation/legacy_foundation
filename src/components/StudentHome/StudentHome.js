@@ -20,13 +20,21 @@ class StudentHome extends Component {
     this.props.dispatch({ type: "FETCH_ENTRIES_FOR_ADMIN" });
   }
 
-  total(amount) {
+  total(amount, previous_savings) {
     let total = 0;
     for (let i = 0; i < amount.length; i++) {
       const element = amount[i];
       total += Number(element.amt_to_savings);
     }
-    return total.toFixed(2);
+    for (let i = 0; i < previous_savings.length; i++) {
+      const element = previous_savings[i];
+      console.log(element.savings)
+      console.log(this.props.user.lcf_id)
+      if (this.props.user.lcf_id === element.lcf_id) {
+        total = total + element.savings
+      }
+    }
+    return Number(total)
   }
 
   render() {
@@ -76,7 +84,7 @@ class StudentHome extends Component {
                   Balance to Pay: $ {this.props.editStudent.balance_due}
                   <br />
                   Total Savings to Date: ${" "}
-                  {this.total(this.props.studentHistory)}
+                  {this.total(this.props.studentHistory, this.props.students)}
                 </>
               ) : (
                 <>
@@ -102,6 +110,7 @@ const mapStateToProps = (state) => ({
   editStudent: state.editStudent[0],
   studentHistory: state.studentHistory.studentHistoryReducer,
   entries: state.students.studententriesadmin,
+  students: state.students.studentlist,
 });
 
 export default withRouter(connect(mapStateToProps)(StudentHome));

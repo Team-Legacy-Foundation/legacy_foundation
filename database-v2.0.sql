@@ -84,6 +84,7 @@ CREATE TABLE "open_transaction" (
 	"lcf_id" integer NOT NULL,
 	"first_name" varchar(255) NOT NULL,
 	"last_name" varchar(255) NOT NULL,
+	"grade" int NOT NULL,
 	"pay_day" DATE NOT NULL,
 	"date_submitted" DATE NOT NULL DEFAULT NOW(),
 	"pass_class" varchar(255) NOT NULL,

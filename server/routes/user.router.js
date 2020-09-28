@@ -192,6 +192,7 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
   const password = encryptLib.encryptPassword(req.body.password);
   const password2 = req.body.password;
   const pif_amount = Number(req.body.pif_amount).toFixed(2);
+  const savings = Number(req.body.savings).toFixed(2);
   const created_at = moment.utc().format();
   const role = "student";
   const inactive = "no";
@@ -203,8 +204,8 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
   //let lcf_id = "";
 
   const queryText = `INSERT INTO "student" 
-                (lcf_id, first_name, last_name, school_attend, school_id, student_email, password, grade, grad_year, last_login, created_at,   lcf_start_date, role,   pif_amount, strikes, inactive, balance_due)
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING lcf_id `;
+                (lcf_id, first_name, last_name, school_attend, school_id, student_email, password, grade, grad_year, last_login, created_at,   lcf_start_date, role,   pif_amount, savings, strikes, inactive, balance_due)
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING lcf_id `;
   pool
     .query(queryText, [
       lcf_id,
@@ -221,6 +222,7 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
       lcf_start_date,
       role,
       pif_amount,
+      savings,
       strikes,
       inactive,
       balance_due
