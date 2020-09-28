@@ -23,6 +23,7 @@ class AddStudent extends Component {
     lcf_start_date: "",
     student_email: "",
     password: "",
+    savings: 0,
     pif_amount: "",
     email_error: false, //used for toast error handling if email exists
     lcfID_error: false, //used for toast error handling if LCF ID exists
@@ -100,6 +101,7 @@ class AddStudent extends Component {
         student_email,
         password,
         pif_amount,
+        savings,
       } = this.state;
 
 
@@ -116,7 +118,8 @@ class AddStudent extends Component {
           7. LCF Start Date: ${lcf_start_date} </br>
           8. Student Email: ${student_email} </br>
           9. Password: ${password}</br>
-          10. PIF Amount ${pif_amount}`,
+          10. PIF Amount ${pif_amount}</br>
+          11. Previous Savings: ${savings}`,
         icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#5cb85c",
@@ -138,6 +141,7 @@ class AddStudent extends Component {
               student_email: student_email,
               password: password,
               pif_amount: pif_amount,
+              savings: savings,
             },
           });
 
@@ -289,6 +293,16 @@ class AddStudent extends Component {
                   name="pif_amount"
                   value={this.state.pif_amount}
                   onChange={this.handleInputChangeFor("pif_amount")}
+                />
+              </Col>
+              <Col>
+                <Form.Label>Previous Savings</Form.Label>
+                <Form.Control
+                  placeholder="Previous Savings"
+                  type="number"
+                  name="savings"
+                  value={this.state.savings}
+                  onChange={this.handleInputChangeFor("savings")}
                 />
               </Col>
             </Row>
