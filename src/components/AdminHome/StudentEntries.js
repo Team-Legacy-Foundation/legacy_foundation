@@ -233,34 +233,12 @@ class StudentEntries extends Component {
     );
   }
 
-  filterStudentArray = (entries) => {
-    return entries.filter(
-      (entry) =>
-        entry.first_name &&
-        entry.last_name &&
-        entry.lcf_id &&
-        // moment(entry.pay_day).format("MMMM Do YYYY") &&
-        // moment(entry.date_submitted).format("MMMM Do YYYY") &&
-        entry.grade &&
-        entry.school_attend &&
-        entry.pass_class &&
-        entry.gpa &&
-        entry.clean_attend &&
-        entry.detent_hours &&
-        entry.act_or_job &&
-        entry.passed_ua &&
-        entry.current_service_hours &&
-        entry.hw_rm_attended 
-        
-    );
-  };
-
   // this IS A SELECTOR: it takes some state, and it
   // returns some derived state. In other words, if you
   // have students, you can always calculate the array
   // that MUI needs from there.
   getStudentArray = (entries) => {
-    const studentsArray = this.filterStudentArray(entries).map(
+    const studentsArray = entries.map(
       (entry, index) => [
         entry.id,
         entry.first_name,

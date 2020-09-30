@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 class PastAdminReports extends Component {
   state = {
     lcf_id: "",
-  }
+  };
   componentDidMount() {
     this.props.dispatch({
       type: "FETCH_HISTORY",
@@ -24,30 +24,29 @@ class PastAdminReports extends Component {
   }
 
   checkTrip = (event) => {
-         event.preventDefault();
-        let counter = 0;
-        let totalMaps = 0;
-        this.props.history.map((item, index) => {
-          console.log("item.attend_payment", item.attend_payment);
-          console.log("item.lcf_id", item.lcf_id)
-          console.log("this.state.lcf_id", this.state.lcf_id);
-          if (item.lcf_id === Number(this.state.lcf_id)) {
-            if (item.attend_payment != "0.00") {
-              counter++;
-              console.log("counter", counter);
-            } 
-            totalMaps++
-          }
-
-          console.log("totalMaps", totalMaps);
-          console.log("calc", counter / totalMaps);
-        });
-        if (counter / totalMaps < 0.8) {
-       Swal.fire("This student is not eligible for a trip");
-        } else {
-        Swal.fire("this student is eligible for a trip");
+    event.preventDefault();
+    let counter = 0;
+    let totalMaps = 0;
+    this.props.history.map((item, index) => {
+      if (item.lcf_id === Number(this.state.lcf_id)) {
+        if (item.attend_payment != "0.00") {
+          counter++;
+          console.log("counter", counter);
         }
-  }
+        totalMaps++;
+      }
+
+      console.log("totalMaps", totalMaps);
+      console.log("calc", counter / totalMaps);
+    });
+    if (counter / totalMaps < 0.8) {
+      Swal.fire("This student is not eligible for a trip");
+  
+    } else {
+      Swal.fire("this student is eligible for a trip");
+
+    }
+  };
   render() {
     return (
       <div style={{ padding: "2%" }}>
@@ -155,7 +154,15 @@ class PastAdminReports extends Component {
           ]}
           //title={"Past Reports"}
         />
-
+        <MUITable
+          data={this.props.students.map((item) => [
+            item.lcf_id,
+            item.first_name,
+            item.last_name,
+          ])}
+          columns={["LCF ID", "First Name", "Last Name"]}
+          //title={"Past Reports"}
+        />
         <br />
         <br />
       </div>
