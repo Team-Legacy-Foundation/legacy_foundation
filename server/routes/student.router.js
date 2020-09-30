@@ -5,6 +5,7 @@ const router = express.Router();
 const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
+const moment = require("moment");
 
 
 //GET to get all students found within the student table and ordered by their lcf_id
@@ -160,6 +161,78 @@ router.put(`/updateentry/:lcf_id`, rejectUnauthenticated, (req, res) => {
           // result.rows: 'INSERT 0 1';
           // it worked!
           console.log('updating an entry worked!')
+          //res.sendStatus(201); //created
+          res.status(201).send(result.rows);
+        })
+        .catch(function (error) {
+          console.log("Sorry, there was an error with your query: ", error);
+          res.sendStatus(500); // HTTP SERVER ERROR
+        });
+  }); // end PUT
+
+  router.post(`/adminmakeentry`, (req, res) => {
+      // HTTP REQUEST BODY
+    const entry = req.body; // pull the object out out of the HTTP REQUEST
+    const {
+      pass_class,
+      gpa,
+      lcf_id,
+      absent,
+      tardy,
+      late,
+      truant,
+      clean_attend,
+      detent_hours,
+      after_school,
+      act_or_job,
+      passed_ua,
+      current_service_hours,
+      hw_rm_attended,
+      comments,
+    } = entry;
+    if (entry === undefined) {
+      // stop, dont touch the database
+      res.sendStatus(400); // 400 BAD REQUEST
+      return;
+    }
+    let date = moment.utc();
+    let previous_pay_day = moment.utc("2020-08-10T00:00:00.000-05");
+    let pay_day = moment.utc(previous_pay_day).add(2, "week");
+
+    function getDate() {
+      if (date >= pay_day) {
+        previous_pay_day = pay_day;
+        pay_day = moment(previous_pay_day).add(2, "week");
+        getDate();
+      }
+    }
+    getDate();
+
+      
+      const queryText = `
+              INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`; 
+  
+      pool
+        .query(queryText, [
+          lcf_id,
+          pass_class,
+          pay_day,
+          previous_pay_day,
+          date,
+          gpa,
+          clean_attend,
+          detent_hours,
+          act_or_job,
+          passed_ua,
+          current_service_hours,
+          hw_rm_attended,
+          comments,
+        ])
+        .then(function (result) {
+          // result.rows: 'INSERT 0 1';
+          // it worked!
+          console.log("updating an entry worked!");
           //res.sendStatus(201); //created
           res.status(201).send(result.rows);
         })
