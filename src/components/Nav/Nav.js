@@ -13,34 +13,48 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import DescriptionIcon from '@material-ui/icons/Description';
+import EditIcon from "@material-ui/icons/Edit";
 
 const Nav = (props) => (
-  <div className="nav" style={{display:'inline-block'}}>
+  <div className="nav" style={{ display: "inline-block" }}>
     <Link to="/home">
       <img
         className="logo"
         src={logo}
         alt="legacy foundation logo"
-        style={{ float:'left', maxWidth:'20%' }}
-        
-      />    
+        style={{ float: "left", maxWidth: "20%" }}
+      />
     </Link>
-    
-    <div className="nav-right" style={{ diplay:'inline-block',float:'left', paddingTop:'1.5%' }}>
+
+    <div
+      className="nav-right"
+      style={{ diplay: "inline-block", float: "left", paddingTop: "1.5%" }}
+    >
       <Link className="nav-link" to="/home">
         {/* Show this link if they are logged in or not,
         but call this link 'Home' if they are logged in,
         and call this link 'Login / Register' if they are not */}
-        {props.user.id ? <><HomeIcon></HomeIcon> Home</> : <><ExitToAppIcon></ExitToAppIcon> Login</>}
+        {props.user.id ? (
+          <>
+            <HomeIcon></HomeIcon> Home
+          </>
+        ) : (
+          <>
+            <ExitToAppIcon></ExitToAppIcon> Login
+          </>
+        )}
       </Link>
       {/* Show the link to the info page and the logout button if the user is logged in */}
       {props.user.id && props.user.role === "admin" && (
         <>
-        <Link className="nav-link" to="/totalstudententries">
-          <FormatListBulletedIcon></FormatListBulletedIcon>
+          <Link className="nav-link" to="/totalstudententries">
+            <FormatListBulletedIcon></FormatListBulletedIcon>
             Current Entries
           </Link>
-        
+          <Link className="nav-link" to="/adminmakeentry">
+            <EditIcon></EditIcon>
+            Make Student Entry
+          </Link>
           <Link className="nav-link" to="/pastadminreports">
             <PlaylistAddCheckIcon></PlaylistAddCheckIcon>
             Past Reports
@@ -48,34 +62,30 @@ const Nav = (props) => (
 
           <Link className="nav-link" to="/deductionlist">
             <PlaylistAddCheckIcon></PlaylistAddCheckIcon>
-           Past Deductions
+            Past Deductions
           </Link>
 
           <Link className="nav-link" to="/chargestudent">
             <CreditCardIcon></CreditCardIcon>
-           Create New Deduction
+            Create New Deduction
           </Link>
 
-           <Link className="nav-link" to="/adminusers">
-             <SupervisorAccountIcon></SupervisorAccountIcon>
+          <Link className="nav-link" to="/adminusers">
+            <SupervisorAccountIcon></SupervisorAccountIcon>
             Admin Users
           </Link>
           <Link className="nav-link" to="/resetadminpassword">
             <RotateLeftIcon></RotateLeftIcon>
-          Reset Password
+            Reset Password
           </Link>
 
           <Link className="nav-link" to="/instructions">
             <DescriptionIcon></DescriptionIcon>
-          Instructions
-         </Link>
+            Instructions
+          </Link>
           <LogOutButton className="nav-link" />
-
         </>
       )}
-
-
-
 
       {props.user.id && props.user.role === "student" && (
         <>
@@ -84,15 +94,14 @@ const Nav = (props) => (
             Make an Entry
           </Link>
           <Link className="nav-link" to="/paststudententries">
-          <FormatListBulletedIcon></FormatListBulletedIcon>
+            <FormatListBulletedIcon></FormatListBulletedIcon>
             Past Entries
           </Link>
-        <Link className="nav-link" to="/resetstudentpassword">
-          <RotateLeftIcon></RotateLeftIcon>
-           Reset Password
+          <Link className="nav-link" to="/resetstudentpassword">
+            <RotateLeftIcon></RotateLeftIcon>
+            Reset Password
           </Link>
-         
-          
+
           <LogOutButton className="nav-link" />
         </>
       )}
@@ -101,7 +110,6 @@ const Nav = (props) => (
         About
       </Link> */}
     </div>
-   
   </div>
 );
 

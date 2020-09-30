@@ -39,7 +39,7 @@ const YellowRadio = withStyles({
 
 //The purpose of this page is to update the student's entry this past pay period
 
-class AdminUpdateEntry extends Component {
+class AdminMakeEntry extends Component {
   state = {
     lcf_id: "",
     pass_class: "",
@@ -260,7 +260,7 @@ class AdminUpdateEntry extends Component {
     }).then((result) => {
       if (result.value) {
         this.props.dispatch({
-          type: "ADMIN_ENTRY_UPDATE",
+          type: "ADMIN_ENTRY",
           payload: {
             lcf_id: lcf_id,
             pass_class: pass_class,
@@ -677,4 +677,4 @@ const mapStateToProps = (state) => ({
   entries: state.students.studententriesadmin,
 });
 
-export default withRouter(connect(mapStateToProps)(AdminUpdateEntry));
+export default withRouter(connect(mapStateToProps)(AdminMakeEntry));

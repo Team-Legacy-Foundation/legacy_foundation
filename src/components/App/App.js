@@ -39,6 +39,7 @@ import AddAdminForm from '../AdminHome/AddAdminForm';
 import PastAdminDeductions from '../PastAdminDeductions/PastAdminDeductions';
 
 import Instructions from '../Instructions/Instructions';
+import AdminMakeEntry from "../AdminHome/AdminMakeEntry";
 
 
 
@@ -56,8 +57,7 @@ class App extends Component {
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />
-          
-           
+
             {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:3000/home will show the UserPage if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the 'Login' or 'Register' page.
@@ -95,7 +95,7 @@ class App extends Component {
             />
             {/* Page that admin is brought to when they click the 'add new student' button on admin homepage
             It has the form for the admin to fill out with all the necessary student information */}
-            <ProtectedRoute exact path="/addstudent" component={AddStudent} /> 
+            <ProtectedRoute exact path="/addstudent" component={AddStudent} />
             <ProtectedRoute //page admin is brought to when they wish to update a student's information
               exact
               path="/updatestudent/:lcf_id" //lcfid helps prepopulate the page with the exisiting data
@@ -111,15 +111,24 @@ class App extends Component {
               path="/totalstudententries"
               component={StudentEntries}
             />
+            <ProtectedRoute //shows all entries made by the students to the admin
+              exact
+              path="/adminmakeentry"
+              component={AdminMakeEntry}
+            />
             <ProtectedRoute //page admin is brought to when they wish to update a student's specific entry
               exact
               path="/adminentryupdate/:lcf_id" //lcf if helps prepopulate the page with existing data
               component={AdminUpdateEntry}
             />
             {/*List of all admins registered within the app */}
-            <ProtectedRoute exact path="/adminusers" component={AddAdmin} /> 
+            <ProtectedRoute exact path="/adminusers" component={AddAdmin} />
             {/*Form for admin to fill out if they wish to add a new admin to the organization*/}
-            <ProtectedRoute exact path="/addadminform" component={AddAdminForm} />
+            <ProtectedRoute
+              exact
+              path="/addadminform"
+              component={AddAdminForm}
+            />
             <ProtectedRoute //page that allows admin to reset their password (while logged in)
               exact
               path="/resetadminpassword"
@@ -133,7 +142,7 @@ class App extends Component {
             <ProtectedRoute //page that shows admin a list of all the deductions made to students
               exact
               path="/deductionlist"
-              component={PastAdminDeductions }
+              component={PastAdminDeductions}
             />
             <ProtectedRoute //page for admin to fill out if they wish to charge a student
               exact //this links into their account and is part of the payroll calculations

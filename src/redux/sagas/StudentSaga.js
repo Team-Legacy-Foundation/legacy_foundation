@@ -185,6 +185,25 @@ function* adminentryupdate(action){
     }
 }
 
+function* adminentry(action) {
+  console.log("We are creating a student entry", action.payload);
+  try {
+    const response = yield axios.post(
+      `/api/student/adminmakeentry`,
+      action.payload
+    );
+
+    yield put({
+      type: "SET_STUDENT_ENTRIES_ADMIN_VIEW",
+      payload: response.data,
+    });
+
+    console.log("Success in updating student entry.");
+  } catch (error) {
+    console.log("error editing student entry", error);
+  }
+}
+
 
 
 function* resetStudentPassword(action) {
@@ -248,6 +267,7 @@ function* StudentSaga() {
      yield takeLatest('GET_STUDENTS', getStudents);
      yield takeLatest('FETCH_ENTRIES_FOR_ADMIN', getStudentEntriesForAdmin);
      yield takeLatest("ADMIN_ENTRY_UPDATE", adminentryupdate);
+     yield takeLatest("ADMIN_ENTRY", adminentry);
      yield takeLatest('RESET_STUDENT_PASSWORD', resetStudentPassword);
      yield takeLatest('DEACTIVATE_STUDENT', deactivateStudent);
      yield takeLatest('ACTIVATE_STUDENT', activateStudent);
