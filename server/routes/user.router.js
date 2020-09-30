@@ -272,6 +272,27 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
     });
 });
 
+router.put("/checktrip", rejectUnauthenticated, (req, res, next) => {
+  // pull out the incoming object data
+  const lcf_id = req.body.lcf_id;
+  const check_trip = req.body.check_trip;
+  
+
+  //initialize the id you will get from the student
+  //let lcf_id = "";
+
+  const queryText = `UPDATE "student" SET trip=$2 WHERE lcf_id =$1`;
+  pool
+    .query(queryText, [
+      lcf_id,
+      check_trip,
+    ]).catch(function (error) {
+      console.log("Sorry, there is an error", error);
+      res.sendStatus(500);
+    });
+});
+
+
 
 ////////////ROUTE BELOW IS PART OF TEMPLATE AND REMAINS HERE IN CASE OF OPEN REGISTRATION BEING NEEDED//////////
 // Handles POST request with new user data
