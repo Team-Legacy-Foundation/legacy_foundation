@@ -68,7 +68,8 @@ router.get('/confirm', rejectUnauthenticated, (req, res) => {
 ///////////////////// Grabs everything from the history table ////////////////////////////////////
 router.get('/history', rejectUnauthenticated, (req, res) => {
     console.log('Grabbing all records from history');
-    const queryText = 'SELECT * FROM history' //this is useful for the admin to view all past entries via the 'past reports' tab
+    const queryText =
+      'select * from "history" left join "charge_student" on history.lcf_id=charge_student.lcf_id'; //this is useful for the admin to view all past entries via the 'past reports' tab
     pool.query(queryText)
     .then((result) => {
         res.send(result.rows).status(200);
