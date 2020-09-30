@@ -257,7 +257,7 @@ router.get('/history/:id', rejectUnauthenticated, (req, res) => {
   const id = req.params.id
   console.log('Grabbing all records from history');
   const queryText =
-    "select * from history join charge_student on history.lcf_id=charge_student.lcf_id WHERE history.lcf_id = 1 ORDER BY date_submitted DESC";
+    "select * from history WHERE history.lcf_id = 1 ORDER BY date_submitted DESC";
   pool.query(queryText, [id])
   .then((result) => {
       res.send(result.rows).status(200);
