@@ -122,6 +122,7 @@ class PastAdminReports extends Component {
             item.student_debt,
             item.student_debt_payment,
             item.student_debt_remaining,
+            item.description,
             item.total,
           ])}
           columns={[
@@ -149,6 +150,7 @@ class PastAdminReports extends Component {
             "Student Debt",
             "Student Debt Payment",
             "Student Debt Remaining",
+            "Student Debt Description",
             "Total",
           ]}
           //title={"Past Reports"}
