@@ -180,6 +180,7 @@ CREATE TABLE "history" (
     "student_debt_payment" NUMERIC(10,2) NOT NULL DEFAULT 0,
     "student_debt_remaining" NUMERIC(10,2) NOT NULL DEFAULT 0,
 	"total" NUMERIC(10,2) NOT NULL,
+	"did_we_pay" VARCHAR(5),
 	CONSTRAINT "history_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
