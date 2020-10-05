@@ -80,18 +80,6 @@ class PastAdminReports extends Component {
             you want to look at!
           </span>
         </div>
-        <Form>
-          <center>
-            <Button
-              onClick={(event) => this.checkTrip(event)}
-              variant="success"
-              type="submit"
-              style={{ width: "20%", margin: "2%" }}
-            >
-              Check Trip Eligibility
-            </Button>
-          </center>
-        </Form>
         <MUITable
           data={this.props.history.map((item) => [
             item.lcf_id,
@@ -172,6 +160,18 @@ class PastAdminReports extends Component {
                 ))
               : ""}
           </Form.Control>
+          <Form>
+            <center>
+              <Button
+                onClick={(event) => this.checkTrip(event)}
+                variant="success"
+                type="submit"
+                style={{ width: "20%", margin: "2%" }}
+              >
+                Check Trip Eligibility
+              </Button>
+            </center>
+          </Form>
         </center>
         <br />
         <br />
