@@ -40,6 +40,17 @@ function* checktrip(action) {
   }
 }
 
+function* checkpaid(action) {
+  try {
+    //passes the incoming new student user info from the payload to the server
+    yield axios.put("/api/user/checkpaid", action.payload);
+
+    yield put({ type: "GET_STUDENTS" });
+  } catch (error) {
+    yield put({ type: "STUDENT_REGISTRATION_FAILED" });
+  }
+}
+
 function* deactivateStudent(action) {
   try {
     //clear any errors on the page before
@@ -275,6 +286,7 @@ console.log('inside get of student', response.data);
 function* StudentSaga() {
     yield takeLatest('REGISTER_STUDENT', registerStudent);
     yield takeLatest('CHECK_TRIP', checktrip);
+     yield takeLatest('CHECK_PAID', checkpaid);
      yield takeLatest('UPDATE_STUDENT', updateStudent);
      yield takeLatest('UPDATE_PASSWORD', updatePassword);
      yield takeLatest('FORGOT_STUDENT_PASSWORD', forgotStudentPassword);
