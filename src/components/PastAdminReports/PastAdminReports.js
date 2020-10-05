@@ -65,12 +65,35 @@ class PastAdminReports extends Component {
        });
     }
   };
+  didWePay = (event) => {
+    console.log("I am running")
+    console.log(this.props.history.map((item) => {
+      console.log("I am mapping", item.total)
+      console.log(item.lcf_id)
+      if (item.total === 0.00 || item.total === "0.00") {
+        console.log("not paid")
+      } else {
+        console.log("paid")
+      }
+    }))
+  }
   render() {
     return (
       <div style={{ padding: "2%" }}>
         <center>
           <h1>Past Reports</h1>
         </center>
+        <center>
+        <Button
+          onClick={(event) => this.didWePay(event)}
+          variant="success"
+          type="submit"
+          style={{ width: "20%", margin: "2%" }}
+        >
+          Check if we paid the students
+        </Button>
+        </center>
+        <br />
         <div id="tooltip">
           <InfoIcon></InfoIcon>
           <span id="tooltiptext">

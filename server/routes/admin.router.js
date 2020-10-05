@@ -69,7 +69,7 @@ router.get('/confirm', rejectUnauthenticated, (req, res) => {
 router.get('/history', rejectUnauthenticated, (req, res) => {
     console.log('Grabbing all records from history');
     const queryText =
-      'select * from "history" left join "charge_student" on history.lcf_id=charge_student.lcf_id'; //this is useful for the admin to view all past entries via the 'past reports' tab
+      'select history.lcf_id, first_name, last_name, pay_day, date_submitted, pass_class, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, attend_payment, pif_donations, bonus_amount, bonus_comments, gpa_bonus, amt_to_savings, money_to_student, student_debt, student_debt_payment, student_debt_remaining, total, "comments", did_we_pay from "history" left join "charge_student" on history.lcf_id=charge_student.lcf_id'; //this is useful for the admin to view all past entries via the 'past reports' tab
     pool.query(queryText)
     .then((result) => {
         res.send(result.rows).status(200);
