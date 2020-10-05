@@ -57,7 +57,7 @@ const Nav = (props) => (
           </Link>
           <Link className="nav-link" to="/pastadminreports">
             <PlaylistAddCheckIcon></PlaylistAddCheckIcon>
-            Past Reports
+            Past Reports/Trip Eligibility
           </Link>
 
           <Link className="nav-link" to="/deductionlist">

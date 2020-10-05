@@ -275,7 +275,7 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
 router.put("/checktrip", rejectUnauthenticated, (req, res, next) => {
   // pull out the incoming object data
   const lcf_id = req.body.lcf_id;
-  const check_trip = req.body.check_trip;
+  const trip = req.body.trip;
   
 
   //initialize the id you will get from the student
@@ -285,7 +285,7 @@ router.put("/checktrip", rejectUnauthenticated, (req, res, next) => {
   pool
     .query(queryText, [
       lcf_id,
-      check_trip,
+      trip,
     ]).catch(function (error) {
       console.log("Sorry, there is an error", error);
       res.sendStatus(500);
