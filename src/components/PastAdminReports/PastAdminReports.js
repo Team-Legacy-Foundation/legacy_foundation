@@ -40,11 +40,29 @@ class PastAdminReports extends Component {
       console.log("calc", counter / totalMaps);
     });
     if (counter / totalMaps < 0.8) {
+
       Swal.fire("This student is not eligible for a trip");
+          const {
+      lcf_id,
+    } = this.state;
+      this.props.dispatch({
+            type: "CHECK_TRIP",
+            payload: {
+              lcf_id: lcf_id,
+              trip: "no",
+            },
+          })
   
     } else {
       Swal.fire("this student is eligible for a trip");
-
+       const { lcf_id } = this.state;
+       this.props.dispatch({
+         type: "CHECK_TRIP",
+         payload: {
+           lcf_id: lcf_id,
+           trip: "yes",
+         },
+       });
     }
   };
   render() {
@@ -63,25 +81,6 @@ class PastAdminReports extends Component {
           </span>
         </div>
         <Form>
-          <center>
-            <Form.Label>Trip Eligibility</Form.Label>
-            <Form.Control
-              as="select"
-              onChange={(event) =>
-                this.setState({ lcf_id: event.target.value })
-              }
-            >
-              <option value="">Pick From Below </option>{" "}
-              {this.props.students
-                ? this.props.students.map((student) => (
-                    <option key={student.lcf_id} value={student.lcf_id}>
-                      {" "}
-                      {student.first_name}&nbsp; {student.last_name}&nbsp;{" "}
-                    </option>
-                  ))
-                : ""}
-            </Form.Control>
-          </center>
           <center>
             <Button
               onClick={(event) => this.checkTrip(event)}
@@ -154,13 +153,37 @@ class PastAdminReports extends Component {
           ]}
           //title={"Past Reports"}
         />
+        <br />
+        <br />
+        <br />
+        <center>
+          <h1>Trip Eligibility</h1>
+          <Form.Control
+            as="select"
+            onChange={(event) => this.setState({ lcf_id: event.target.value })}
+          >
+            <option value="">Pick From Below </option>{" "}
+            {this.props.students
+              ? this.props.students.map((student) => (
+                  <option key={student.lcf_id} value={student.lcf_id}>
+                    {" "}
+                    {student.first_name}&nbsp; {student.last_name}&nbsp;{" "}
+                  </option>
+                ))
+              : ""}
+          </Form.Control>
+        </center>
+        <br />
+        <br />
+        <br />
         <MUITable
           data={this.props.students.map((item) => [
             item.lcf_id,
             item.first_name,
             item.last_name,
+            item.trip,
           ])}
-          columns={["LCF ID", "First Name", "Last Name"]}
+          columns={["LCF ID", "First Name", "Last Name", "Eligable for a trip"]}
           //title={"Past Reports"}
         />
         <br />
