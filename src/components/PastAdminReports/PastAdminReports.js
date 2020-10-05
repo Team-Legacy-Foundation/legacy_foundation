@@ -196,6 +196,7 @@ class PastAdminReports extends Component {
             item.student_debt_remaining,
             item.description,
             item.total,
+            item.did_we_pay,
           ])}
           columns={[
             "LCF ID",
@@ -224,6 +225,7 @@ class PastAdminReports extends Component {
             "Student Debt Remaining",
             "Student Debt Description",
             "Total",
+            "Did we pay this student?"
           ]}
           //title={"Past Reports"}
         />
