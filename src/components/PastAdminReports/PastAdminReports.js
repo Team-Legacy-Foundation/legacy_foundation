@@ -64,13 +64,99 @@ class PastAdminReports extends Component {
          },
        });
     }
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
+  didWePay = (event) => {
+    let date = moment().format("L");
+    date = new Date(date)
+    this.props.history.map((item) => {
+      item.pay_day = new Date(item.pay_day)
+      let previous_pay_day = moment(item.pay_day).subtract(2, "weeks");
+      previous_pay_day = moment(previous_pay_day).format("L");
+      previous_pay_day = new Date(previous_pay_day);
+      console.log(item.pay_day)
+      console.log(date)
+      console.log(previous_pay_day)
+      if (date >= previous_pay_day) {
+      if (item.total === 0.00 || item.total === "0.00") {
+          this.props.dispatch({
+            type: "CHECK_PAID",
+            payload: {
+              lcf_id: item.lcf_id,
+              paid: "no",
+            },
+          });
+      } else {
+            this.props.dispatch({
+              type: "CHECK_PAID",
+              payload: {
+                lcf_id: item.lcf_id,
+                paid: "yes",
+              },
+            });
+      }
+    }
+    })
+    // this.props.students.map((student) => {
+    // let counter = 0;
+    // let totalMaps = 0;
+    // this.props.history.map((item, index) => {
+    //   if (Number(student.lcf_id) === Number(item.lcf_id)) {
+    //     if (item.attend_payment != "0.00") {
+    //       counter++;
+    //       console.log("counter", counter, student.lcf_id, item.lcf_id);
+    //     }
+    //     totalMaps++;
+    //   }
+      
+
+    //   console.log("totalMaps", totalMaps, student.lcf_id, item.lcf_id);
+    //   console.log("calc", counter / totalMaps, student.lcf_id, item.lcf_id);
+      
+    // });
+    //    if (counter / totalMaps < 0.8) {
+    //      this.props.dispatch({
+    //        type: "CHECK_TRIP",
+    //        payload: {
+    //          lcf_id: student.lcf_id,
+    //          trip: "no",
+    //        },
+    //      });
+    //      console.log(student.lcf_id, "no")
+    //    } else {
+    //      this.props.dispatch({
+    //        type: "CHECK_TRIP",
+    //        payload: {
+    //          lcf_id: student.lcf_id,
+    //          trip: "yes",
+    //        },
+    //      });
+    //       console.log(student.lcf_id, "yes");
+    //    }
+    //   })
+      this.props.dispatch({
+        type: "FETCH_HISTORY",
+      });
+  }
   render() {
     return (
       <div style={{ padding: "2%" }}>
         <center>
           <h1>Past Reports</h1>
         </center>
+        <center>
+        <Button
+          onClick={(event) => this.didWePay(event)}
+          variant="success"
+          type="submit"
+          style={{ width: "20%", margin: "2%" }}
+        >
+          Check if we paid the students
+        </Button>
+        </center>
+        <br />
         <div id="tooltip">
           <InfoIcon></InfoIcon>
           <span id="tooltiptext">
