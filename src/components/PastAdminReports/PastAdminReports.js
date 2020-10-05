@@ -146,8 +146,8 @@ class PastAdminReports extends Component {
         <center>
           <h1>Past Reports</h1>
         </center>
-        <center>
-        <Button
+        {/* <center> */}
+        {/* <Button
           onClick={(event) => this.didWePay(event)}
           variant="success"
           type="submit"
@@ -155,7 +155,7 @@ class PastAdminReports extends Component {
         >
           Check if we paid the students
         </Button>
-        </center>
+        </center> */}
         <br />
         <div id="tooltip">
           <InfoIcon></InfoIcon>
@@ -196,7 +196,6 @@ class PastAdminReports extends Component {
             item.student_debt_remaining,
             item.description,
             item.total,
-            item.did_we_pay,
           ])}
           columns={[
             "LCF ID",
@@ -225,7 +224,6 @@ class PastAdminReports extends Component {
             "Student Debt Remaining",
             "Student Debt Description",
             "Total",
-            "Did we pay this student?"
           ]}
           //title={"Past Reports"}
         />
