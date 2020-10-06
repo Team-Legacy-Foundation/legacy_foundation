@@ -43,7 +43,7 @@ function* checktrip(action) {
 function* checkpaid(action) {
   try {
     //passes the incoming new student user info from the payload to the server
-    yield axios.put("/api/user/checkpaid", action.payload);
+    yield axios.put("/api/user/checkpaid");
 
     yield put({ type: "GET_STUDENTS" });
   } catch (error) {
