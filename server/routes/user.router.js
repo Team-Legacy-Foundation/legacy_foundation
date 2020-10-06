@@ -293,14 +293,10 @@ router.put("/checktrip", rejectUnauthenticated, (req, res, next) => {
 });
 
 router.put("/checkpaid", rejectUnauthenticated, (req, res, next) => {
-  // pull out the incoming object data
-  const lcf_id = req.body.lcf_id;
-  const paid = req.body.paid;
-
   //initialize the id you will get from the student
   //let lcf_id = "";
-  const queryText = `UPDATE "history" SET did_we_pay=$2 WHERE lcf_id =$1`;
-  pool.query(queryText, [lcf_id, paid]).catch(function (error) {
+  const queryText = `UPDATE history SET did_we_pay = ( CASE WHEN (total = 0) THEN 'no' ELSE  'yes' END )`;
+  pool.query(queryText).catch(function (error) {
     console.log("Sorry, there is an error", error);
     res.sendStatus(500);
   });
