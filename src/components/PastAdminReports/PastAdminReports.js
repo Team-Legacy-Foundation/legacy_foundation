@@ -16,6 +16,7 @@ import Swal from "sweetalert2";
 class PastAdminReports extends Component {
   state = {
     lcf_id: "",
+    toggle: false,
   };
   componentDidMount() {
     this.props.dispatch({
@@ -69,6 +70,9 @@ class PastAdminReports extends Component {
     }, 2000);
   };
   didWePay = (event) => {
+    this.setState({
+      toggle: true,
+    })
       let date = moment().format("L");
       date = new Date(date);
       this.props.history.map((item) => {
@@ -140,6 +144,11 @@ class PastAdminReports extends Component {
         >
           Check if we paid the students
         </Button>
+        {this.state.toggle === true ? (
+          <div>Please wait while we calculate your information</div>
+        ) : (
+          <span></span>
+        )}
         </center>
         <br />
         <div id="tooltip">
