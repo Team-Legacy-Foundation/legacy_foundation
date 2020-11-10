@@ -7,7 +7,7 @@ CREATE TABLE "user" (
     "role" varchar,
     "last_login" TIMESTAMPTZ,
 	"token" varchar(255)
-    
+
 );
 
 
@@ -20,7 +20,7 @@ CREATE TABLE "admin" (
 	"password" varchar(255) NOT NULL,
 	"created_at" DATE NOT NULL DEFAULT 'now()',
 	"role" varchar(255) NOT NULL,
-	"token" varchar(255)
+	"token" varchar(255),
 	CONSTRAINT "admin_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -49,7 +49,7 @@ CREATE TABLE "student" (
 	"inactive" varchar(255) DEFAULT 'no',
 	"balance_due" NUMERIC(10,2) NOT NULL DEFAULT 0,
 	"trip" VARCHAR(5),
-	"token" varchar(255)
+	"token" varchar(255),
 	CONSTRAINT "student_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -220,5 +220,3 @@ VALUES
 ( 10, 10 ),
 ( 11, 10 ),
 ( 12, 10 );
-
-

@@ -125,14 +125,14 @@ router.post("/addadmin", rejectUnauthenticated, (req, res, next) => {
   const last_name = req.body.last_name;
   const email = req.body.email;
   const password = encryptLib.encryptPassword(req.body.password);
-  const created_at = req.body.created_at;
-  const role = req.body.role;
+  const created_at = moment.utc().format();
+  const role = 'admin';
   lcf_id = null;
 
   //initialize the id you will get from the student
   let admin_id = "";
 
-  const queryText = `INSERT INTO "admin" 
+  const queryText = `INSERT INTO "admin"
                 (first_name, last_name, email, password, role, created_at)
                 VALUES($1, $2, $3, $4, $5, $6) RETURNING id `;
   pool
@@ -203,7 +203,7 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
   //initialize the id you will get from the student
   //let lcf_id = "";
 
-  const queryText = `INSERT INTO "student" 
+  const queryText = `INSERT INTO "student"
                 (lcf_id, first_name, last_name, school_attend, school_id, student_email, password, grade, grad_year, last_login, created_at,   lcf_start_date, role,   pif_amount, savings, strikes, inactive, balance_due)
                 VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING lcf_id `;
   pool
@@ -276,7 +276,7 @@ router.put("/checktrip", rejectUnauthenticated, (req, res, next) => {
   // pull out the incoming object data
   const lcf_id = req.body.lcf_id;
   const trip = req.body.trip;
-  
+
 
   //initialize the id you will get from the student
   //let lcf_id = "";
@@ -370,7 +370,7 @@ router.put(`/adminpasswordreset/:admin_id`, rejectUnauthenticated, (req, res) =>
           console.log("Sorry, there was an error with your query: ", error);
           res.sendStatus(500); // HTTP SERVER ERROR
         });
-      
+
     })
     .catch((error) => {
       console.log(`Error on PUT with query ${error}`);

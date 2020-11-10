@@ -2,18 +2,21 @@
 
 ## Description
 The purpose of this app is to help centralize the gathering of student information as well as expedite the payroll process associated with
-the student's earings from attending school and getting good grades. 
+the student's earings from attending school and getting good grades.
 
 ## Installation
 In order to run this from Github, you will need to:
 
 1. Create a database named ``legacy_children_foundation``
-2. Use the queries in the ``database-v2.0.sql`` and ``database_functions.sql`` files to set up all the necessary tables and populate the needed data to allow the application to run correctly. The project is built on Postgres, so you will need to make sure to have that installed. (Postico recommended)
+2. Use the queries in the ``database-v2.0.sql``, ``database_functions.sql``, and ``database_security.sql`` files to set up all the necessary tables and populate the needed data to allow the application to run correctly. The project is built on Postgres, so you will need to make sure to have that installed. (Postico recommended)
 3. Clone/fork the repository
 4. Open up your editor of choice and run an ``npm install``
 5. Run ``npm run server`` in your terminal
 6. Run ``npm run client`` in your terminal
-7. The ``npm run client`` command should open up a new browser tab for you. 
+7. The ``npm run client`` command should open up a new browser tab for you.
+8. To create the initial admin application user in a blank admin database,
+   one way to do it is disable security by temporarily modifying `server/modules/authentication-middleware.js` to just `next()`, then POST `/api/user/addadmin` with a JSON object with values `first_name`, `last_name`, `email`, `password`,
+   then re-enable security.
 
 ## Usage
 
