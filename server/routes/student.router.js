@@ -72,7 +72,7 @@ router.put(`/updatestudent/:lcf_id`, rejectUnauthenticated, (req, res) => {
       let student_id = "";
 
 //double insert is needed since some of the information is found within the user AND student table
-      const queryText = `UPDATE "student" SET lcf_id=$1, first_name =$2, last_name=$3, school_attend=$4, school_id=$5, student_email=$6, grade=$7, grad_year=$8, lcf_start_date=$9, role=$10, pif_amount=$11  
+      const queryText = `UPDATE "student" SET lcf_id=$1, first_name =$2, last_name=$3, school_attend=$4, school_id=$5, student_email=$6, grade=$7, grad_year=$8, lcf_start_date=$9, role=$10, pif_amount=$11
                 WHERE lcf_id =$1 RETURNING id`;
       pool
         .query(queryText, [
@@ -132,18 +132,18 @@ router.put(`/updateentry/:lcf_id`, rejectUnauthenticated, (req, res) => {
         current_service_hours,
         hw_rm_attended,
         comments,
-        
+
       } = entry;
       if (entry === undefined) { //make sure bad data does not get through
           // stop, dont touch the database
           res.sendStatus(400); // 400 BAD REQUEST
           return;
       }
-      
+
       const queryText = `
-          UPDATE "entry" SET pass_class=$2, gpa=$3, clean_attend=$4, detent_hours=$5, act_or_job=$6, passed_ua=$7, current_service_hours=$8, hw_rm_attended=$9, comments=$10 
-          WHERE lcf_id = $1;`; 
-  
+          UPDATE "entry" SET pass_class=$2, gpa=$3, clean_attend=$4, detent_hours=$5, act_or_job=$6, passed_ua=$7, current_service_hours=$8, hw_rm_attended=$9, comments=$10
+          WHERE lcf_id = $1;`;
+
       pool
         .query(queryText, [
           lcf_id,
@@ -208,11 +208,11 @@ router.put(`/updateentry/:lcf_id`, rejectUnauthenticated, (req, res) => {
     }
     getDate();
 
-      
+
       const queryText = `
-              INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`; 
-  
+              INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`;
+
       pool
         .query(queryText, [
           lcf_id,
@@ -241,8 +241,8 @@ router.put(`/updateentry/:lcf_id`, rejectUnauthenticated, (req, res) => {
           res.sendStatus(500); // HTTP SERVER ERROR
         });
   }); // end POST
-  
-  
+
+
 
 //PUT or update a student's password
 //this is used by an admin when they go to manually reset a student's password
@@ -330,7 +330,7 @@ router.get('/history/:id', rejectUnauthenticated, (req, res) => {
   const id = req.params.id
   console.log('Grabbing all records from history');
   const queryText =
-    "select * from history WHERE history.lcf_id = 1 ORDER BY date_submitted DESC";
+    "select * from history WHERE history.lcf_id = $1 ORDER BY date_submitted DESC";
   pool.query(queryText, [id])
   .then((result) => {
       res.send(result.rows).status(200);
