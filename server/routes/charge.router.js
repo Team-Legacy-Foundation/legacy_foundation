@@ -1,14 +1,12 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-const {
-  rejectUnauthenticated,
-} = require("../modules/authentication-middleware");
+const { allowAdminOnly } = require("../modules/authentication-middleware");
 
 //This route deals with charges being made to the student and retreiving pst charges from the database
 
 //Adds a new charge made by the admin to the "charge_student" table
-router.post("/", rejectUnauthenticated, (req, res) => {
+router.post("/", allowAdminOnly, (req, res) => {
     // HTTP REQUEST BODY
     const charge = req.body; // pull the object out out of the HTTP REQUEST
     const {
@@ -28,7 +26,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     //this will create a new row for a charge in the "charge_student" table
     const queryText = `
 
-        INSERT INTO "charge_student" (lcf_id, admin_id, date, type, description, amount) 
+        INSERT INTO "charge_student" (lcf_id, admin_id, date, type, description, amount)
         VALUES ($1, $2, $3, $4, $5, $6);`; //grabs database
 
     pool
@@ -42,7 +40,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
       ])
       .then((result) => {
         const query2Text =
-        'UPDATE "student" SET balance_due=$1+balance_due WHERE lcf_id=$2'; 
+        'UPDATE "student" SET balance_due=$1+balance_due WHERE lcf_id=$2';
         //Charge is added to balance_due attached to the student so it can be viewed on the student home list
       pool
         .query(query2Text, [

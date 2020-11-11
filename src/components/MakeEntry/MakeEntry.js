@@ -43,6 +43,7 @@ const YellowRadio = withStyles({
 
 //The purpose of this page is to capture the student's activity for the past pay period
 class MakeEntry extends Component {
+
   state = {
     //state info for entry form
     lcf_id: this.props.user.lcf_id,

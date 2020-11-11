@@ -1,9 +1,7 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-const {
-  rejectUnauthenticated,
-} = require("../modules/authentication-middleware");
+const { allowAdminOnly, allowAdminOrSelf } = require("../modules/authentication-middleware");
 
 const moment = require('moment');
 
@@ -11,9 +9,9 @@ const moment = require('moment');
 //(i.e. entries are the information gathered from students from the "Make Entry" form)
 
 //GET all rows found in the entry table
-router.get('/', rejectUnauthenticated, (req, res) => {
+router.get('/', allowAdminOnly, (req, res) => {
     pool
-      .query("SELECT * from entry") 
+      .query("SELECT * from entry")
       .then((result) => {
         res.send(result.rows);
       })
@@ -24,9 +22,9 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 }) //end GET
 
 //GET an entry based off the lcf_id passed in
-router.get('/:id', rejectUnauthenticated, (req, res) => {
+router.get('/:lcf_id', allowAdminOrSelf, (req, res) => {
   pool
-    .query("SELECT * from entry WHERE lcf_id=$1",[req.params.id])
+    .query("SELECT * from entry WHERE lcf_id=$1",[req.params.lcf_id])
     .then((result) => {
       res.send(result.rows);
     })
@@ -36,9 +34,8 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
     });
 }) //end GET
 
-//POST i.e. make a new entry in the entry table. 
-router.post("/", rejectUnauthenticated, (req, res) => {
-  console.log('This means entry router is running')
+//POST i.e. make a new entry in the entry table.
+router.post("/", allowAdminOrSelf, (req, res) => {
     // HTTP REQUEST BODY
     const entry = req.body; // pull the object out out of the HTTP REQUEST
     const {
@@ -56,8 +53,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
       passed_ua,
       current_service_hours,
       hw_rm_attended,
-      comments,
-      
+      comments
     } = entry;
     if (entry === undefined) {
         // stop, dont touch the database
@@ -81,7 +77,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
 
 
     const queryText = `
-        INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
+        INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`; //grabs database
 
     pool
@@ -117,7 +113,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
 //Delete an entry based off the id of the entry itself
 //USED FOR TESTING PURPOSES
 //Ideally, entries are not deleted willy nilly
-router.delete("/:id", rejectUnauthenticated, (req, res) => {
+router.delete("/:id", allowAdminOnly, (req, res) => {
   pool
     .query('DELETE FROM entry WHERE id=$1', [req.params.id])
     .then((result) => {

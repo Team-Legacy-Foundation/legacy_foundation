@@ -1,7 +1,5 @@
 const express = require("express");
-const {
-  rejectUnauthenticated,
-} = require("../modules/authentication-middleware");
+const { rejectUnauthenticated, allowAdminOnly, allowAdminOrSelf } = require("../modules/authentication-middleware");
 const encryptLib = require("../modules/encryption");
 const pool = require("../modules/pool");
 const userStrategy = require("../strategies/user.strategy");
@@ -118,7 +116,7 @@ router.post("/forgot/admin/:token/:email", (req, res) => {
 
 //Handles POST to add a new admin
 //The password is encrypted before being inserted into the database
-router.post("/addadmin", rejectUnauthenticated, (req, res, next) => {
+router.post("/addadmin", allowAdminOnly, (req, res, next) => {
 
   // pull out the incoming object data
   const first_name = req.body.first_name;
@@ -176,7 +174,7 @@ router.post("/addadmin", rejectUnauthenticated, (req, res, next) => {
 
 //Handles POST to the student table to add a new student
 //The password is encrypted before being inserted into the database
-router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
+router.post("/addstudent", allowAdminOnly, (req, res, next) => {
 
   // pull out the incoming object data
   const first_name = req.body.first_name;
@@ -272,7 +270,7 @@ router.post("/addstudent", rejectUnauthenticated, (req, res, next) => {
     });
 });
 
-router.put("/checktrip", rejectUnauthenticated, (req, res, next) => {
+router.put("/checktrip", allowAdminOnly, (req, res, next) => {
   // pull out the incoming object data
   const lcf_id = req.body.lcf_id;
   const trip = req.body.trip;
@@ -292,7 +290,7 @@ router.put("/checktrip", rejectUnauthenticated, (req, res, next) => {
     });
 });
 
-router.put("/checkpaid", rejectUnauthenticated, (req, res, next) => {
+router.put("/checkpaid", allowAdminOnly, (req, res, next) => {
   //initialize the id you will get from the student
   //let lcf_id = "";
   const queryText = `UPDATE history SET did_we_pay = ( CASE WHEN (total = 0) THEN 'no' ELSE  'yes' END )`;
@@ -308,6 +306,7 @@ router.put("/checkpaid", rejectUnauthenticated, (req, res, next) => {
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
+/*
 router.post("/register", rejectUnauthenticated, (req, res, next) => {
   const email = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
@@ -318,7 +317,9 @@ router.post("/register", rejectUnauthenticated, (req, res, next) => {
     .query(queryText, [email, password])
     .then(() => res.sendStatus(201))
     .catch(() => res.sendStatus(500));
-});/////////////////////////////////////////////////////////////////////////////////////////
+});
+*/
+/////////////////////////////////////////////////////////////////////////////////////////
 
 // Handles login form authenticate/login POST
 // userStrategy.authenticate('local') is middleware that we run on this route
@@ -348,7 +349,7 @@ router.post("/logout", (req, res) => {
 
 
 //PUT or updates the admin password from 'reset password' tab admin side
-router.put(`/adminpasswordreset/:admin_id`, rejectUnauthenticated, (req, res) => {
+router.put(`/adminpasswordreset/:admin_id`, allowAdminOnly, (req, res) => {
   console.log('we are about to change the admin password:', req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
   const adminID = req.params.admin_id;
@@ -383,7 +384,7 @@ router.put(`/adminpasswordreset/:admin_id`, rejectUnauthenticated, (req, res) =>
 
 
 //PUT or update the student password via the 'reset password' tab student side
-router.put(`/studentpasswordreset/:lcf_id`, rejectUnauthenticated, (req, res) => {
+router.put(`/studentpasswordreset/:lcf_id`, allowAdminOrSelf, (req, res) => {
   console.log('we are about to change the student password:', req.body);
   const newPassword = encryptLib.encryptPassword(req.body.password);
   const studentID = req.params.lcf_id;
@@ -478,7 +479,7 @@ router.put(`/passwordforgot/admin`, (req, res) => {
 //DELETEs student from student table based off lcf_id
 //USED FOR TESTING PURPOSES
 //Ideally, all students are only 'soft deleted' or in this app, deactivated
-router.delete("/:id", rejectUnauthenticated, (req, res) => {
+router.delete("/:id", allowAdminOnly, (req, res) => {
   pool
     .query('DELETE FROM "student" "user" WHERE lcf_id=$1', [req.params.id])
     .then((result) => {

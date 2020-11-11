@@ -17,7 +17,7 @@ function* registerStudent(action) {
         yield axios.post('/api/user/addstudent', action.payload);
 
          yield put({ type: "GET_STUDENTS"});
-      
+
 
         //console.log('we are about to send data for a new student', action.payload);
     }catch(error){
@@ -100,7 +100,7 @@ function* updateStudent(action) {
         yield axios.put(`/api/student/updatestudent/${action.payload.lcf_id}`, action.payload);
          yield put({ type: "GET_STUDENTS"});
 
-       
+
     } catch (error) {
         console.log('Error with student update:', error);
         yield put({
@@ -201,7 +201,7 @@ function* adminentryupdate(action){
     console.log('We are updating a student entry', action.payload);
     try {
         const response = yield axios.put(`/api/student/updateentry/${action.payload.lcf_id}`, action.payload);
-       
+
         yield put({type: 'SET_STUDENT_ENTRIES_ADMIN_VIEW', payload: response.data});
 
         console.log("Success in updating student entry.");
@@ -239,7 +239,7 @@ function* resetStudentPassword(action) {
              //passes the incoming new student password info from the payload to the server
              console.log('we are about to reset the student password', action.payload);
              const response = yield axios.put(`/api/user/studentpasswordreset/${action.payload.lcf_id}`, action.payload);
-             
+
              yield put({ type: "SET_USER", payload: response.data });
             console.log("Success in updating new password or email.");
 
@@ -275,7 +275,7 @@ console.log('inside get of student', response.data);
       yield put({
           type: 'EDIT_STUDENT',
           payload: response.data
-      });   
+      });
   } catch (error) {
       console.log('Error with getting the list of Students:', error);
   }
@@ -284,29 +284,22 @@ console.log('inside get of student', response.data);
 
 
 function* StudentSaga() {
-    yield takeLatest('REGISTER_STUDENT', registerStudent);
-    yield takeLatest('CHECK_TRIP', checktrip);
-     yield takeLatest('CHECK_PAID', checkpaid);
-     yield takeLatest('UPDATE_STUDENT', updateStudent);
-     yield takeLatest('UPDATE_PASSWORD', updatePassword);
-     yield takeLatest('FORGOT_STUDENT_PASSWORD', forgotStudentPassword);
-     yield takeLatest('DELETE_STUDENT', deleteStudent);
-     yield takeLatest('GET_STUDENTS', getStudents);
-     yield takeLatest('FETCH_ENTRIES_FOR_ADMIN', getStudentEntriesForAdmin);
-     yield takeLatest("ADMIN_ENTRY_UPDATE", adminentryupdate);
-     yield takeLatest("ADMIN_ENTRY", adminentry);
-     yield takeLatest('RESET_STUDENT_PASSWORD', resetStudentPassword);
-     yield takeLatest('DEACTIVATE_STUDENT', deactivateStudent);
-     yield takeLatest('ACTIVATE_STUDENT', activateStudent);
-     //yield takeLatest('EDIT_STUDENT', editStudent)
-     yield takeLatest('GET_STUDENT_FOR_EDIT', getStudentForEdit)
-     
+  yield takeLatest('REGISTER_STUDENT', registerStudent);
+  yield takeLatest('CHECK_TRIP', checktrip);
+  yield takeLatest('CHECK_PAID', checkpaid);
+  yield takeLatest('UPDATE_STUDENT', updateStudent);
+  yield takeLatest('UPDATE_PASSWORD', updatePassword);
+  yield takeLatest('FORGOT_STUDENT_PASSWORD', forgotStudentPassword);
+  yield takeLatest('DELETE_STUDENT', deleteStudent);
+  yield takeLatest('GET_STUDENTS', getStudents);
+  yield takeLatest('FETCH_ENTRIES_FOR_ADMIN', getStudentEntriesForAdmin);
+  yield takeLatest("ADMIN_ENTRY_UPDATE", adminentryupdate);
+  yield takeLatest("ADMIN_ENTRY", adminentry);
+  yield takeLatest('RESET_STUDENT_PASSWORD', resetStudentPassword);
+  yield takeLatest('DEACTIVATE_STUDENT', deactivateStudent);
+  yield takeLatest('ACTIVATE_STUDENT', activateStudent);
+  //yield takeLatest('EDIT_STUDENT', editStudent)
+  yield takeLatest('GET_STUDENT_FOR_EDIT', getStudentForEdit)
 }
 
 export default StudentSaga;
-
-
-
-
-
-
