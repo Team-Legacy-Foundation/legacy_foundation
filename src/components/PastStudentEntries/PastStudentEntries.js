@@ -15,9 +15,8 @@ import moment from "moment";
 
 class PastStudentEntries extends Component {
   componentDidMount() {
-    //fetches music list from database on mount
-      this.props.dispatch({ type: 'FETCH_STUDENT_HISTORY', payload: this.props.user.lcf_id});
-       this.props.dispatch({ type: "FETCH_ENTRY", });
+    this.props.dispatch({ type: 'FETCH_STUDENT_HISTORY', payload: this.props.user.lcf_id});
+    this.props.dispatch({ type: "FETCH_ENTRY" });
   }
 
   total(amount) {
@@ -27,10 +26,10 @@ class PastStudentEntries extends Component {
       total += Number(element.amt_to_savings)
     }return total.toFixed(2)
   }
-  
+
   render() {
     const gunnarStyle = { minHeight: "500px", minWidth: "150px", textAlign:'center' };
-    
+
     if (this.props.studentHistory.length === 0 ) { //conditional rendering to handle case of no entries for student
       return (
         <Paper elevation={5} style={{margin:'5%', padding:'5%', textAlign:'center'}}>
@@ -52,10 +51,10 @@ class PastStudentEntries extends Component {
 
       <div style={{margin:'2%'}}>
         <center><h1>Past Entries</h1></center><br/>
-      
+
         <h5>Total Savings to Date: ($ {this.total(this.props.studentHistory)})</h5>
       <Paper elevation={5} style={{height: "100%", overflow: "scroll", border: "",}}>
-        
+
         <Table style={{margin:'1%',}}>
           <TableHead>
             <TableRow style={gunnarStyle}>
@@ -110,7 +109,7 @@ class PastStudentEntries extends Component {
            <TableCell style={gunnarStyle}>Pending Approval</TableCell>
             <TableCell style={gunnarStyle}>Pending Approval</TableCell>
           </TableRow>}
-          
+
             {
             this.props.studentHistory.map((entryItem, index) => {
               // if (index >= this.props.user.id === entryItem.student_id) {
@@ -118,10 +117,10 @@ class PastStudentEntries extends Component {
               // }
             })}
           </TableBody>
-          
+
         </Table>
         </Paper>
-        
+
       </div>
     );}
   }
@@ -130,7 +129,7 @@ class PastStudentEntries extends Component {
 const mapStateToProps = (state) => ({
   user: state.user,
   studentHistory: state.studentHistory.studentHistoryReducer,
-   entry: state.entry.entryList,
+  entry: state.entry.entryList
 });
 
 export default withRouter(connect(mapStateToProps)(PastStudentEntries));

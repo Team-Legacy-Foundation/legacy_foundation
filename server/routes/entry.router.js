@@ -36,9 +36,9 @@ router.get('/:lcf_id', allowAdminOrSelf, (req, res) => {
 
 //POST i.e. make a new entry in the entry table.
 router.post("/", allowAdminOrSelf, (req, res) => {
-    // HTTP REQUEST BODY
-    const entry = req.body; // pull the object out out of the HTTP REQUEST
-    const {
+    const entry = req.body;
+    let {
+      pay_day,
       pass_class,
       gpa,
       lcf_id,
@@ -56,29 +56,28 @@ router.post("/", allowAdminOrSelf, (req, res) => {
       comments
     } = entry;
     if (entry === undefined) {
-        // stop, dont touch the database
-        res.sendStatus(400); // 400 BAD REQUEST
-        return;
+      res.sendStatus(400);
+      return;
     }
-        let date = moment.utc();
-        let previous_pay_day = moment.utc("2020-08-10T00:00:00.000-05");
-        let pay_day = moment.utc(previous_pay_day)
-          .add(2, "week")
 
-    function getDate() {
-      if (date >= pay_day) {
-        previous_pay_day = pay_day
-         pay_day = moment(previous_pay_day)
-           .add(2, "week")
-           getDate();
+    const date = moment.utc();
+    let previous_pay_day;
+    if (pay_day) {
+      previous_pay_day = moment(pay_day).add(-2, "week").format("YYYY-MM-DD");
+    } else {
+      previous_pay_day = moment.utc("2020-08-10T00:00:00.000-05");
+      pay_day = moment.utc(previous_pay_day).add(2, "week")
+      while (date >= pay_day) {
+        previous_pay_day = pay_day;
+        pay_day = moment(previous_pay_day).add(2, "week");
       }
+      pay_day = pay_day.format("YYYY-MM-DD");
+      previous_pay_day = previous_pay_day.format("YYYY-MM-DD");
     }
-    getDate();
-
 
     const queryText = `
-        INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`; //grabs database
+      INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`;
 
     pool
       .query(queryText, [
@@ -97,10 +96,6 @@ router.post("/", allowAdminOrSelf, (req, res) => {
         comments,
       ])
       .then(function (result) {
-        // result.rows: 'INSERT 0 1';
-        // it worked!
-        console.log('post worked!')
-        //res.sendStatus(201); //created
         res.status(201).send(result.rows);
       })
       .catch(function (error) {

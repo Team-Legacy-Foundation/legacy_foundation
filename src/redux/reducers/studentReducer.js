@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-// Stores the information from the students table in the database
+
 const studentlist = (state = [], action) => {
     switch (action.type) {
         case "SET_STUDENTS":
@@ -18,8 +18,19 @@ const studententriesadmin = (state = [], action) => {
     }
 };
 
+// This is used by components so they can tell when
+// they have fresh data.
+const entriesLoadNumber = (state = 0, action) => {
+    switch (action.type) {
+        case 'SET_STUDENT_ENTRIES_ADMIN_VIEW':
+            return state + 1;
+        default:
+            return state;
+    }
+}
 
 export default combineReducers({
    studentlist,
    studententriesadmin,
+   entriesLoadNumber
 });

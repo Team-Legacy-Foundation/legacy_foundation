@@ -3,21 +3,36 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { green, yellow } from "@material-ui/core/colors";
 import {
-  TextField,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   Button,
   FormControl,
+  FormControlLabel,
   FormLabel,
-  withStyles,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Radio,
+  RadioGroup,
   Slider,
+  Snackbar,
+  TextField,
+  Typography,
+  withStyles
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
 import "./MakeEntry.css";
 import moment from "moment";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import withReactContent from "sweetalert2-react-content";
+
+const SwalJsx = withReactContent(Swal);
 
 const GreenRadio = withStyles({
   // turns the radio button green
@@ -45,6 +60,11 @@ const YellowRadio = withStyles({
 class MakeEntry extends Component {
 
   state = {
+    selected_pay_day_ymd: null,
+    status_rows: [],
+    initialEntriesLoadNumber: this.props.entriesLoadNumber,
+    savingEntriesLoadNumber: null,
+
     //state info for entry form
     lcf_id: this.props.user.lcf_id,
     pass_class: "",
@@ -60,7 +80,7 @@ class MakeEntry extends Component {
     passed_ua: null,
     current_service_hours: 0,
     hw_rm_attended: null,
-    comments: null,
+    comments: '',
     //error values used to conditionally render error toasts, default is false
     error: false,
     pay_day_error: false,
@@ -69,153 +89,121 @@ class MakeEntry extends Component {
   };
 
   componentWillMount() {
-    //current date
-    let date = moment();
-    //preset previous_pay_day
-    let previous_pay_day = moment("2020-09-21T00:00:00.000-05"); //midnight central time
-    //preset current pay_day
-    let pay_day = moment(previous_pay_day);
-    let counter = 0;
-    //this function defines the current pay period
-    function getDate() {
-      //if date is greater or equal to the current date, run the logic below
-      if (date >= pay_day) {
-        counter++;
-        //define previous_pay_day to be the same as current pay_day
-        previous_pay_day = pay_day;
-        //define current pay_day to be pay_day plus 2 weeks
-        pay_day = moment(previous_pay_day).add(2, "week");
-        //call the function again.
-        getDate();
-      }
-    }
-    //call getDate
-    getDate();
-    if (counter === 3) {
-       this.setState({
-         clean_attend: 8,
-         total_days: 8,
-       })
-      } else if (counter === 4) {
-          this.setState({
-            clean_attend: 9,
-            total_days: 9,
-          });
-      } else if (counter === 5) {
-          this.setState({
-            clean_attend: 7,
-            total_days: 7,
-          });
-      } else if (counter === 7) {
-          this.setState({
-            clean_attend: 8,
-            total_days: 8,
-          });
-      } else if (counter === 8) {
-         this.setState({
-           clean_attend: 5,
-           total_days: 5,
-         });
-      } else if (counter === 9) {
-         this.setState({
-           clean_attend: 9,
-           total_days: 9,
-         });
-      } else if (counter === 11) {
-         this.setState({
-           clean_attend: 8,
-           total_days: 8,
-         });
-      } else if (counter === 13) {
-          this.setState({
-            clean_attend: 5,
-            total_days: 5,
-          });
-      } else if (counter === 14) {
-         this.setState({
-           clean_attend: 9,
-           total_days: 9,
-         });
-      } else if (counter === 16) {
-         this.setState({
-           clean_attend: 9,
-           total_days: 9,
-         });
-      } else if (counter === 18) {
-         this.setState({
-           clean_attend: 9,
-           total_days: 9,
-         });
-      } else if (counter === 19) {
-         this.setState({
-           clean_attend: 3,
-           total_days: 3,
-         });
-      }
-    //formats previous_pay_day
-    previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
-    //formats current pay_day
-    pay_day = moment(pay_day).format("MMMM Do YYYY");
+    const payDayInfo = this.findCurrentPayDay();
+    const statusRows = [
+      this.buildStatusRow(payDayInfo.pay_day_moment),
+      this.buildStatusRow(moment(payDayInfo.pay_day_moment).add(-2, "week")),
+      this.buildStatusRow(moment(payDayInfo.pay_day_moment).add(-4, "week"))
+    ];
+
+    // These are the hard-coded number of school days per pay
+    // period starting with 9/21/2020. It looks like we're good
+    // for about 19 pay periods, and then the code will need to
+    // be modified to handle this. -JP, 11/19/20
+    //                              3           7          11                      19
+    const daysByCounter = [0, 0, 0, 8, 9, 7, 0, 8, 5, 9, 0, 8, 0, 5, 9, 0, 9, 0, 9, 3];
+    let totalDays = daysByCounter[payDayInfo.counter];
+    if (!totalDays) totalDays = 10;
+    this.setState({
+      clean_attend: totalDays,
+      total_days: totalDays,
+      status_rows: statusRows
+    });
   }
 
   componentDidMount() {
-    //grabs student data from database
-    this.props.dispatch({
-      type: "GET_STUDENTS",
+    this.props.dispatch({ type: "GET_STUDENTS" });
+    this.props.dispatch({ type: "FETCH_STUDENT_HISTORY", payload: this.state.lcf_id});
+    this.props.dispatch({ type: "FETCH_ENTRIES_FOR_ADMIN" });
+  }
+
+  /** @param payDay {moment.Moment} */
+  buildStatusRow(payDay) {
+    const row = {
+      period_start: moment(payDay).add(-2, "week"),
+      period_end: moment(payDay).add(-1, "day"),
+      pay_day: payDay,
+      pay_day_ymd: payDay.format('YYYY-MM-DD')
+    };
+    row.title = `${row.period_start.format("MMM D")} - ${row.period_end.format("MMM D, YYYY")}`;
+    row.long_title = `${row.period_start.format("MMMM D")} - ${row.period_end.format("MMMM D, YYYY")}`;
+    return row;
+  }
+
+  getEntryToMatchPayDay(studentLcfId, payDayYmd) {
+    const allEntries = (this.props.entries || []).concat(this.props.studentHistory || []);
+    return allEntries.find(e => {
+      if (e.lcf_id !== studentLcfId) {
+        return false;
+      }
+      if (typeof e.pay_day === 'string') {
+        return e.pay_day.substr(0, 10) === payDayYmd;
+      } else {
+        return payDayYmd === moment(e.pay_day).format('YYYY-MM-DD');
+      }
     });
-    //fetch entries for admins
-    this.props.dispatch({
-      type: "FETCH_ENTRIES_FOR_ADMIN",
-    });
-  } //end componentDidMount
+  }
+
+  /** @returns {{ pay_day_moment: moment.Moment, pay_day: string, previous_pay_day: string, counter: number }} */
+  findCurrentPayDay() {
+    let today = moment();
+    let previous_pay_day = moment("2020-09-21T00:00:00.000-05"); //midnight central time
+    let pay_day = moment(previous_pay_day);
+    let counter = 0;
+    while (today >= pay_day) {
+      counter++;
+      previous_pay_day = pay_day;
+      pay_day = moment(previous_pay_day).add(2, "week");
+    }
+    previous_pay_day = previous_pay_day.format("MMMM Do YYYY");
+    return {
+      pay_day_moment: pay_day,
+      pay_day: pay_day.format("MMMM Do YYYY"),
+      previous_pay_day,
+      counter
+    };
+  }
 
   //This function handles storing input values into state on change
   handleChange = (event, fieldName) => {
     this.setState({ [fieldName]: event.target.value });
-  }; //end handleChange
+  };
 
-  // handleChange for gpa
   handleChangeGpa = (event, gpa) => {
     gpa = Number(gpa);
     this.setState({
       gpa,
     });
-  }; //end handleChangeGpa
+  };
 
-  //handleChange for absent
   handleChangeAbsent = (event, absent) => {
     absent = Number(absent);
     this.setState({
       absent,
     });
-  }; //end handleChangeAbsent
+  };
 
-  //handleChange for tardy
   handleChangeTardy = (event, tardy) => {
     tardy = Number(tardy);
-
     this.setState({
       tardy,
     });
-  }; //end handleChangeTardy
+  };
 
-  //handleChange for late
   handleChangeLate = (event, late) => {
     late = Number(late);
     this.setState({
       late,
     });
-  }; //end handleChangeLate
+  };
 
-  //handleChange for truant
   handleChangeTruant = (event, truant) => {
     truant = Number(truant);
     this.setState({
       truant,
     });
-  }; //end handleChangeTruant
+  };
 
-  //handleChange for attendance
   handleChangeAttendance = (event) => {
     let { absent, tardy, late, truant, clean_attend } = this.state;
 
@@ -223,13 +211,11 @@ class MakeEntry extends Component {
       clean_attend: clean_attend - absent - tardy - late - truant,
       toggle: !this.state.toggle,
     });
-  }; //end handleChange
+  };
 
   //this function sends user information to the server to store in the database
   submitInfo = (event) => {
-    //prevents any default actions
     event.preventDefault();
-    //grabs local state and defines it in a var of the same name
     const {
       pass_class,
       lcf_id,
@@ -257,325 +243,240 @@ class MakeEntry extends Component {
       current_service_hours === "" ||
       hw_rm_attended === null
     ) {
-      //...if they are null set error state to true to conditionally render alert toast
-      this.setState({
-        error: true,
-      });
-      //...set it back to false after 5 secondss
-      setTimeout(() => {
-        this.setState({
-          error: false,
-        });
-      }, 5000);
-      //stop the function
+      this.setState({ error: true });
+      setTimeout(() => this.setState({ error: false }), 5000);
       return;
     }
 
-    //saves studentHistory from reducer to historyEntries
-    let historyEntries = this.props.studentHistory;
-    //current date
-    let date = moment();
-    //preset previous_pay_day
-    let previous_pay_day = moment("2020-08-10T00:00:00.000-05");
-    //preset pay_day
-    let pay_day = moment(previous_pay_day);
-
-    //function to set pay_day and previous_pay_day to the current pay period
-    function getDate() {
-      //if date is greater or equal to the current date, run the logic below
-      if (date >= pay_day) {
-        //define previous_pay_day to be the same as current pay_day
-        previous_pay_day = pay_day;
-        //define current pay_day to be pay_day plus 2 weeks
-        pay_day = moment(previous_pay_day).add(2, "week");
-        //call the function again.
-        getDate();
+    const historyEntries = this.props.studentHistory;
+    for (let history of historyEntries) {
+      let historyYmd = moment.utc(history.pay_day).format("YYYY-MM-DD");
+      if (historyYmd === this.state.selected_pay_day_ymd) {
+        this.setState({ pay_day_error: true });
+        setTimeout(() => this.setState({ pay_day_error: false }), 5000);
+        return;
       }
     }
-    //call getDate
-    getDate();
-    //formats previous_pay_day
-    previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
-    //formats current pay_day
-    pay_day = moment(pay_day).format("MMMM Do YYYY hh:mm:ss");
-    console.log("pay_day", pay_day)
-    console.log("previous_pay_day", previous_pay_day)
-    //loops through historyEntries
-    for (let history of historyEntries) {
-      //formats history_pay_day
-      let history_pay_day = moment
-        .utc(history.pay_day)
-        .format("MMMM Do YYYY hh:mm:ss"); //trying to add time
-      //checks to see if a student has made an entry for that pay period
-      if (history_pay_day === pay_day) {
-        //sets state to true which conditionally renders an error
-        this.setState({
-          pay_day_error: true,
-        });
-        //...turns it back to false after 5 seconds
-        setTimeout(() => {
-          this.setState({
-            pay_day_error: false,
-          });
-        }, 5000);
-        return;
-      } //end if statement
-    }
 
-    //begin sweetAlerts
-    Swal.fire({
+    SwalJsx.fire({
       title: "Please confirm details below",
-      html: `1. Passing classes: ${pass_class} </br>
-      2. GPA: ${gpa} </br>
-      3a. Days absent: ${absent} </br>
-      3b. Days tardy: ${tardy} </br>
-      3c. Days late ${late} </br>
-      3d. Days truant ${truant} </br>
-      3e. Days punctual: ${clean_attend} </br>
-      4. Detention hours: ${detent_hours} </br>
-      5. Job or after school activities: ${act_or_job} </br>
-      6. Drug free: ${passed_ua} </br>
-      7. service hours: ${current_service_hours} </br>
-      8. homeroom attendence: ${hw_rm_attended} </br>
-      9. comments: ${comments}`,
+      html: this.buildEntryPreview(this.state),
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#5cb85c",
       cancelButtonColor: "#fcb70a",
       confirmButtonText: "Confirm my entry",
     }).then((result) => {
-      //end sweetAlerts
-
-      //on confirm run the dispatch to send makeEntry info over to redux sagas
-      if (result.value) {
-        this.props.dispatch({
-          type: "ADD_ENTRY",
-          payload: {
-            pass_class: pass_class,
-            lcf_id: lcf_id,
-            gpa: gpa,
-            absent: absent,
-            tardy: tardy,
-            late: late,
-            truant: truant,
-            clean_attend: clean_attend,
-            detent_hours: detent_hours,
-            act_or_job: act_or_job,
-            passed_ua: passed_ua,
-            current_service_hours: current_service_hours,
-            hw_rm_attended: hw_rm_attended,
-            comments: comments,
-          },
-        });
-        //begin sweetAlerts
-        Swal.fire("Success!", "Your entry has been logged.", "success"); //end sweetAlerts
-        //pushes user back to homepage
-        this.props.history.push("/home");
+      if (!result.value) {
+        return;
       }
+      this.setState({ savingEntriesLoadNumber: this.props.entriesLoadNumber});
+      this.props.dispatch({
+        type: "ADD_ENTRY",
+        payload: {
+          pay_day: this.state.selected_pay_day_ymd,
+          pass_class: pass_class,
+          lcf_id: lcf_id,
+          gpa: gpa,
+          absent: absent,
+          tardy: tardy,
+          late: late,
+          truant: truant,
+          clean_attend: clean_attend,
+          detent_hours: detent_hours,
+          act_or_job: act_or_job,
+          passed_ua: passed_ua,
+          current_service_hours: current_service_hours,
+          hw_rm_attended: hw_rm_attended,
+          comments: comments
+        }
+      });
     });
-  }; //ends SubmitInfo
+  };
+
+  buildEntryPreview(entry) {
+    const hasFullAttendanceInfo = typeof (entry.absent) !== 'undefined'
+      || typeof (entry.tardy) !== 'undefined'
+      || typeof (entry.late) !== 'undefined'
+      || typeof (entry.truant) !== 'undefined';
+    let attendHtml;
+    if (hasFullAttendanceInfo) {
+      attendHtml = (<div>
+        <div>3a. Days absent: {entry.absent}</div>
+        <div>3b. Days tardy: {entry.tardy}</div>
+        <div>3c. Days late: {entry.late}</div>
+        <div>3d. Days truant: {entry.truant}</div>
+        <div>3e. Days punctual: {entry.clean_attend}</div>
+      </div>);
+    } else {
+      attendHtml = (<div>3. Days punctual: {entry.clean_attend}</div>);
+    }
+    return (<div className="payday-swal-content">
+      <div>1. Passing classes: {entry.pass_class}</div>
+      <div>2. GPA: {entry.gpa}</div>
+      {attendHtml}
+      <div>4. Detention hours: {entry.detent_hours}</div>
+      <div>5. Job or after school activities: {entry.act_or_job}</div>
+      <div>6. Drug free: {entry.passed_ua}</div>
+      <div>7. Service hours: {entry.current_service_hours}</div>
+      <div>8. Homeroom attendence: {entry.hw_rm_attended}</div>
+      <div>9. Comments: {entry.comments}</div>
+    </div>);
+  }
+
+  setSelectedRow(row) {
+    if(!row) {
+      this.setState({ selected_pay_day_ymd: null });
+      return;
+    }
+    const entry = this.getEntryToMatchPayDay(this.state.lcf_id, row.pay_day_ymd);
+    this.setState({ selected_pay_day_ymd: row.pay_day_ymd });
+    if (!entry) {
+      return;
+    }
+    SwalJsx.fire({
+      title: `${row.pay_day.format('MMMM D')} Pay Day Information`,
+      html: this.buildEntryPreview(entry),
+      showCancelButton: false,
+      confirmButtonColor: "#5cb85c",
+      confirmButtonText: "Dismiss",
+    });
+  }
+
+  renderSummaryRowListItem(lcfId, row) {
+    const entry = this.getEntryToMatchPayDay(lcfId, row.pay_day_ymd);
+    let icon;
+    let status;
+    if (!entry) {
+      icon = <CalendarTodayIcon />;
+      status = "No entry";
+    } else if (entry.did_we_pay === "Yes" || entry.did_we_pay === "yes") {
+      // History entry that's been paid
+      const money = Number(entry.total).toFixed(2);
+      icon = <AttachMoneyIcon style={{ color: green[700] }} />;
+      status = `Submitted ${moment(entry.date_submitted).format('MMM D')}; $${money} paid`;
+    } else if (typeof entry.did_we_pay !== "undefined") {
+      // History entry, but did_we_pay seems to be falsy.
+      icon = <EventAvailableIcon style={{ color: yellow[700] }} />;
+      status = `Submitted ${moment(entry.date_submitted).format('MMM D')}`;
+    } else {
+      icon = <EventAvailableIcon style={{ color: green[700] }} />;
+      status = `Submitted ${moment(entry.date_submitted).format('MMM D')}`;
+    }
+    return {
+      entry,
+      html:
+        <ListItem button key={row.pay_day_ymd}
+            selected={this.state.selected_pay_day_ymd === row.pay_day_ymd}
+            onClick={() => this.setSelectedRow(row)}>
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText primary={row.title} secondary={status} />
+        </ListItem>
+    };
+  }
 
   render() {
-    // sets min and max for service hours text box
-    const inputProps = {
-      max: 10,
-      min: 0,
-    };
-    //defines marks on sliders, displays value below each spot on each slider
+    const student = this.props.students.find(s => s.lcf_id === this.props.user.lcf_id);
+    if (!student || this.state.initialEntriesLoadNumber === this.props.entriesLoadNumber) {
+      return (<div className="make-entry-loading">Loading...</div>);
+    }
+
+    const isSaving = this.state.savingEntriesLoadNumber
+      && this.state.savingEntriesLoadNumber === this.props.entriesLoadNumber;
+
+    const savingSnackbar = <Snackbar open={isSaving} message="Saving..." />;
+
     const marks = [
       {
         value: 0,
-        label: "0",
+        label: "0"
       },
-      //   {
-      //     value: 1,
-      //     label: "1",
-      //   },
-      //   {
-      //     value: 2,
-      //     label: "2",
-      //   },
-      //   {
-      //     value: 3,
-      //     label: "3",
-      //   },
-      //   {
-      //     value: 4,
-      //     label: "4",
-      //   },
-      //   {
-      //     value: 5,
-      //     label: "5",
-      //   },
-      //   {
-      //     value: 6,
-      //     label: "6",
-      //   },
-      //   {
-      //     value: 7,
-      //     label: "7",
-      //   },
-      //   {
-      //     value: 8,
-      //     label: "8",
-      //   },
-      //   {
-      //     value: 9,
-      //     label: "9",
-      //   },
       {
         value: this.state.total_days,
         label: this.state.total_days,
-      },
-    ];
-    //same as marks but specific for the gpa slider
-    const marksGpa = [
-      {
-        value: 0,
-        label: "0",
-      },
-      {
-        value: 0.5,
-        label: "0.5",
-      },
-      {
-        value: 1,
-        label: "1",
-      },
-      {
-        value: 1.5,
-        label: "1.5",
-      },
-      {
-        value: 2,
-        label: "2",
-      },
-      {
-        value: 2.5,
-        label: "2.5",
-      },
-      {
-        value: 3,
-        label: "3",
-      },
-      {
-        value: 3.5,
-        label: "3.5",
-      },
-      {
-        value: 4,
-        label: "4",
-      },
-    ];
-    //saves entries from reducer to var of same name
-    let { entries } = this.props;
-    //current date
-    let date = moment();
-    //preset previous_pay_day
-    let previous_pay_day = moment("2020-09-21T00:00:00.000-05"); //midnight central time
-    //preset current pay_day
-    let pay_day = moment(previous_pay_day);
-    let counter = 0;
-    //this function defines the current pay period
-    function getDate() {
-      //if date is greater or equal to the current date, run the logic below
-      if (date >= pay_day) {
-        counter++;
-        //define previous_pay_day to be the same as current pay_day
-        previous_pay_day = pay_day;
-        //define current pay_day to be pay_day plus 2 weeks
-        pay_day = moment(previous_pay_day).add(2, "week");
-        //call the function again.
-        getDate();
       }
-    }
-    //call getDate
-    getDate();
-    //formats previous_pay_day
-    previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
-    //formats current pay_day
-    pay_day = moment(pay_day).format("MMMM Do YYYY");
-    //saves students from reducer to studentList
-    const studentList = this.props.students;
+    ];
+    const marksGpa = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4].map(i => ({ value: i, label: i.toString()}));
 
-    for (let student of studentList) {
-      //checks lcf_id of student and if the student is active
-      if (
-        this.props.user.lcf_id === student.lcf_id &&
-        student.inactive === "yes"
-      ) {
-        // if the student is inactive they can not make an entry, this message appears instead when they click on make entry
-        return (
-          <div>
-            <Paper elevation={5} style={{ margin: "5%", padding: "5%" }}>
-              <center>
-                <h2>
-                  Sorry, you cannot make an entry at this moment. Your account
-                  is currently inactive, please contact the admin for further
-                  details.
-                </h2>
-              </center>
-              <center>
-                <h2>Thank you!</h2>
-              </center>
-            </Paper>
-          </div>
-        );
-      }
+    if (student.inactive === "yes") {
+      return (
+        <div>
+          <Paper elevation={5} style={{ margin: "5%", padding: "5%" }}>
+            <center>
+              <h2>
+                Sorry, you cannot make an entry at this moment. Your account
+                is currently inactive, please contact the admin for further
+                details.
+              </h2>
+            </center>
+            <center>
+              <h2>Thank you!</h2>
+            </center>
+          </Paper>
+        </div>
+      );
     }
-    //loops through entries
-    for (let entry of entries) {
-      //makes sure pay_day is a Date value
-      entry.pay_day = new Date(entry.pay_day);
-      //makes sure previous_pay_day is a Date value
-      entry.previous_pay_day = new Date(entry.previous_pay_day);
-      //checks lcf_id of student and if they've already made an entry
-      if (
-        this.props.user.lcf_id === entry.lcf_id &&
-        (entry.pay_day > date || entry.previous_pay_day <= date)
-      ) {
-        //...if they did make an entry,
-        //this notification appears rather then the entry forum
-        //when the student clicks on make entry
-        return (
-          <div>
-            <Paper elevation={5} style={{ margin: "5%", padding: "5%" }}>
-              <center>
-                <h2>
-                  Entry already submitted for this pay period, please check back
-                  next pay period
-                </h2>
-              </center>
-              <center>
-                <h2>Thank you!</h2>
-              </center>
-            </Paper>
-          </div>
-        );
-      }
+
+    const summaryRows = this.state.status_rows.map(row => this.renderSummaryRowListItem(student.lcf_id, row));
+    const statusTable = (
+      <div className="payday-summary">
+        <Paper elevation={5}>
+          <Typography variant="h6">Recent Pay Periods</Typography>
+          <List dense>
+            {summaryRows.map(r => r.html)}
+          </List>
+        </Paper>
+        { summaryRows.some(r => !r.entry) || (
+          <Alert severity="info" elevation={5}>
+            Nice -- all pay periods listed here have entries.
+            Check back next pay period!
+          </Alert>
+        )}
+        { savingSnackbar }
+      </div>
+    );
+
+    if (!this.state.selected_pay_day_ymd) {
+      return statusTable;
+    }
+
+    const row = this.state.status_rows.find(r => r.pay_day_ymd === this.state.selected_pay_day_ymd);
+    const entry = this.getEntryToMatchPayDay(student.lcf_id, this.state.selected_pay_day_ymd);
+    if (entry) {
+      return statusTable;
     }
 
     return (
       <div>
-        <br />
         {/* toast that appears on error, shows up when all required fields are not filled in */}
         {this.state.error === true && (
           <Alert className="error" style={{}} severity="error">
             Please fill out all of the required fields
           </Alert>
         )}
-        <br />
         {/* toast that appears when student tries to make an entry when an entry has alreadt been made */}
         {this.state.pay_day_error === true && (
           <Alert className="error" style={{}} severity="error">
-            Sorry, you already have an entry on record for this pay period, your
-            entry has not been saved successfully!
+            You already have a historical entry on record for this pay period.
+            Another entry for the same pay period cannot be created.
           </Alert>
         )}
-        {/* shows current pay period. payDay() function updates to current dates */}
-        <h3 style={{ textAlign: "center", margin: "2%" }}>
-          This entry is for the week of: {previous_pay_day} - {pay_day}
-        </h3>
+
+        <Grid container style={{ maxWidth: "90%", margin: "16px auto 8px auto" }}>
+          <Grid item xs={1}>
+            <IconButton onClick={() => this.setSelectedRow(null)}>
+              <ArrowBackIcon fontSize="large" />
+            </IconButton>
+          </Grid>
+          <Grid item xs={10}>
+            <h6 style={{ textAlign: "center" }}>
+              This entry is for the week of
+            </h6>
+            <h3 style={{ textAlign: "center" }}>
+              {row.long_title}
+            </h3>
+          </Grid>
+        </Grid>
         <Paper
           elevation={5}
           style={{
@@ -586,7 +487,7 @@ class MakeEntry extends Component {
           }}
         >
           {/* start form for make entry */}
-          <form onSubmit={this.submitInfo}>
+          <form onSubmit={this.submitInfo} className="payday-entry-form">
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
                 1. Are you passing all your classes?
@@ -601,14 +502,14 @@ class MakeEntry extends Component {
                 onChange={(event) => this.handleChange(event, "pass_class")}
               >
                 <FormControlLabel
+                  disabled={isSaving}
                   value="Yes"
-                  //calls and renders the green radio button
                   control={<GreenRadio />}
                   label="Yes"
                 />
                 <FormControlLabel
+                  disabled={isSaving}
                   value="No"
-                  //calls and renders the yellow radio button
                   control={<YellowRadio />}
                   label="No"
                 />
@@ -620,6 +521,7 @@ class MakeEntry extends Component {
               style={{
                 width: "80%",
               }}
+              disabled={isSaving}
               required
               // sets the default value of the slider to the value of state
               defaultValue={this.state.gpa}
@@ -804,11 +706,13 @@ class MakeEntry extends Component {
                 onChange={(event) => this.handleChange(event, "detent_hours")}
               >
                 <FormControlLabel
+                  disabled={isSaving}
                   value="No"
                   control={<GreenRadio />}
                   label="No"
                 />
                 <FormControlLabel
+                  disabled={isSaving}
                   value="Yes"
                   control={<YellowRadio />}
                   label="Yes"
@@ -830,11 +734,13 @@ class MakeEntry extends Component {
                 onChange={(event) => this.handleChange(event, "act_or_job")}
               >
                 <FormControlLabel
+                  disabled={isSaving}
                   value="Yes"
                   control={<GreenRadio />}
                   label="Yes"
                 />
                 <FormControlLabel
+                  disabled={isSaving}
                   value="No"
                   control={<YellowRadio />}
                   label="No"
@@ -855,11 +761,13 @@ class MakeEntry extends Component {
                 onChange={(event) => this.handleChange(event, "passed_ua")}
               >
                 <FormControlLabel
+                  disabled={isSaving}
                   value="Yes"
                   control={<GreenRadio />}
                   label="Yes"
                 />
                 <FormControlLabel
+                  disabled={isSaving}
                   value="No"
                   control={<YellowRadio />}
                   label="No"
@@ -867,7 +775,7 @@ class MakeEntry extends Component {
               </RadioGroup>
             </FormControl>
             <br />
-            <p>
+            <br />
               7. How many service hours did you do the past 2 weeks?
               <TextField //takes in a number (can be 0)
                 style={{
@@ -876,6 +784,7 @@ class MakeEntry extends Component {
                   width: "130px",
                   verticalAlign: "middle",
                 }}
+                disabled={isSaving}
                 variant="outlined"
                 required
                 fullWidth
@@ -884,16 +793,17 @@ class MakeEntry extends Component {
                 // sets value of input to local state
                 value={this.state.current_service_hours}
                 type="number"
-                inputProps={inputProps}
+                inputProps={{ min: 0, max: 10 }}
                 maxLength={1000}
                 onChange={(event) =>
                   this.handleChange(event, "current_service_hours")
                 } //onChange of input values set local state
               />
-            </p>
+            <br />
+            <br />
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
-                8. Were you ontime for mandatory homerooms this pay period?
+                8. Were you on time for mandatory homerooms this pay period?
               </FormLabel>
               <RadioGroup //Yes or No answer (i.e. two possible options)
                 aria-label="hw_rm_attended"
@@ -907,11 +817,13 @@ class MakeEntry extends Component {
                   value="Yes"
                   control={<GreenRadio />} //colors button
                   label="Yes"
+                  disabled={isSaving}
                 />
                 <FormControlLabel
                   value="No"
                   control={<YellowRadio />} //colors button
                   label="No"
+                  disabled={isSaving}
                 />
               </RadioGroup>
             </FormControl>{" "}
@@ -923,6 +835,7 @@ class MakeEntry extends Component {
                 margin: "5px",
                 width: "100%",
               }}
+              disabled={isSaving}
               //per material UI changes textfield to act like a textarea tag
               multiline
               //input field takes up for rows by defaults
@@ -941,37 +854,20 @@ class MakeEntry extends Component {
               onChange={(event) => this.handleChange(event, "comments")} //onChange of input values set local state
             />{" "}
             <center>
-              <Button //button that cancels current entry, i.e. do not submit anything to database
-                style={{
-                  marginTop: "3%",
-                  marginLeft: "5%",
-                  marginRight: "5%",
-                  backgroundColor: "#b89c09",
-                  color: "white",
-                }}
+              <Button
+                disabled={isSaving}
                 variant="contained"
                 className="button"
-                onClick={() => {
-                  this.props.history.push("/home"); //push student back to home page
-                }}
-              >
+                onClick={() => this.setSelectedRow(null)}>
                 Cancel Entry
               </Button>
 
-              <Button //button that, one clicked, submits the entry to the database
-                style={{
-                  //note that it only goes through if it passes all validation
-                  marginTop: "3%",
-                  marginLeft: "5%",
-                  marginRight: "5%",
-                  backgroundColor: "green",
-                  color: "white",
-                }}
+              <Button
+                disabled={isSaving}
                 variant="contained"
                 type="submit"
                 color="primary"
-                className="button"
-              >
+                className="button">
                 Submit Entry
               </Button>
             </center>
@@ -980,16 +876,35 @@ class MakeEntry extends Component {
         <br />{" "}
         {/*Add a little buffer on the bottom of page (prevent cutoff on mobile) */}
         <br />
+        { savingSnackbar }
       </div>
     );
   }
+
+  componentDidUpdate(prevProps) {
+    // Detect when a "save entry" completes and show success to the user.
+    if (this.props.entriesLoadNumber === prevProps.entriesLoadNumber) {
+      return;
+    }
+    const wasSaving = this.state.savingEntriesLoadNumber
+      && this.state.savingEntriesLoadNumber < this.props.entriesLoadNumber;
+    if (wasSaving) {
+      Swal.fire("Success!", "Your entry has been saved.", "success");
+      this.setState({
+        selected_pay_day_ymd: null,
+        savingEntriesLoadNumber: null
+      });
+    }
+  }
+
 }
 
 const mapStateToProps = (state) => ({
   user: state.user,
   entries: state.students.studententriesadmin,
+  entriesLoadNumber: state.students.entriesLoadNumber,
   students: state.students.studentlist,
-  studentHistory: state.studentHistory.studentHistoryReducer,
+  studentHistory: state.studentHistory.studentHistoryReducer
 });
 
 export default withRouter(connect(mapStateToProps)(MakeEntry));

@@ -1,14 +1,41 @@
 .error {
   /* styling for the toast that pops up when there's an error */
-      position: fixed;
-      right: 2%;
-      top: 2%;
-      z-index: 2000000;
-      /* runs animation that fades the toast error in when error fails */
-      animation-name: error;
-      animation-duration: 0.5s;
-      animation-iteration-count: 1;
-      border: solid black 1px;
+  position: fixed;
+  right: 2%;
+  top: 2%;
+  z-index: 2000000;
+  /* runs animation that fades the toast error in when error fails */
+  animation-name: error;
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  border: solid black 1px;
+}
+
+.make-entry-loading {
+  margin: 32px auto;
+  text-align: center;
+}
+
+.payday-summary {
+  max-width: 300px;
+  margin: 32px auto;
+}
+
+.payday-summary h6 {
+  text-align: center;
+}
+
+.payday-summary > .MuiPaper-root {
+  padding: 8px 0 0 0;
+  margin-bottom: 16px;
+}
+
+.payday-swal-content {
+  text-align: left;
+}
+
+.payday-entry-form .button {
+  margin: 3% 5% 0 5%;
 }
 
 @keyframes error {

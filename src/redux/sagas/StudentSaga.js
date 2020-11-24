@@ -162,74 +162,59 @@ function* deleteStudent(action) {
 }
 
 function* getStudents(action) {
-        try {
-            //console.log('we are about to get Students', action.type);
+  try {
+    //console.log('we are about to get Students', action.type);
 
-            const response = yield axios.get(`/api/student/studentlist`);
+    const response = yield axios.get(`/api/student/studentlist`);
 
-            yield put({
-                type: 'SET_STUDENTS',
-                payload: response.data
-            });
+    yield put({
+        type: 'SET_STUDENTS',
+        payload: response.data
+    });
 
 
-            //console.log('Here is the list of student', response.data);
-        } catch (error) {
-            console.log('Error with getting the list of Students:', error);
-        }
+    //console.log('Here is the list of student', response.data);
+  } catch (error) {
+      console.log('Error with getting the list of Students:', error);
+  }
 }
 
-
-function * getStudentEntriesForAdmin (action){
-    try{
-        console.log('We are about to get all entries for student');
+function * getStudentEntriesForAdmin (action) {
+    try {
         const response = yield axios.get(`/api/student/studententries`);
-
         yield put ({
             type: 'SET_STUDENT_ENTRIES_ADMIN_VIEW',
             payload: response.data
         });
-    //console.log('Here is the list of entries', response.data);
     }
     catch (error) {
         console.log('Error with getting the list of Student entries:', error);
     }
 }
 
-
 function* adminentryupdate(action){
-    console.log('We are updating a student entry', action.payload);
     try {
         const response = yield axios.put(`/api/student/updateentry/${action.payload.lcf_id}`, action.payload);
-
         yield put({type: 'SET_STUDENT_ENTRIES_ADMIN_VIEW', payload: response.data});
-
-        console.log("Success in updating student entry.");
     } catch (error) {
         console.log("error editing student entry", error);
     }
 }
 
 function* adminentry(action) {
-  console.log("We are creating a student entry", action.payload);
   try {
     const response = yield axios.post(
       `/api/student/adminmakeentry`,
       action.payload
     );
-
     yield put({
       type: "SET_STUDENT_ENTRIES_ADMIN_VIEW",
       payload: response.data,
     });
-
-    console.log("Success in updating student entry.");
   } catch (error) {
     console.log("error editing student entry", error);
   }
 }
-
-
 
 function* resetStudentPassword(action) {
     try{
