@@ -1,11 +1,11 @@
 //Brought in as part of project template
 //Helps figure out which database to look at (according to .env file)
 
-//Bring in required 
+//Bring in required
 const pg = require('pg');
 const url = require('url');
 
-let config = {};
+let config;
 
 if (process.env.DATABASE_URL) {
   // Heroku gives a url, not a connection object
@@ -25,7 +25,6 @@ if (process.env.DATABASE_URL) {
   };
 } else {
   config = {
-
     user: process.env.PG_USER,
     password: process.env.PG_PASSWORD,
     host: "localhost", // Server hosting the postgres database

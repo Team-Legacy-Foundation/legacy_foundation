@@ -16,20 +16,16 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import EditIcon from "@material-ui/icons/Edit";
 
 const Nav = (props) => (
-  <div className="nav" style={{ display: "inline-block" }}>
-    <Link to="/home">
+  <div className="nav">
+    <Link to="/home" className="logo">
       <img
         className="logo"
         src={logo}
         alt="legacy foundation logo"
-        style={{ float: "left", maxWidth: "20%" }}
       />
     </Link>
 
-    <div
-      className="nav-right"
-      style={{ diplay: "inline-block", float: "left", paddingTop: "1.5%" }}
-    >
+    <div className="nav-right">
       <Link className="nav-link" to="/home">
         {/* Show this link if they are logged in or not,
         but call this link 'Home' if they are logged in,
@@ -115,7 +111,7 @@ const Nav = (props) => (
 
 // Instead of taking everything from state, we just want the user
 // object to determine if they are logged in
-// if they are logged in, we show them a few more links 
+// if they are logged in, we show them a few more links
 // if you wanted you could write this code like this:
 // const mapStateToProps = ({ user }) => ({ user });
 const mapStateToProps = state => ({

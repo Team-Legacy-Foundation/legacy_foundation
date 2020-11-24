@@ -11,12 +11,13 @@ function* fetchEntry() {
     console.log("error fetch ", error);
   }
 }
+
 // Used to set a new entry
 function* addEntry(action) {
   console.log('inside addEntry saga',action.payload);
   try {
-    // sends off the post request to a entry 
     yield axios.post(`/entry`, action.payload);
+    yield put({ type: "FETCH_ENTRIES_FOR_ADMIN" });
   } catch (error) {
     console.log("Error adding entry:", error);
   }

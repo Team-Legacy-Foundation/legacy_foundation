@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+
 // Holds the information for the entries for the week
 const entryList = (state = [], action) => {
   switch (action.type) {
@@ -10,5 +11,5 @@ const entryList = (state = [], action) => {
 };
 
 export default combineReducers({
-  entryList,
+  entryList
 });

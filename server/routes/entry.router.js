@@ -1,9 +1,7 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-const {
-  rejectUnauthenticated,
-} = require("../modules/authentication-middleware");
+const { allowAdminOnly, allowAdminOrSelf } = require("../modules/authentication-middleware");
 
 const moment = require('moment');
 
@@ -11,9 +9,9 @@ const moment = require('moment');
 //(i.e. entries are the information gathered from students from the "Make Entry" form)
 
 //GET all rows found in the entry table
-router.get('/', rejectUnauthenticated, (req, res) => {
+router.get('/', allowAdminOnly, (req, res) => {
     pool
-      .query("SELECT * from entry") 
+      .query("SELECT * from entry")
       .then((result) => {
         res.send(result.rows);
       })
@@ -24,9 +22,9 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 }) //end GET
 
 //GET an entry based off the lcf_id passed in
-router.get('/:id', rejectUnauthenticated, (req, res) => {
+router.get('/:lcf_id', allowAdminOrSelf, (req, res) => {
   pool
-    .query("SELECT * from entry WHERE lcf_id=$1",[req.params.id])
+    .query("SELECT * from entry WHERE lcf_id=$1",[req.params.lcf_id])
     .then((result) => {
       res.send(result.rows);
     })
@@ -36,12 +34,11 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
     });
 }) //end GET
 
-//POST i.e. make a new entry in the entry table. 
-router.post("/", rejectUnauthenticated, (req, res) => {
-  console.log('This means entry router is running')
-    // HTTP REQUEST BODY
-    const entry = req.body; // pull the object out out of the HTTP REQUEST
-    const {
+//POST i.e. make a new entry in the entry table.
+router.post("/", allowAdminOrSelf, (req, res) => {
+    const entry = req.body;
+    let {
+      pay_day,
       pass_class,
       gpa,
       lcf_id,
@@ -56,33 +53,31 @@ router.post("/", rejectUnauthenticated, (req, res) => {
       passed_ua,
       current_service_hours,
       hw_rm_attended,
-      comments,
-      
+      comments
     } = entry;
     if (entry === undefined) {
-        // stop, dont touch the database
-        res.sendStatus(400); // 400 BAD REQUEST
-        return;
+      res.sendStatus(400);
+      return;
     }
-        let date = moment.utc();
-        let previous_pay_day = moment.utc("2020-08-10T00:00:00.000-05");
-        let pay_day = moment.utc(previous_pay_day)
-          .add(2, "week")
 
-    function getDate() {
-      if (date >= pay_day) {
-        previous_pay_day = pay_day
-         pay_day = moment(previous_pay_day)
-           .add(2, "week")
-           getDate();
+    const date = moment.utc();
+    let previous_pay_day;
+    if (pay_day) {
+      previous_pay_day = moment(pay_day).add(-2, "week").format("YYYY-MM-DD");
+    } else {
+      previous_pay_day = moment.utc("2020-08-10T00:00:00.000-05");
+      pay_day = moment.utc(previous_pay_day).add(2, "week")
+      while (date >= pay_day) {
+        previous_pay_day = pay_day;
+        pay_day = moment(previous_pay_day).add(2, "week");
       }
+      pay_day = pay_day.format("YYYY-MM-DD");
+      previous_pay_day = previous_pay_day.format("YYYY-MM-DD");
     }
-    getDate();
-
 
     const queryText = `
-        INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`; //grabs database
+      INSERT INTO "entry" (lcf_id, pass_class, pay_day, previous_pay_day, date_submitted, gpa, clean_attend, detent_hours, act_or_job, passed_ua, current_service_hours, hw_rm_attended, comments)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);`;
 
     pool
       .query(queryText, [
@@ -101,10 +96,6 @@ router.post("/", rejectUnauthenticated, (req, res) => {
         comments,
       ])
       .then(function (result) {
-        // result.rows: 'INSERT 0 1';
-        // it worked!
-        console.log('post worked!')
-        //res.sendStatus(201); //created
         res.status(201).send(result.rows);
       })
       .catch(function (error) {
@@ -117,7 +108,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
 //Delete an entry based off the id of the entry itself
 //USED FOR TESTING PURPOSES
 //Ideally, entries are not deleted willy nilly
-router.delete("/:id", rejectUnauthenticated, (req, res) => {
+router.delete("/:id", allowAdminOnly, (req, res) => {
   pool
     .query('DELETE FROM entry WHERE id=$1', [req.params.id])
     .then((result) => {
