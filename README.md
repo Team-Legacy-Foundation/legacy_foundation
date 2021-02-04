@@ -11,10 +11,15 @@ In order to run this from Github, you will need to:
 2. Use the queries in the ``database-v2.0.sql``, ``database_functions.sql``, and ``database_security.sql`` files to set up all the necessary tables and populate the needed data to allow the application to run correctly. The project is built on Postgres, so you will need to make sure to have that installed. (Postico recommended)
 3. Clone/fork the repository
 4. Open up your editor of choice and run an ``npm install``
-5. Run ``npm run server`` in your terminal
-6. Run ``npm run client`` in your terminal
-7. The ``npm run client`` command should open up a new browser tab for you.
-8. To create the initial admin application user in a blank admin database,
+5. Add environment variables for the server:
+   * `SERVER_SESSION_SECRET` = random 10-character+ password-like thing; used for making cookies
+   * `DATABASE_URL` = postgresql://user@server:password@server/dbname
+   * `SENDGRID_API_KEY`
+   * You can put these in a bash script `.my-secrets.sh` (which is in .gitignore) `export DATABASE_URL=postgresql://...` and then run `source ./.my-secrets.sh`.
+6. Run ``npm run server`` in your terminal
+7. Run ``npm run client`` in your terminal
+8. The ``npm run client`` command should open up a new browser tab for you.
+9.  To create the initial admin application user in a blank admin database,
    one way to do it is disable security by temporarily modifying `server/modules/authentication-middleware.js` to just `next()`, then POST `/api/user/addadmin` with a JSON object with values `first_name`, `last_name`, `email`, `password`,
    then re-enable security.
 
@@ -235,7 +240,7 @@ In order to run this from Github, you will need to:
 - SweetAlerts2 - Javascript library for alerts/confirmations
 - SendGrid - platform for generating/sending emails
 
-## Authors
+## Original Emerging Digital Academy Authors
 
 Christopher Neisen [cneisen234](https://github.com/cneisen234)
 Clever Mukori [clevereda](https://github.com/clevereda)
@@ -264,11 +269,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-## Acknowledgement
+## Acknowledgement from Original Authors
 Thank you Mary Dehne and Legacy Children's foundation for this opportunity to create a custom application.
 Thank you Emerging Digital Academy for equipping us with the knowledge to make this application a reality.
-
-## Support
-
-If you have suggestions or issues, please email us at:
-khagler.kh@gmail.com

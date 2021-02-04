@@ -16,6 +16,7 @@ import {
 import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
 import moment from "moment";
+import { setStateToEntryByLcfIdInUrl } from "./AdminUtils";
 
 const GreenRadio = withStyles({
   root: {
@@ -149,33 +150,7 @@ class AdminUpdateEntry extends Component {
   }
 
   componentDidMount() {
-    let url_array = document.location.href.split("/"); //get the url
-
-    let id = url_array[url_array.length - 1]; //gets the id from the url
-
-    this.props.entries.map((item, index) => {
-      if (item.lcf_id === Number(id)) {
-        console.log("HELLO", item);
-        this.setState({
-          lcf_id: item.lcf_id,
-          pass_class: item.pass_class,
-          gpa: item.gpa,
-          absent: item.absent,
-          tardy: item.tardy,
-          late: item.late,
-          clean_attend: item.clean_attend,
-          detent_hours: item.detent_hours,
-          act_or_job: item.act_or_job,
-          passed_ua: item.passed_ua,
-          current_service_hours: item.current_service_hours,
-          hw_rm_attended: item.hw_rm_attended,
-          comments: item.comments,
-        });
-      } else {
-        console.log("FAIL", item.lcf_id);
-        console.log(id);
-      }
-    });
+    setStateToEntryByLcfIdInUrl(this);
   }
 
   handleChange = (event, fieldName) => {

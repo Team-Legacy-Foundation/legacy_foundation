@@ -16,7 +16,7 @@ const warnings = require('../constants/warnings');
 
 const serverSessionSecret = () => {
   if (!process.env.SERVER_SESSION_SECRET || //check to see if this exists
-      process.env.SERVER_SESSION_SECRET.length < 8 || //want secret to be a ceetain length (longer = more secure)
+      process.env.SERVER_SESSION_SECRET.length < 8 || //want secret to be a certain length (longer = more secure)
       process.env.SERVER_SESSION_SECRET === warnings.exampleBadSecret) {
     // Warning if user doesn't have a good secret
     console.log(warnings.badSecret);

@@ -28,9 +28,9 @@ class PastAdminReports extends Component {
     event.preventDefault();
     let counter = 0;
     let totalMaps = 0;
-    this.props.history.map((item, index) => {
+    this.props.history.forEach(item => {
       if (item.lcf_id === Number(this.state.lcf_id)) {
-        if (item.attend_payment != "0.00") {
+        if (item.attend_payment !== "0.00") {
           counter++;
           console.log("counter", counter);
         }
@@ -53,7 +53,7 @@ class PastAdminReports extends Component {
               trip: "no",
             },
           })
-  
+
     } else {
       Swal.fire("this student is eligible for a trip");
        const { lcf_id } = this.state;
@@ -75,7 +75,7 @@ class PastAdminReports extends Component {
     })
       let date = moment().format("L");
       date = new Date(date);
-      this.props.history.map((item) => {
+      this.props.history.forEach(item => {
         item.pay_day = new Date(item.pay_day);
         let previous_pay_day = moment(item.pay_day).subtract(2, "weeks");
         previous_pay_day = moment(previous_pay_day).format("L");

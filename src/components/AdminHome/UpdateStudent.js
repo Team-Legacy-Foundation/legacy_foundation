@@ -8,28 +8,20 @@ import Card from 'react-bootstrap/Card';
 import moment from "moment";
 import Swal from "sweetalert2";
 
-
-
-   // This component is for updating student information
-
 class UpdateStudent extends Component {
-  
 
-  
   state = {
-    
     first_name: "",
     last_name:"",
     grade:"",
     grad_year: "",
-    school_attend:  "", 
+    school_attend:  "",
     lcf_id:"",
     lcf_start_date:"",
     student_email:"",
     password: "",
     pif_amount: "",
     isLoaded: false
-    
   };
 
   filterStudentArray = (students) => {
@@ -52,7 +44,7 @@ class UpdateStudent extends Component {
 
     if (!this.state.isLoaded){
     let url_array=document.location.href.split("/");
-    
+
 let id = url_array[url_array.length-1];
 
 
@@ -64,13 +56,13 @@ let id = url_array[url_array.length-1];
       type: "GET_STUDENT_FOR_EDIT", payload: id
     });
 
-   
+
 
     this.props.dispatch({
       type: "FETCH_ENTRIES_FOR_ADMIN",
     });
 
-    this.props.students.map((item, index) => {
+    this.props.students.forEach(item => {
       if(item.lcf_id === Number(id)){
         console.log('HELLO',item)
         this.setState({
@@ -89,13 +81,13 @@ let id = url_array[url_array.length-1];
           console.log('FAIL', item.lcf_id)
           console.log(id)
         }
-      
+
     })
   }
   this.setState({isLoaded: true})
   }
 
-  
+
   //Start of update student
 
   updateStudent = (event) => {
@@ -145,7 +137,7 @@ let id = url_array[url_array.length-1];
                student_email: this.state.student_email,
                password: this.state.password,
                pif_amount: this.state.pif_amount,
-               
+
              },
            });
            Swal.fire("Success!", "Your entry has been logged.", "success");
@@ -173,8 +165,8 @@ let id = url_array[url_array.length-1];
       <div>
         <h1 style={{ width: "50%", margin: "2% 35%" }}>
           Update Student Information
-          
-          
+
+
         </h1>
 
         <Card border = "info" style={{ width: '90%', margin: '3% auto', padding: '2%' }} >
@@ -321,5 +313,5 @@ const mapStateToProps = (state) => ({
   students: state.students.studentlist,
   editStudent: state.editStudent // Stores the information for a single student
 });
-   
+
 export default connect(mapStateToProps) (UpdateStudent);
