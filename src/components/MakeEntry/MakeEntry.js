@@ -32,6 +32,7 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import EventBusyIcon from '@material-ui/icons/EventBusy';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import withReactContent from "sweetalert2-react-content";
+import { getGpaSliderMarks } from "./MakeEntryUtils";
 
 const SwalJsx = withReactContent(Swal);
 
@@ -344,7 +345,6 @@ class MakeEntry extends Component {
           and the due date for entry was {row.editable_cut_off}.
         </div>),
         showCancelButton: false,
-        showCancelButton: false,
         confirmButtonColor: "#5cb85c",
         confirmButtonText: "Dismiss"
       });
@@ -419,7 +419,7 @@ class MakeEntry extends Component {
         label: this.state.total_days,
       }
     ];
-    const marksGpa = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4].map(i => ({ value: i, label: i.toString()}));
+    const marksGpa = getGpaSliderMarks();
 
     if (student.inactive === "yes") {
       return (

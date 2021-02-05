@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
 import moment from "moment";
 import { setStateToEntryByLcfIdInUrl } from "./AdminUtils";
+import { getGpaSliderMarks } from "./../MakeEntry/MakeEntryUtils";
 
 const GreenRadio = withStyles({
   root: {
@@ -41,116 +42,50 @@ const YellowRadio = withStyles({
 //The purpose of this page is to update the student's entry this past pay period
 
 class AdminUpdateEntry extends Component {
+
   state = {
+    loading: true,
     lcf_id: "",
+    student_name: "",
+    pay_period_label: "",
     pass_class: "",
     gpa: 0,
-    absent: 0,
-    tardy: 0,
-    late: 0,
-    truant: 0,
-    clean_attend: 10,
-    total_days: 10,
+    clean_attend: 0,
     detent_hours: "",
     act_or_job: "",
     passed_ua: "",
     current_service_hours: 0,
     hw_rm_attended: "",
-    comments: "",
+    comments: ""
   };
 
   componentWillMount() {
-    //current date
-    let date = moment();
-    //preset previous_pay_day
-    let previous_pay_day = moment("2020-09-21T00:00:00.000-05"); //midnight central time
-    //preset current pay_day
-    let pay_day = moment(previous_pay_day);
-    let counter = 0;
-    //this function defines the current pay period
-    function getDate() {
-      //if date is greater or equal to the current date, run the logic below
-      if (date >= pay_day) {
-        counter++;
-        //define previous_pay_day to be the same as current pay_day
-        previous_pay_day = pay_day;
-        //define current pay_day to be pay_day plus 2 weeks
-        pay_day = moment(previous_pay_day).add(2, "week");
-        //call the function again.
-        getDate();
-      }
-    }
-    //call getDate
-    getDate();
-    if (counter === 3) {
-      this.setState({
-        clean_attend: 8,
-        total_days: 8,
-      });
-    } else if (counter === 4) {
-      this.setState({
-        clean_attend: 9,
-        total_days: 9,
-      });
-    } else if (counter === 5) {
-      this.setState({
-        clean_attend: 7,
-        total_days: 7,
-      });
-    } else if (counter === 7) {
-      this.setState({
-        clean_attend: 8,
-        total_days: 8,
-      });
-    } else if (counter === 8) {
-      this.setState({
-        clean_attend: 5,
-        total_days: 5,
-      });
-    } else if (counter === 9) {
-      this.setState({
-        clean_attend: 9,
-        total_days: 9,
-      });
-    } else if (counter === 11) {
-      this.setState({
-        clean_attend: 8,
-        total_days: 8,
-      });
-    } else if (counter === 13) {
-      this.setState({
-        clean_attend: 5,
-        total_days: 5,
-      });
-    } else if (counter === 14) {
-      this.setState({
-        clean_attend: 9,
-        total_days: 9,
-      });
-    } else if (counter === 16) {
-      this.setState({
-        clean_attend: 9,
-        total_days: 9,
-      });
-    } else if (counter === 18) {
-      this.setState({
-        clean_attend: 9,
-        total_days: 9,
-      });
-    } else if (counter === 19) {
-      this.setState({
-        clean_attend: 3,
-        total_days: 3,
-      });
-    }
-    //formats previous_pay_day
-    previous_pay_day = moment(previous_pay_day).format("MMMM Do YYYY");
-    //formats current pay_day
-    pay_day = moment(pay_day).format("MMMM Do YYYY");
   }
 
   componentDidMount() {
-    setStateToEntryByLcfIdInUrl(this);
+    if (this.props.entries === null || this.props.entries.length === 0) {
+      this.props.dispatch({ type: "FETCH_ENTRIES_FOR_ADMIN" });
+    } else {
+      this.initializeState();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    // Detect when we're not loading anymore.
+    if (this.state.loading && this.props.entries?.length > 0) {
+      this.initializeState();
+    }
+  }
+
+  initializeState() {
+    const entry = setStateToEntryByLcfIdInUrl(this);
+    const paydayEnd = moment(entry.pay_day).add(-3, 'day');
+    const payDayStart = moment(entry.previous_pay_day);
+    this.setState({
+      loading: false,
+      student_name: `${entry.first_name} ${entry.last_name}`,
+      pay_period_label: `${payDayStart.format('MMM D')} to ${paydayEnd.format('MMM D, YYYY')}`
+    });
   }
 
   handleChange = (event, fieldName) => {
@@ -162,49 +97,13 @@ class AdminUpdateEntry extends Component {
       gpa,
     });
   };
-  handleChangeAbsent = (event, absent) => {
-    absent = Number(absent);
-    this.setState({
-      absent,
-    });
-  };
-  handleChangeTardy = (event, tardy) => {
-    tardy = Number(tardy);
-    this.setState({
-      tardy,
-    });
-  };
-  handleChangeLate = (event, late) => {
-    late = Number(late);
-    this.setState({
-      late,
-    });
-  };
-  handleChangeTruant = (event, truant) => {
-    truant = Number(truant);
-    this.setState({
-      truant,
-    });
-  };
-  //handleChange for attendance
-  handleChangeAttendance = (event, clean_attend) => {
-    this.setState({
-      clean_attend,
-    });
-  }; //end handleChange
 
-  //Function for submiting info
   submitInfo = (event) => {
     event.preventDefault();
-
     const {
       pass_class,
       lcf_id,
       gpa,
-      absent,
-      tardy,
-      late,
-      truant,
       clean_attend,
       detent_hours,
       after_school,
@@ -240,10 +139,6 @@ class AdminUpdateEntry extends Component {
             lcf_id: lcf_id,
             pass_class: pass_class,
             gpa: gpa,
-            absent: absent,
-            tardy: tardy,
-            late: late,
-            truant: truant,
             clean_attend: clean_attend,
             detent_hours: detent_hours,
             after_school: after_school,
@@ -251,8 +146,8 @@ class AdminUpdateEntry extends Component {
             passed_ua: passed_ua,
             current_service_hours: current_service_hours,
             hw_rm_attended: hw_rm_attended,
-            comments: comments,
-          },
+            comments: comments
+          }
         });
         Swal.fire("Success!", "Your entry update has been logged.", "success");
         this.props.history.push("/totalstudententries");
@@ -261,148 +156,36 @@ class AdminUpdateEntry extends Component {
     });
   };
 
-  navToStudentEntries = () => {
-    //goes to details page
-    this.props.history.push("/totalstudententries");
-  };
+  navToStudentEntries = () => this.props.history.push("/totalstudententries");
 
   render() {
-    const inputProps = {
-      max: 10,
-      min: 0,
-    };
-    const marks = [
-      {
-        value: 0,
-        label: "0",
-      },
-      // {
-      //   value: 1,
-      //   label: "1",
-      // },
-      // {
-      //   value: 2,
-      //   label: "2",
-      // },
-      // {
-      //   value: 3,
-      //   label: "3",
-      // },
-      // {
-      //   value: 4,
-      //   label: "4",
-      // },
-      // {
-      //   value: 5,
-      //   label: "5",
-      // },
-      // {
-      //   value: 6,
-      //   label: "6",
-      // },
-      // {
-      //   value: 7,
-      //   label: "7",
-      // },
-      // {
-      //   value: 8,
-      //   label: "8",
-      // },
-      // {
-      //   value: 9,
-      //   label: "9",
-      // },
-      {
-        value: this.state.total_days,
-        label: this.state.total_days,
-      },
-    ];
-    const marksGpa = [
-      {
-        value: 0,
-        label: "0",
-      },
-      {
-        value: 0.5,
-        label: "0.5",
-      },
-      {
-        value: 1,
-        label: "1",
-      },
-      {
-        value: 1.5,
-        label: "1.5",
-      },
-      {
-        value: 2,
-        label: "2",
-      },
-      {
-        value: 2.5,
-        label: "2.5",
-      },
-      {
-        value: 3,
-        label: "3",
-      },
-      {
-        value: 3.5,
-        label: "3.5",
-      },
-      {
-        value: 4,
-        label: "4",
-      },
-    ];
+    const header =
+      (<div className="navbuttonscontainer">
+        <Button
+          onClick={this.navToStudentEntries}
+          style={{ marginLeft: "auto", marginRight: "auto", marginTop: 10, display: "block" }}
+          variant="contained"
+          color="primary"
+          className="button"
+        >View Student Entries</Button>
+      </div>);
+    const body = this.state.loading
+      ? (<h3 style={{ textAlign: "center" }}>Loading...</h3>)
+      : this.getMainBody();
 
+    return (<div>{header}{body}</div>);
+  }
+
+  getMainBody() {
+    const marksGpa = getGpaSliderMarks();
     return (
       <div>
-        {this.props.user.role === "admin" && (
-          <div className="navbuttonscontainer">
-            <Button
-              onClick={this.navToStudentEntries}
-              style={{
-                marginLeft: "40%",
-                marginTop: 10,
-              }}
-              variant="contained"
-              color="primary"
-              className="button"
-            >
-              {" "}
-              View Student Entries
-            </Button>{" "}
-          </div>
-        )}
-
-        <br />
-        <h3 style={{ textAlign: "center" }}>
-          This entry is for the week of: PAY PERIOD HERE
+        <h3 style={{ textAlign: "center", marginTop: "24px" }}>
+          This entry is for the week of: {this.state.pay_period_label}
         </h3>
-        <Paper elevation={5} style={{ padding: "5%", margin: "5%" }}>
+        <Paper elevation={5} style={{ padding: "24px 5%", margin: "24px 5%" }}>
           <form onSubmit={this.submitInfo}>
-            <p>1. Student LCF ID:</p>
-            <TextField
-              style={{
-                backgroundColor: "white",
-                margin: "5px",
-                width: "30%",
-              }}
-              variant="outlined"
-              required
-              fullWidth
-              label="lcf_id"
-              name="lcf_id"
-              // sets value of input to local state
-              value={this.state.lcf_id}
-              type="text"
-              inputProps={inputProps}
-              maxLength={1000}
-              onChange={(event) => this.handleChange(event, "lcf_id")} //onChange of input values set local state
-            />
-            <br />
-            <br />
+            <p>1. Student: {this.state.student_name} (#{this.state.lcf_id})</p>
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
                 2. Are you passing all your classes?
@@ -431,7 +214,7 @@ class AdminUpdateEntry extends Component {
                 width: "80%",
               }}
               required
-              defaultValue={this.state.gpa}
+              defaultValue={Number(this.state.gpa)}
               type="number"
               aria-labelledby="discrete-slider-custom"
               step={0.01}
@@ -440,39 +223,36 @@ class AdminUpdateEntry extends Component {
               min={0}
               label="GPA"
               name="GPA"
-              value={this.state.gpa}
+              value={Number(this.state.gpa)}
               onChange={this.handleChangeGpa}
               marks={marksGpa}
             />{" "}
             <span style={{ marginLeft: 20 }}>GPA: {this.state.gpa}</span>
-            <p>
-              4. How many school days were you punctual for this pay period?
+
+            <div>
+              4. How many school days were you punctual for this pay period? (no tardies, no truancy, no lateness)
               <br />
-              (no tardies, no truancy, no lateness)
-            </p>
-            <Slider
-              style={{
-                width: "80%",
-              }}
-              required
-              defaultValue={this.state.clean_attend}
-              type="number"
-              aria-labelledby="discrete-slider-custom"
-              step={1}
-              valueLabelDisplay="auto"
-              max={10}
-              min={0}
-              label="attendance"
-              name="attendance"
-              value={this.state.clean_attend}
-              onChange={this.handleChangeAttendance}
-              marks={marks}
-            />{" "}
-            <span style={{ marginLeft: 20 }}>
-              Attendance: {this.state.clean_attend}
-            </span>
-            <br />
-            <br />
+              <TextField
+                  style={{
+                    backgroundColor: "white",
+                    margin: "5px",
+                    width: "180px",
+                    verticalAlign: "middle",
+                  }}
+                  variant="outlined"
+                  required
+                  fullWidth
+                  label="Clean attendance"
+                  name="Clean attendance"
+                  // sets value of input to local state
+                  value={this.state.clean_attend}
+                  type="number"
+                  inputProps={{min:0, max:10}}
+                  maxLength={2}
+                  onChange={(event) => this.handleChange(event, "clean_attend")}
+                />
+            </div>
+
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
                 5. Do you have detention hours at school?
@@ -545,7 +325,7 @@ class AdminUpdateEntry extends Component {
               </RadioGroup>
             </FormControl>
             <br />
-            <p>
+            <div>
               8. How many service hours did you do the past 2 weeks?
               <TextField
                 style={{
@@ -562,16 +342,14 @@ class AdminUpdateEntry extends Component {
                 // sets value of input to local state
                 value={this.state.current_service_hours}
                 type="number"
-                inputProps={inputProps}
-                maxLength={1000}
-                onChange={(event) =>
-                  this.handleChange(event, "current_service_hours")
-                } //onChange of input values set local state
+                inputProps={{ min: 0, max: 100 }}
+                maxLength={4}
+                onChange={(event) => this.handleChange(event, "current_service_hours")}
               />
-            </p>
+            </div>
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
-                9. Were you ontime for mandatory homerooms this pay period?
+                9. Were you on time for mandatory homerooms this pay period?
               </FormLabel>
               <RadioGroup
                 aria-label="hw_rm_attended"
@@ -645,11 +423,12 @@ class AdminUpdateEntry extends Component {
       </div>
     );
   }
+
 }
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  entries: state.students.studententriesadmin,
+  entries: state.students.studententriesadmin
 });
 
 export default withRouter(connect(mapStateToProps)(AdminUpdateEntry));

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+/*
 import { green, yellow } from "@material-ui/core/colors";
 import {
   TextField,
@@ -17,7 +18,6 @@ import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
 import moment from "moment";
 import { setStateToEntryByLcfIdInUrl } from "./AdminUtils";
-
 const GreenRadio = withStyles({
   root: {
     color: green[400],
@@ -37,10 +37,9 @@ const YellowRadio = withStyles({
   },
   checked: {},
 })((props) => <Radio color="default" {...props} />);
-
-//The purpose of this page is to update the student's entry this past pay period
-
+*/
 class AdminMakeEntry extends Component {
+  /*
   state = {
     lcf_id: "",
     pass_class: "",
@@ -58,7 +57,17 @@ class AdminMakeEntry extends Component {
     hw_rm_attended: "",
     comments: "",
   };
+*/
+  render() {
+    return (<div style={{ maxWidth: "400px", margin: "2em auto" }}>
+      The ability for an admin to create new student
+      entries is not currently functional.
+      You can <strong>edit</strong> entries students have
+      added by going to Current Entries
+      and clicking the Edit icon on the row you want to edit.</div>)
+  }
 
+  /*
   componentWillMount() {
     //current date
     let date = moment();
@@ -571,7 +580,7 @@ class AdminMakeEntry extends Component {
             </p>
             <FormControl component="fieldset">
               <FormLabel component="legend" style={{ color: "black" }}>
-                9. Were you ontime for mandatory homerooms this pay period?
+                9. Were you on time for mandatory homerooms this pay period?
               </FormLabel>
               <RadioGroup
                 aria-label="hw_rm_attended"
@@ -645,6 +654,7 @@ class AdminMakeEntry extends Component {
       </div>
     );
   }
+  */
 }
 
 const mapStateToProps = (state) => ({
