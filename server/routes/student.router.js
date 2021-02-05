@@ -42,8 +42,13 @@ function getStudentByLcfId(lcf_id, res) {
 router.get('/studententries', rejectUnauthenticated, async (req, res) => {
     // If not an admin, only return the student's own records.
     let poolQuery;
-    let queryText = `SELECT * FROM "entry" JOIN "student" ON "student"."lcf_id" = "entry"."lcf_id"`;
-    if(req.user.role === 'admin') {
+  let queryText = `SELECT
+      e.*,
+      s.first_name, s.last_name, s.school_attend, s.school_id,
+      s.student_email, s.grade, s.grad_year, s.last_login,
+      s.lcf_start_date
+    FROM entry e JOIN student s ON s.lcf_id = e.lcf_id`;
+  if (req.user.role === 'admin') {
       poolQuery = pool.query(queryText);
     } else {
       queryText += ' where student.lcf_id = $1';
