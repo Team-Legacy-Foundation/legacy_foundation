@@ -29,6 +29,7 @@ import moment from "moment";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import EventBusyIcon from '@material-ui/icons/EventBusy';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import withReactContent from "sweetalert2-react-content";
 
@@ -119,11 +120,15 @@ class MakeEntry extends Component {
 
   /** @param payDay {moment.Moment} */
   buildStatusRow(payDay) {
+    const cutOff = moment(payDay).add(-2, 'day').add(12, 'hour');
+    console.log({ payDay, cutOff });
     const row = {
       period_start: moment(payDay).add(-2, "week"),
       period_end: moment(payDay).add(-1, "day"),
       pay_day: payDay,
-      pay_day_ymd: payDay.format('YYYY-MM-DD')
+      pay_day_ymd: payDay.format('YYYY-MM-DD'),
+      editable_cut_off: cutOff.format('MMM D [by] hh:mm a'),
+      editable: moment().add(-20, 'minute').isBefore(cutOff)
     };
     row.title = `${row.period_start.format("MMM D")} - ${row.period_end.format("MMM D, YYYY")}`;
     row.long_title = `${row.period_start.format("MMMM D")} - ${row.period_end.format("MMMM D, YYYY")}`;
@@ -325,11 +330,26 @@ class MakeEntry extends Component {
   }
 
   setSelectedRow(row) {
+
     if(!row) {
       this.setState({ selected_pay_day_ymd: null });
       return;
     }
     const entry = this.getEntryToMatchPayDay(this.state.lcf_id, row.pay_day_ymd);
+    if (!entry && !row.editable) {
+      SwalJsx.fire({
+        title: `${row.pay_day.format('MMMM D')} Pay Day Information`,
+        html: (<div className="payday-swal-content">
+          No information has been submitted for this pay day,
+          and the due date for entry was {row.editable_cut_off}.
+        </div>),
+        showCancelButton: false,
+        showCancelButton: false,
+        confirmButtonColor: "#5cb85c",
+        confirmButtonText: "Dismiss"
+      });
+      return;
+    }
     this.setState({ selected_pay_day_ymd: row.pay_day_ymd });
     if (!entry) {
       return;
@@ -347,8 +367,11 @@ class MakeEntry extends Component {
     const entry = this.getEntryToMatchPayDay(lcfId, row.pay_day_ymd);
     let icon;
     let status;
-    if (!entry) {
+    if (!entry && row.editable) {
       icon = <CalendarTodayIcon />;
+      status = "Entry due " + row.editable_cut_off;
+    } else if (!entry) {
+      icon = <EventBusyIcon style={{ color: yellow[700] }} />;
       status = "No entry";
     } else if (entry.did_we_pay === "Yes" || entry.did_we_pay === "yes") {
       // History entry that's been paid
