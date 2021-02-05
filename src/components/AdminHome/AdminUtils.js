@@ -1,14 +1,15 @@
 
-export function setStateToEntryByLcfIdInUrl(component) {
+export function setStateToEntryByEntryIdInUrl(component) {
     const url_array = document.location.href.split("/"); //get the url
     const id = url_array[url_array.length - 1]; //gets the id from the url
 
-    const item = component.props.entries.find(i => i.lcf_id === Number(id));
+    const item = component.props.entries.find(i => i.id === Number(id));
     if (!item) {
-        console.log("Failed to find entry by lcf_id in last segment of URL.", id);
+        console.log("Failed to find entry by id in last segment of URL.", id);
         return null;
     } else {
         component.setState({
+            id: item.id,
             lcf_id: item.lcf_id,
             gpa: item.gpa,
             clean_attend: item.clean_attend,

@@ -48,9 +48,9 @@ class StudentEntries extends Component {
               <Button
                 variant="warning"
                 onClick={() => {
-                  const selectedStudent = this.props.entries[dataIndex];
+                  const selectedEntry = this.props.entries[dataIndex];
                   this.props.history.push({
-                    pathname: `/adminentryupdate/${selectedStudent.lcf_id}`
+                    pathname: `/adminentryupdate/${selectedEntry.id}`
                   });
                 }}
               >
@@ -61,10 +61,17 @@ class StudentEntries extends Component {
         },
       },
       {
-        name: "Entry ID",
+        name: "Pay Day",
         options: {
           filter: true,
-        },
+          sortCompare: (order) => {
+            return (a, b) => {
+              const amo = moment(a.data, 'M/D/YY');
+              const bmo = moment(b.data, 'M/D/YY');
+              return amo.diff(bmo, 'day') * (order === 'asc' ? 1 : -1);
+            }
+          }
+        }
       },
       {
         name: "First Name",
@@ -153,28 +160,13 @@ class StudentEntries extends Component {
       },
     ];
 
-    //The calculations below show the next pay day
-    let date = moment();
-    let previous_pay_day = moment("2020-08-10T00:00:00.000-05")
-    let pay_day = moment(previous_pay_day)
+    const options = {
+      rowsPerPage: 50,
+      rowsPerPageOptions: [10, 25, 50, 100, 500]
+    };
 
-    //beginning of getDate
-      function getDate() {
-        if (date >= pay_day) {
-          previous_pay_day = pay_day;
-          pay_day = moment(previous_pay_day).add(2, "week");
-          getDate();
-        }
-      }//End of getDate
-      getDate();
-
-      previous_pay_day = moment(previous_pay_day).format(
-        "MMMM Do YYYY"
-      );
-      pay_day = moment(pay_day).format("MMMM Do YYYY");
     return (
-      <div><br/>
-         <center><h1>Current Entries</h1></center>
+      <div>
          <Button
           style={{margin:'1%'}}
           variant='success'
@@ -183,18 +175,12 @@ class StudentEntries extends Component {
           Run Report
         </Button>
         {this.redirectPage()}
-        {/*PLEASE NOTE: instead of start date, we want to show latest activity on this table */}
-        {/*This will be tied to whenever a student logs in, it will do a put on that column to show thier latest login */}
-
-        {/*Blaine: one option, get rid of filter and map and handle in redux */}
-        {/*Do map in redux and store the data for the table in redux */}
         <div style={{paddingRight:'2%', paddingLeft:'2%', paddingBottom:'6%'}}>
-        <MUITable
-          data={this.getStudentArray(this.props.entries)}
-          columns={columns}
-          title={`Entries for Current Pay Period: ${previous_pay_day} - ${pay_day}`}
-
-        />
+          <MUITable
+            options={options}
+            data={this.getStudentArray(this.props.entries)}
+            columns={columns}
+            title={`Current Entries`} />
         </div>
         <br/>
         <br/>
@@ -209,7 +195,7 @@ class StudentEntries extends Component {
   // that MUI needs from there.
   getStudentArray = (entries) => {
     return entries.map(entry => [
-      entry.id,
+      moment(entry.pay_day).format('M/D/YY'),
       entry.first_name,
       entry.last_name,
       entry.lcf_id,

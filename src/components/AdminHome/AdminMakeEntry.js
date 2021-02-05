@@ -17,7 +17,6 @@ import {
 import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
 import moment from "moment";
-import { setStateToEntryByLcfIdInUrl } from "./AdminUtils";
 const GreenRadio = withStyles({
   root: {
     color: green[400],
@@ -159,7 +158,7 @@ class AdminMakeEntry extends Component {
   }
 
   componentDidMount() {
-    setStateToEntryByLcfIdInUrl(this);
+    // TODO: any state initialization here.
   }
 
   handleChange = (event, fieldName) => {

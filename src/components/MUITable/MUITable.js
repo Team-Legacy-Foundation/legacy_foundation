@@ -30,14 +30,18 @@ class MUITable extends Component {
   };
 
   render() {
-    
+
+    let options = this.props.options
+      ? { ...this.state.options, ...this.props.options }
+      : this.state.options;
+
     return (
       <React.Fragment>
         <MUIDataTable
           title={this.props.title}
           data={this.props.data}
           columns={this.props.columns}
-          options={this.state.options}
+          options={options}
         />
       </React.Fragment>
     );

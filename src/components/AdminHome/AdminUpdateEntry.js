@@ -16,7 +16,7 @@ import {
 import Swal from "sweetalert2";
 import Paper from "@material-ui/core/Paper";
 import moment from "moment";
-import { setStateToEntryByLcfIdInUrl } from "./AdminUtils";
+import { setStateToEntryByEntryIdInUrl } from "./AdminUtils";
 import { getGpaSliderMarks } from "./../MakeEntry/MakeEntryUtils";
 
 const GreenRadio = withStyles({
@@ -44,6 +44,7 @@ const YellowRadio = withStyles({
 class AdminUpdateEntry extends Component {
 
   state = {
+    id: 0,
     loading: true,
     lcf_id: "",
     student_name: "",
@@ -78,7 +79,7 @@ class AdminUpdateEntry extends Component {
   }
 
   initializeState() {
-    const entry = setStateToEntryByLcfIdInUrl(this);
+    const entry = setStateToEntryByEntryIdInUrl(this);
     const paydayEnd = moment(entry.pay_day).add(-3, 'day');
     const payDayStart = moment(entry.previous_pay_day);
     this.setState({
@@ -101,6 +102,7 @@ class AdminUpdateEntry extends Component {
   submitInfo = (event) => {
     event.preventDefault();
     const {
+      id,
       pass_class,
       lcf_id,
       gpa,
@@ -136,6 +138,7 @@ class AdminUpdateEntry extends Component {
         this.props.dispatch({
           type: "ADMIN_ENTRY_UPDATE",
           payload: {
+            id: id,
             lcf_id: lcf_id,
             pass_class: pass_class,
             gpa: gpa,
