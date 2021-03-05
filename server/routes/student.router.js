@@ -51,7 +51,7 @@ router.get('/studententries', rejectUnauthenticated, async (req, res) => {
   if (req.user.role === 'admin') {
     poolQuery = pool.query(queryText);
   } else {
-    queryText += ' where student.lcf_id = $1';
+    queryText += ' where s.lcf_id = $1';
     poolQuery = pool.query(queryText, [req.user.lcf_id]);
   }
   try {

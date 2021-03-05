@@ -15,7 +15,7 @@ In order to run this from Github, you will need to:
    * `SERVER_SESSION_SECRET` = random 10-character+ password-like thing; used for making cookies
    * `DATABASE_URL` = postgresql://user@server:password@server/dbname
    * `SENDGRID_API_KEY`
-   * You can put these in a bash script `.my-secrets.sh` (which is in .gitignore) `export DATABASE_URL=postgresql://...` and then run `source ./.my-secrets.sh`.
+   * You can put these in a bash script `.my-secrets.sh` (which is in .gitignore) `export DATABASE_URL=postgresql://...` and then run `source ./.my-secrets.sh`. Maybe there's a more conventional ".env" approach -- if you know what it is, change this readme to reflect that.
 6. Run ``npm run server`` in your terminal
 7. Run ``npm run client`` in your terminal
 8. The ``npm run client`` command should open up a new browser tab for you.
